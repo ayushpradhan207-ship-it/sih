@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VeriSkill — Verifiable Skill Passport & Explainable Matching Platform</title>
+  <meta name="description" content="Verifiable Skill Passport & Explainable Internship/Team Matching Platform built for SOA IDEATHON 2026 / Smart India Hackathon 2026.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              800: '#1e40af',
+              900: '#1e3a8a',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- FontAwesome 6 Icons CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col antialiased selection:bg-blue-600 selection:text-white">
+
+  <!-- TOP NAVIGATION & DEMO TOUR BAR -->
+  <header id="navbar-root"></header>
+
+  <!-- MAIN APP CONTAINER -->
+  <main id="app-root" class="flex-1"></main>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast-container"></div>
+
+  <!-- FOOTER -->
+  <footer class="bg-white border-t border-slate-200 py-10 mt-auto text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2 font-bold text-slate-900 text-sm">
+        <div class="w-6 h-6 rounded-lg bg-blue-600 flex items-center justify-center text-white text-xs">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <span>VeriSkill</span>
+        <span class="text-[10px] px-2 py-0.5 rounded bg-blue-50 text-blue-700 font-normal border border-blue-200">
+          SOA IDEATHON 2026 Internal Selection Build
+        </span>
+      </div>
+
+      <div class="flex items-center gap-6">
+        <a href="#/about" class="hover:text-slate-900 transition-colors">Architecture & Methodology</a>
+        <a href="#/admin/fairness" class="hover:text-slate-900 transition-colors">Ethical AI Audit</a>
+        <a href="#/verify/VP-2026-IND-1042" class="hover:text-slate-900 transition-colors">Public Verification</a>
+        <a href="#/student/privacy" class="hover:text-slate-900 transition-colors">Privacy by Design</a>
+      </div>
+
+      <div class="text-slate-400">
+        Empowering students via <strong class="text-slate-600">Proof, Not Claims</strong>.
+      </div>
+    </div>
+  </footer>
+
+  <!-- COMPONENT & ROUTER SCRIPTS -->
+  <script src="/js/utils.js"></script>
+  <script src="/js/components/navbar.js"></script>
+  <script src="/js/components/landingView.js"></script>
+  <script src="/js/components/aboutView.js"></script>
+  <script src="/js/components/studentDashboardView.js"></script>
+  <script src="/js/components/skillPassportView.js"></script>
+  <script src="/js/components/evidenceView.js"></script>
+  <script src="/js/components/opportunitiesView.js"></script>
+  <script src="/js/components/matchExplainView.js"></script>
+  <script src="/js/components/recruiterDashboardView.js"></script>
+  <script src="/js/components/candidateRankView.js"></script>
+  <script src="/js/components/createJobView.js"></script>
+  <script src="/js/components/teamBuilderView.js"></script>
+  <script src="/js/components/publicVerifyView.js"></script>
+  <script src="/js/components/fairnessAuditView.js"></script>
+  <script src="/js/components/privacyView.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>

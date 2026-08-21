@@ -1,0 +1,124 @@
+[
+  {
+    "id": "opp-ml-intern",
+    "title": "Machine Learning Intern",
+    "company": "Apex Neural Labs",
+    "logo": "🧠",
+    "location": "Bangalore / Remote",
+    "type": "Full-time Internship (6 Months)",
+    "stipend": "₹45,000 / month",
+    "domain": "Artificial Intelligence & Healthcare",
+    "postedDate": "2026-08-15",
+    "description": "Join our Core Applied AI research group to engineer robust clinical prediction models, fine-tune transformer architectures, and build explainable diagnostic pipelines for partner hospitals.",
+    "requiredSkills": [
+      { "name": "Python", "minLevel": "Advanced", "weight": 0.35, "minConfidence": 80 },
+      { "name": "Machine Learning", "minLevel": "Advanced", "weight": 0.30, "minConfidence": 75 },
+      { "name": "SQL", "minLevel": "Intermediate", "weight": 0.15, "minConfidence": 70 },
+      { "name": "PyTorch", "minLevel": "Intermediate", "weight": 0.20, "minConfidence": 70 }
+    ],
+    "preferredSkills": [
+      { "name": "Docker", "weight": 0.05, "minLevel": "Intermediate", "gapImportance": "Medium", "remediationAction": "Complete containerization mini-project for ML inference APIs" },
+      { "name": "AWS", "weight": 0.05, "minLevel": "Intermediate", "gapImportance": "High", "remediationAction": "Deploy existing PyTorch model using AWS SageMaker / ECS" },
+      { "name": "MLOps", "weight": 0.05, "minLevel": "Basic", "gapImportance": "Medium", "remediationAction": "Build CI/CD model deployment pipeline with GitHub Actions" }
+    ],
+    "projectRequirement": "At least 1 verified end-to-end Machine Learning or NLP project repository with reproducible code.",
+    "credentialRequirement": "Verified university coursework in ML/Data Science or recognized industry specialization.",
+    "experienceRequirement": "Hackathon or competitive programming track record is preferred."
+  },
+  {
+    "id": "opp-fullstack-ai",
+    "title": "Full Stack AI Engineer Intern",
+    "company": "NeuroTech Solutions",
+    "logo": "⚡",
+    "location": "Remote",
+    "type": "Summer Internship (3 Months)",
+    "stipend": "₹40,000 / month",
+    "domain": "EdTech & Generative AI",
+    "postedDate": "2026-08-18",
+    "description": "Collaborate directly with senior architects to build responsive real-time web applications integrating LLM streaming APIs, interactive analytics dashboards, and verifiable credential workflows.",
+    "requiredSkills": [
+      { "name": "React", "minLevel": "Advanced", "weight": 0.30, "minConfidence": 80 },
+      { "name": "TypeScript", "minLevel": "Intermediate", "weight": 0.25, "minConfidence": 75 },
+      { "name": "Node.js", "minLevel": "Intermediate", "weight": 0.25, "minConfidence": 70 },
+      { "name": "PostgreSQL", "minLevel": "Intermediate", "weight": 0.20, "minConfidence": 70 }
+    ],
+    "preferredSkills": [
+      { "name": "Tailwind CSS", "weight": 0.05, "minLevel": "Intermediate", "gapImportance": "Low", "remediationAction": "Refactor component styles using Tailwind utility classes" },
+      { "name": "Docker", "weight": 0.05, "minLevel": "Intermediate", "gapImportance": "Medium", "remediationAction": "Containerize Node/React multi-container compose app" }
+    ],
+    "projectRequirement": "Live web application demo with frontend and database integration.",
+    "credentialRequirement": "Demonstrated React or Full-Stack certification."
+  },
+  {
+    "id": "opp-data-analyst",
+    "title": "Data Science & Analytics Intern",
+    "company": "Quantum Insights AI",
+    "logo": "📊",
+    "location": "Hyderabad / Hybrid",
+    "type": "Fall Internship (4 Months)",
+    "stipend": "₹35,000 / month",
+    "domain": "FinTech & Risk Analytics",
+    "postedDate": "2026-08-12",
+    "description": "Perform exploratory data analysis on millions of transaction records, develop statistical anomaly detection pipelines, and craft interactive executive dashboards.",
+    "requiredSkills": [
+      { "name": "Python", "minLevel": "Advanced", "weight": 0.35, "minConfidence": 80 },
+      { "name": "SQL", "minLevel": "Advanced", "weight": 0.35, "minConfidence": 80 },
+      { "name": "Pandas", "minLevel": "Advanced", "weight": 0.15, "minConfidence": 75 },
+      { "name": "Scikit-learn", "minLevel": "Intermediate", "weight": 0.15, "minConfidence": 70 }
+    ],
+    "preferredSkills": [
+      { "name": "FastAPI", "weight": 0.05, "minLevel": "Intermediate", "gapImportance": "Low", "remediationAction": "Expose tabular model predictions via REST endpoint" },
+      { "name": "Tableau", "weight": 0.05, "minLevel": "Intermediate", "gapImportance": "Medium", "remediationAction": "Build interactive business intelligence workbook" }
+    ],
+    "projectRequirement": "Data analysis notebook repository with statistical insights.",
+    "credentialRequirement": "University course in Database Systems or Applied Data Science."
+  },
+  {
+    "id": "opp-cloud-devops",
+    "title": "Cloud Infrastructure & DevOps Intern",
+    "company": "ScaleCloud Systems",
+    "logo": "☁️",
+    "location": "Bhubaneswar / Hybrid",
+    "type": "Winter Internship (6 Months)",
+    "stipend": "₹42,000 / month",
+    "domain": "Enterprise Cloud & SRE",
+    "postedDate": "2026-08-10",
+    "description": "Design automated continuous delivery pipelines, monitor multi-cluster Kubernetes deployments, and enforce infrastructure-as-code security standards.",
+    "requiredSkills": [
+      { "name": "Docker", "minLevel": "Advanced", "weight": 0.30, "minConfidence": 80 },
+      { "name": "Kubernetes", "minLevel": "Intermediate", "weight": 0.25, "minConfidence": 75 },
+      { "name": "AWS", "minLevel": "Advanced", "weight": 0.25, "minConfidence": 80 },
+      { "name": "Linux", "minLevel": "Advanced", "weight": 0.20, "minConfidence": 80 }
+    ],
+    "preferredSkills": [
+      { "name": "CI/CD (GitHub Actions)", "weight": 0.10, "minLevel": "Advanced", "gapImportance": "High", "remediationAction": "Implement automated build/push/deploy workflow" },
+      { "name": "Terraform", "weight": 0.10, "minLevel": "Intermediate", "gapImportance": "High", "remediationAction": "Provision AWS VPC and EC2 via Terraform HCL" }
+    ],
+    "projectRequirement": "Repository containing production-grade Dockerfiles, K8s manifests, or GitHub Actions pipelines.",
+    "credentialRequirement": "AWS Cloud Practitioner / Linux Certified."
+  },
+  {
+    "id": "opp-uiux-engineer",
+    "title": "UI/UX & Product Design Intern",
+    "company": "DesignSphere Studio",
+    "logo": "🎨",
+    "location": "Mumbai / Remote",
+    "type": "Full-time Internship (3 Months)",
+    "stipend": "₹38,000 / month",
+    "domain": "Product Design & HCI",
+    "postedDate": "2026-08-14",
+    "description": "Conduct deep user journey research, build high-fidelity interactive Figma prototypes, and establish scalable design system tokens in close collaboration with frontend engineers.",
+    "requiredSkills": [
+      { "name": "Figma", "minLevel": "Advanced", "weight": 0.35, "minConfidence": 85 },
+      { "name": "UI/UX Design", "minLevel": "Advanced", "weight": 0.30, "minConfidence": 80 },
+      { "name": "User Research", "minLevel": "Intermediate", "weight": 0.20, "minConfidence": 75 },
+      { "name": "Design Systems", "minLevel": "Intermediate", "weight": 0.15, "minConfidence": 70 }
+    ],
+    "preferredSkills": [
+      { "name": "React", "weight": 0.05, "minLevel": "Intermediate", "gapImportance": "Low", "remediationAction": "Translate Figma token variables into Tailwind themes" },
+      { "name": "Accessibility (a11y)", "weight": 0.05, "minLevel": "Intermediate", "gapImportance": "Medium", "remediationAction": "Audit WCAG 2.1 AA compliance in design files" }
+    ],
+    "projectRequirement": "Figma portfolio case study demonstrating user research to interactive prototype.",
+    "credentialRequirement": "Recognized UX design coursework or competition badge."
+  }
+]

@@ -1,0 +1,54 @@
+[
+  {
+    "id": "audit-101",
+    "timestamp": "2026-08-21T10:43:12Z",
+    "eventType": "MATCH_GENERATED",
+    "actor": "ExplainableMatchingEngine_v2.4",
+    "candidateId": "VS-1042",
+    "opportunityId": "opp-ml-intern",
+    "score": 91,
+    "attributesUsed": ["verified_skills", "project_relevance", "evidence_confidence", "credential_hash"],
+    "attributesMasked": ["gender", "age", "institution", "location", "photo", "name"],
+    "details": "Generated 91% match for candidate #VS-1042 with 4 verified skill traces and 2 gap skills (Docker, AWS)."
+  },
+  {
+    "id": "audit-102",
+    "timestamp": "2026-08-21T09:30:00Z",
+    "eventType": "FAIRNESS_AUDIT_EXECUTED",
+    "actor": "FairnessAuditService",
+    "candidateCount": 10,
+    "disparateImpactRatio": 0.94,
+    "status": "PASS",
+    "details": "Automated bias simulation passed with Disparate Impact Ratio 0.94 (> 0.80 Four-Fifths Rule Threshold)."
+  },
+  {
+    "id": "audit-103",
+    "timestamp": "2026-08-20T16:15:22Z",
+    "eventType": "CREDENTIAL_VERIFIED",
+    "actor": "VerificationService",
+    "candidateId": "VS-1042",
+    "credentialId": "VC-DL-2026-001",
+    "proofHash": "sha256:7a9e1c3f5d7b9a1c3e5f7a9b1d3f5e7a9b1c3d5e7f9a1b3c5d7e9f1a3b5c7d9e",
+    "details": "DeepLearning.AI Machine Learning Specialization cryptographically verified against issuer signature."
+  },
+  {
+    "id": "audit-104",
+    "timestamp": "2026-08-19T14:20:00Z",
+    "eventType": "TEAM_OPTIMIZATION_RUN",
+    "actor": "TeamComplementarityService",
+    "projectId": "team-proj-healthcare",
+    "teamSize": 6,
+    "coverageScore": 94,
+    "details": "Complementarity solver selected optimal 6-member squad maximizing skill coverage across AI/ML, Backend, Frontend, UI/UX, and Cloud."
+  },
+  {
+    "id": "audit-105",
+    "timestamp": "2026-08-18T11:05:40Z",
+    "eventType": "EVIDENCE_INGESTED",
+    "actor": "SkillExtractionService",
+    "candidateId": "VS-1042",
+    "source": "GitHub / student-placement-predictor",
+    "extractedSkills": ["Python", "Machine Learning", "Scikit-learn", "Pandas", "NumPy", "SQL", "Git"],
+    "details": "Simulated AST & commit analysis extracted 7 skills with average confidence 92%."
+  }
+]

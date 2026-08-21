@@ -1,0 +1,796 @@
+[
+  {
+    "id": "student-1042",
+    "anonymizedId": "VS-1042",
+    "passportId": "VP-2026-IND-1042",
+    "isPrimaryDemo": true,
+    "personal": {
+      "fullName": "Aarav Sharma",
+      "email": "student@veriskill.demo",
+      "institution": "Siksha 'O' Anusandhan University (SOA)",
+      "degree": "B.Tech in Computer Science & Engineering",
+      "graduationYear": 2026,
+      "location": "Bhubaneswar, Odisha, India",
+      "gender": "Male",
+      "age": 21,
+      "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80"
+    },
+    "passportMetrics": {
+      "overallScore": 84,
+      "trustScore": 87,
+      "verifiedSkillsCount": 17,
+      "totalEvidenceCount": 26,
+      "credentialsCount": 4,
+      "projectsCount": 5,
+      "competitionsCount": 1,
+      "lastDemonstrated": "2026-08-18"
+    },
+    "skills": [
+      {
+        "id": "sk-py",
+        "name": "Python",
+        "category": "programming",
+        "level": "Advanced",
+        "confidence": 94,
+        "verifiedEvidenceCount": 5,
+        "lastDemonstrated": "2026-08-18",
+        "verificationStatus": "VERIFIED",
+        "proofHash": "sha256:9f83a2e1d74b92c478a83210ef87a6c5b4d3e2f1a0987654321fedcba0987654",
+        "evidenceIds": ["ev-proj-1", "ev-proj-2", "ev-gh-1", "ev-course-1", "ev-hack-1"]
+      },
+      {
+        "id": "sk-ml",
+        "name": "Machine Learning",
+        "category": "ai_ml",
+        "level": "Advanced",
+        "confidence": 88,
+        "verifiedEvidenceCount": 4,
+        "lastDemonstrated": "2026-08-16",
+        "verificationStatus": "VERIFIED",
+        "proofHash": "sha256:7b12c4e9f08a34d567890123456789abcdef0123456789abcdef0123456789ab",
+        "evidenceIds": ["ev-proj-1", "ev-proj-3", "ev-course-1", "ev-hack-1"]
+      },
+      {
+        "id": "sk-react",
+        "name": "React",
+        "category": "frontend",
+        "level": "Intermediate",
+        "confidence": 81,
+        "verifiedEvidenceCount": 3,
+        "lastDemonstrated": "2026-08-10",
+        "verificationStatus": "VERIFIED",
+        "proofHash": "sha256:3a4b5c6d7e8f901234567890abcdef1234567890abcdef1234567890abcdef12",
+        "evidenceIds": ["ev-proj-4", "ev-proj-5", "ev-cred-3"]
+      },
+      {
+        "id": "sk-sql",
+        "name": "SQL",
+        "category": "database",
+        "level": "Intermediate",
+        "confidence": 79,
+        "verifiedEvidenceCount": 3,
+        "lastDemonstrated": "2026-07-29",
+        "verificationStatus": "VERIFIED",
+        "proofHash": "sha256:1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+        "evidenceIds": ["ev-proj-1", "ev-proj-2", "ev-cred-4"]
+      },
+      {
+        "id": "sk-pytorch",
+        "name": "PyTorch",
+        "category": "ai_ml",
+        "level": "Intermediate",
+        "confidence": 76,
+        "verifiedEvidenceCount": 2,
+        "lastDemonstrated": "2026-08-15",
+        "verificationStatus": "VERIFIED",
+        "proofHash": "sha256:fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+        "evidenceIds": ["ev-proj-2", "ev-gh-1"]
+      },
+      {
+        "id": "sk-git",
+        "name": "Git",
+        "category": "collaboration",
+        "level": "Advanced",
+        "confidence": 90,
+        "verifiedEvidenceCount": 4,
+        "lastDemonstrated": "2026-08-18",
+        "verificationStatus": "VERIFIED",
+        "proofHash": "sha256:a1b2c3d4e5f67890a1b2c3d4e5f67890a1b2c3d4e5f67890a1b2c3d4e5f67890",
+        "evidenceIds": ["ev-gh-1", "ev-proj-1", "ev-proj-4", "ev-hack-1"]
+      },
+      {
+        "id": "sk-docker",
+        "name": "Docker",
+        "category": "cloud_devops",
+        "level": "Beginner",
+        "confidence": 40,
+        "verifiedEvidenceCount": 1,
+        "lastDemonstrated": "2026-06-20",
+        "verificationStatus": "SELF-DECLARED",
+        "proofHash": "sha256:d0c9e8f7a6b5c4d3e2f1a098765432109876543210fedcba9876543210abcdef",
+        "evidenceIds": ["ev-self-docker"]
+      },
+      {
+        "id": "sk-nlp",
+        "name": "NLP",
+        "category": "ai_ml",
+        "level": "Intermediate",
+        "confidence": 78,
+        "verifiedEvidenceCount": 2,
+        "lastDemonstrated": "2026-08-12",
+        "verificationStatus": "VERIFIED",
+        "proofHash": "sha256:99887766554433221100aabbccddeeff00112233445566778899aabbccddeeff",
+        "evidenceIds": ["ev-proj-2", "ev-hack-1"]
+      },
+      {
+        "id": "sk-sklearn",
+        "name": "Scikit-learn",
+        "category": "ai_ml",
+        "level": "Advanced",
+        "confidence": 89,
+        "verifiedEvidenceCount": 3,
+        "lastDemonstrated": "2026-08-16",
+        "verificationStatus": "VERIFIED",
+        "proofHash": "sha256:554433221100ffeeddccbbaa99887766554433221100ffeeddccbbaa99887766",
+        "evidenceIds": ["ev-proj-1", "ev-proj-3", "ev-course-1"]
+      },
+      {
+        "id": "sk-pandas",
+        "name": "Pandas",
+        "category": "ai_ml",
+        "level": "Advanced",
+        "confidence": 92,
+        "verifiedEvidenceCount": 4,
+        "lastDemonstrated": "2026-08-18",
+        "verificationStatus": "VERIFIED",
+        "proofHash": "sha256:aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899",
+        "evidenceIds": ["ev-proj-1", "ev-proj-2", "ev-proj-3", "ev-course-1"]
+      },
+      {
+        "id": "sk-fastapi",
+        "name": "FastAPI",
+        "category": "backend",
+        "level": "Intermediate",
+        "confidence": 75,
+        "verifiedEvidenceCount": 2,
+        "lastDemonstrated": "2026-08-16",
+        "verificationStatus": "VERIFIED",
+        "proofHash": "sha256:11223344556677889900aabbccddeeff11223344556677889900aabbccddeeff",
+        "evidenceIds": ["ev-proj-3", "ev-gh-1"]
+      },
+      {
+        "id": "sk-tailwind",
+        "name": "Tailwind CSS",
+        "category": "frontend",
+        "level": "Intermediate",
+        "confidence": 80,
+        "verifiedEvidenceCount": 2,
+        "lastDemonstrated": "2026-08-10",
+        "verificationStatus": "VERIFIED",
+        "proofHash": "sha256:22334455667788990011aabbccddeeff22334455667788990011aabbccddeeff",
+        "evidenceIds": ["ev-proj-4", "ev-proj-5"]
+      },
+      {
+        "id": "sk-postgres",
+        "name": "PostgreSQL",
+        "category": "database",
+        "level": "Intermediate",
+        "confidence": 74,
+        "verifiedEvidenceCount": 2,
+        "lastDemonstrated": "2026-07-29",
+        "verificationStatus": "VERIFIED",
+        "proofHash": "sha256:33445566778899001122aabbccddeeff33445566778899001122aabbccddeeff",
+        "evidenceIds": ["ev-proj-5", "ev-cred-4"]
+      },
+      {
+        "id": "sk-nodejs",
+        "name": "Node.js",
+        "category": "backend",
+        "level": "Intermediate",
+        "confidence": 72,
+        "verifiedEvidenceCount": 2,
+        "lastDemonstrated": "2026-08-05",
+        "verificationStatus": "VERIFIED",
+        "proofHash": "sha256:44556677889900112233aabbccddeeff44556677889900112233aabbccddeeff",
+        "evidenceIds": ["ev-proj-5", "ev-cred-3"]
+      },
+      {
+        "id": "sk-vc",
+        "name": "W3C Verifiable Credentials",
+        "category": "cybersecurity",
+        "level": "Intermediate",
+        "confidence": 77,
+        "verifiedEvidenceCount": 1,
+        "lastDemonstrated": "2026-08-10",
+        "verificationStatus": "VERIFIED",
+        "proofHash": "sha256:55667788990011223344aabbccddeeff55667788990011223344aabbccddeeff",
+        "evidenceIds": ["ev-proj-4"]
+      },
+      {
+        "id": "sk-numpy",
+        "name": "NumPy",
+        "category": "ai_ml",
+        "level": "Advanced",
+        "confidence": 91,
+        "verifiedEvidenceCount": 3,
+        "lastDemonstrated": "2026-08-18",
+        "verificationStatus": "VERIFIED",
+        "proofHash": "sha256:66778899001122334455aabbccddeeff66778899001122334455aabbccddeeff",
+        "evidenceIds": ["ev-proj-1", "ev-proj-2", "ev-course-1"]
+      },
+      {
+        "id": "sk-sysarch",
+        "name": "System Architecture",
+        "category": "collaboration",
+        "level": "Intermediate",
+        "confidence": 70,
+        "verifiedEvidenceCount": 2,
+        "lastDemonstrated": "2026-08-16",
+        "verificationStatus": "VERIFIED",
+        "proofHash": "sha256:77889900112233445566aabbccddeeff77889900112233445566aabbccddeeff",
+        "evidenceIds": ["ev-proj-3", "ev-proj-5"]
+      }
+    ],
+    "evidenceList": [
+      {
+        "id": "ev-proj-1",
+        "type": "Project",
+        "title": "Student Placement Prediction System",
+        "source": "GitHub / Academic Capstone",
+        "url": "https://github.com/aarav-sharma/student-placement-predictor",
+        "description": "End-to-end Machine Learning pipeline analyzing student academic & internship records to predict campus placement probabilities with 92.4% ROC-AUC score. Built with Python, Pandas, Scikit-learn, and Streamlit.",
+        "skills": ["Python", "Machine Learning", "Scikit-learn", "Pandas", "NumPy", "SQL", "Git"],
+        "verificationStatus": "VERIFIED",
+        "proofHash": "sha256:8f9a2b3c4d5e6f708192a3b4c5d6e7f8091a2b3c4d5e6f708192a3b4c5d6e7f8",
+        "timestamp": "2026-08-18T10:30:00Z",
+        "confidence": 0.94,
+        "metadata": {
+          "repoStars": 24,
+          "commitsCount": 47,
+          "linesOfCode": 3420,
+          "automatedTests": "Passing (18/18)",
+          "license": "MIT"
+        }
+      },
+      {
+        "id": "ev-proj-2",
+        "type": "Project",
+        "title": "NLP Healthcare Sentiment & Triage Analyzer",
+        "source": "GitHub / Research Initiative",
+        "url": "https://github.com/aarav-sharma/nlp-healthcare-triage",
+        "description": "Fine-tuned BioBERT model for analyzing clinical notes and patient sentiment to prioritize emergency triage tickets. Implemented in PyTorch, Hugging Face Transformers, and SQL.",
+        "skills": ["Python", "PyTorch", "NLP", "Machine Learning", "Pandas", "SQL"],
+        "verificationStatus": "VERIFIED",
+        "proofHash": "sha256:1a2b3c4d5e6f708192a3b4c5d6e7f8091a2b3c4d5e6f708192a3b4c5d6e7f809",
+        "timestamp": "2026-08-12T14:15:00Z",
+        "confidence": 0.91,
+        "metadata": {
+          "repoStars": 38,
+          "commitsCount": 62,
+          "linesOfCode": 5120,
+          "automatedTests": "Passing (24/24)",
+          "license": "Apache-2.0"
+        }
+      },
+      {
+        "id": "ev-proj-3",
+        "type": "Project",
+        "title": "AI Resume Screening & Bias Audit Engine",
+        "source": "GitHub / Open Source",
+        "url": "https://github.com/aarav-sharma/fair-ai-screening",
+        "description": "Fairness-aware ATS ranking engine evaluating candidate evidence while mathematically enforcing Disparate Impact Ratio > 0.90 across demographic groups. Built with FastAPI and Scikit-learn.",
+        "skills": ["Python", "Machine Learning", "FastAPI", "Scikit-learn", "Pandas", "System Architecture"],
+        "verificationStatus": "VERIFIED",
+        "proofHash": "sha256:3c4d5e6f708192a3b4c5d6e7f8091a2b3c4d5e6f708192a3b4c5d6e7f8091a2b",
+        "timestamp": "2026-08-16T18:00:00Z",
+        "confidence": 0.93,
+        "metadata": {
+          "repoStars": 52,
+          "commitsCount": 83,
+          "linesOfCode": 4890,
+          "automatedTests": "Passing (32/32)",
+          "license": "MIT"
+        }
+      },
+      {
+        "id": "ev-proj-4",
+        "type": "Project",
+        "title": "Decentralized Credential Ledger UI",
+        "source": "GitHub / Hackathon Project",
+        "url": "https://github.com/aarav-sharma/decentralized-credentials-ui",
+        "description": "Interactive Web client for verifying W3C Verifiable Credentials and Open Badges 3.0 with client-side SHA-256 validation, React, and Tailwind CSS.",
+        "skills": ["React", "Tailwind CSS", "W3C Verifiable Credentials", "Git"],
+        "verificationStatus": "VERIFIED",
+        "proofHash": "sha256:5e6f708192a3b4c5d6e7f8091a2b3c4d5e6f708192a3b4c5d6e7f8091a2b3c4d",
+        "timestamp": "2026-08-10T11:20:00Z",
+        "confidence": 0.88,
+        "metadata": {
+          "repoStars": 19,
+          "commitsCount": 35,
+          "linesOfCode": 2980,
+          "license": "MIT"
+        }
+      },
+      {
+        "id": "ev-proj-5",
+        "type": "Project",
+        "title": "Full-Stack EdTech Analytics Dashboard",
+        "source": "GitHub / Production MVP",
+        "url": "https://github.com/aarav-sharma/edtech-analytics-fullstack",
+        "description": "Real-time student progress tracking portal with PostgreSQL time-series queries, Node.js backend, and responsive React data visualizations.",
+        "skills": ["React", "Node.js", "PostgreSQL", "Tailwind CSS", "System Architecture"],
+        "verificationStatus": "VERIFIED",
+        "proofHash": "sha256:708192a3b4c5d6e7f8091a2b3c4d5e6f708192a3b4c5d6e7f8091a2b3c4d5e6f",
+        "timestamp": "2026-08-05T09:45:00Z",
+        "confidence": 0.89,
+        "metadata": {
+          "repoStars": 15,
+          "commitsCount": 41,
+          "linesOfCode": 3760,
+          "license": "MIT"
+        }
+      },
+      {
+        "id": "ev-gh-1",
+        "type": "GitHub Repository & Activity",
+        "title": "Verified GitHub Developer Profile & Commits",
+        "source": "GitHub GraphQL API Audit",
+        "url": "https://github.com/aarav-sharma",
+        "description": "Continuous GitHub contributor with 340+ lifetime commits across 12 repositories in Python, TypeScript, and ML libraries over the last 14 months.",
+        "skills": ["Python", "PyTorch", "FastAPI", "Git"],
+        "verificationStatus": "VERIFIED",
+        "proofHash": "sha256:92a3b4c5d6e7f8091a2b3c4d5e6f708192a3b4c5d6e7f8091a2b3c4d5e6f7081",
+        "timestamp": "2026-08-18T00:00:00Z",
+        "confidence": 0.96,
+        "metadata": {
+          "totalContributions": 348,
+          "verifiedPullRequests": 29,
+          "codeReviewsCompleted": 14
+        }
+      },
+      {
+        "id": "ev-course-1",
+        "type": "Coursework Outcome",
+        "title": "CS-402: Machine Learning & Statistical Inference",
+        "source": "SOA University Academic Transcript API",
+        "url": "https://soa.ac.in/academic-records/verify/CS402-2025-1042",
+        "description": "Graduated with Grade 'O' (Outstanding / 95%). Completed hands-on labs in linear/logistic regression, SVMs, decision trees, neural network architectures, and cross-validation.",
+        "skills": ["Python", "Machine Learning", "Scikit-learn", "Pandas", "NumPy"],
+        "verificationStatus": "VERIFIED",
+        "proofHash": "sha256:b4c5d6e7f8091a2b3c4d5e6f708192a3b4c5d6e7f8091a2b3c4d5e6f708192a3",
+        "timestamp": "2025-12-15T12:00:00Z",
+        "confidence": 0.95,
+        "metadata": {
+          "credits": 4,
+          "grade": "O (10/10 GP)",
+          "institutionVerified": true
+        }
+      },
+      {
+        "id": "ev-cred-3",
+        "type": "Certification",
+        "title": "Meta Front-End Developer Professional Certificate",
+        "source": "Coursera / Meta Verifiable Credential",
+        "url": "https://coursera.org/verify/professional-cert/META-FE-90142",
+        "description": "Rigorous 9-course program covering advanced React patterns, component architecture, state management, accessibility, and client-server integration.",
+        "skills": ["React", "Node.js"],
+        "verificationStatus": "VERIFIED",
+        "proofHash": "sha256:d6e7f8091a2b3c4d5e6f708192a3b4c5d6e7f8091a2b3c4d5e6f708192a3b4c5",
+        "timestamp": "2026-03-20T08:00:00Z",
+        "confidence": 0.92,
+        "metadata": {
+          "issuer": "Meta / Coursera",
+          "w3cStandard": "W3C VC v1.1 Compliant"
+        }
+      },
+      {
+        "id": "ev-cred-4",
+        "type": "Certification",
+        "title": "PostgreSQL for Everybody Specialization",
+        "source": "University of Michigan Online",
+        "url": "https://coursera.org/verify/specialization/UMICH-PG-44012",
+        "description": "Database design, relational modeling, advanced SQL queries, JSONB indexing, and query optimization techniques.",
+        "skills": ["SQL", "PostgreSQL"],
+        "verificationStatus": "VERIFIED",
+        "proofHash": "sha256:f8091a2b3c4d5e6f708192a3b4c5d6e7f8091a2b3c4d5e6f708192a3b4c5d6e7",
+        "timestamp": "2026-04-14T10:00:00Z",
+        "confidence": 0.90,
+        "metadata": {
+          "issuer": "University of Michigan",
+          "w3cStandard": "Open Badges 3.0"
+        }
+      },
+      {
+        "id": "ev-hack-1",
+        "type": "Competition",
+        "title": "Smart India AI Hackathon (Internal Selection)",
+        "source": "SOA IDEATHON 2026 Jury Verdict",
+        "url": "https://ideathon.soa.ac.in/archive/2026/teams/neural-flow",
+        "description": "1st Runner Up (Team Lead & ML Architect). Engineered an explainable AI triage algorithm in 36 continuous hours using PyTorch and Scikit-learn.",
+        "skills": ["Python", "Machine Learning", "NLP", "Git"],
+        "verificationStatus": "VERIFIED",
+        "proofHash": "sha256:091a2b3c4d5e6f708192a3b4c5d6e7f8091a2b3c4d5e6f708192a3b4c5d6e7f8",
+        "timestamp": "2026-08-16T22:00:00Z",
+        "confidence": 0.96,
+        "metadata": {
+          "award": "1st Runner Up (National Finalist Track)",
+          "teamSize": 5
+        }
+      },
+      {
+        "id": "ev-self-docker",
+        "type": "Self-Declared",
+        "title": "Basic Docker Containerization Practice",
+        "source": "Self-Reported Experience",
+        "description": "Wrote basic Dockerfiles for Python scripts and pulled base images locally.",
+        "skills": ["Docker"],
+        "verificationStatus": "SELF-DECLARED",
+        "proofHash": "sha256:unverified_self_declaration_hash_placeholder",
+        "timestamp": "2026-06-20T00:00:00Z",
+        "confidence": 0.40,
+        "metadata": {
+          "note": "Awaiting repository commit verification or container registry link."
+        }
+      }
+    ],
+    "credentials": [
+      {
+        "credentialId": "VC-DL-2026-001",
+        "title": "Advanced Machine Learning Specialization",
+        "issuer": "DeepLearning.AI",
+        "credentialType": "Professional Specialization",
+        "issuedDate": "2026-01-15",
+        "expirationDate": "Never",
+        "skills": ["Machine Learning", "Python", "Scikit-learn"],
+        "verificationStatus": "VERIFIED",
+        "proofHash": "sha256:7a9e1c3f5d7b9a1c3e5f7a9b1d3f5e7a9b1c3d5e7f9a1b3c5d7e9f1a3b5c7d9e",
+        "standard": "W3C Verifiable Credential v1.1"
+      },
+      {
+        "credentialId": "VC-UM-2026-042",
+        "title": "Applied Data Science with Python",
+        "issuer": "University of Michigan",
+        "credentialType": "Academic Certificate",
+        "issuedDate": "2025-11-20",
+        "expirationDate": "Never",
+        "skills": ["Python", "Pandas", "NumPy", "Machine Learning"],
+        "verificationStatus": "VERIFIED",
+        "proofHash": "sha256:2b4d6f8a0c2e4a6c8e0a2c4e6a8c0e2a4c6e8a0c2e4a6c8e0a2c4e6a8c0e2a4c",
+        "standard": "Open Badges 3.0"
+      },
+      {
+        "credentialId": "VC-META-2026-104",
+        "title": "Meta Front-End Developer Professional Certificate",
+        "issuer": "Meta",
+        "credentialType": "Industry Certification",
+        "issuedDate": "2026-03-20",
+        "expirationDate": "Never",
+        "skills": ["React", "Tailwind CSS", "JavaScript"],
+        "verificationStatus": "VERIFIED",
+        "proofHash": "sha256:3c5e7a9c1e3a5c7e9a1c3e5a7c9e1a3c5e7a9c1e3a5c7e9a1c3e5a7c9e1a3c5e",
+        "standard": "W3C Verifiable Credential v1.1"
+      },
+      {
+        "credentialId": "VC-UM-2026-088",
+        "title": "PostgreSQL for Everybody Specialization",
+        "issuer": "University of Michigan",
+        "credentialType": "Academic Certificate",
+        "issuedDate": "2026-04-14",
+        "expirationDate": "Never",
+        "skills": ["SQL", "PostgreSQL"],
+        "verificationStatus": "VERIFIED",
+        "proofHash": "sha256:4d6f8b0d2f4b6d8f0b2d4f6b8d0f2b4d6f8b0d2f4b6d8f0b2d4f6b8d0f2b4d6f",
+        "standard": "Open Badges 3.0"
+      }
+    ]
+  },
+  {
+    "id": "student-1018",
+    "anonymizedId": "VS-1018",
+    "passportId": "VP-2026-IND-1018",
+    "personal": {
+      "fullName": "Rohan Deshmukh",
+      "email": "rohan@veriskill.demo",
+      "institution": "IIT Bhubaneswar",
+      "degree": "B.Tech in Computer Science",
+      "graduationYear": 2026,
+      "location": "Bhubaneswar, India",
+      "gender": "Male",
+      "age": 22
+    },
+    "passportMetrics": {
+      "overallScore": 89,
+      "trustScore": 92,
+      "verifiedSkillsCount": 14,
+      "totalEvidenceCount": 22,
+      "credentialsCount": 3,
+      "projectsCount": 4,
+      "competitionsCount": 2,
+      "lastDemonstrated": "2026-08-19"
+    },
+    "skills": [
+      { "name": "Node.js", "category": "backend", "level": "Advanced", "confidence": 92, "verifiedEvidenceCount": 4, "verificationStatus": "VERIFIED" },
+      { "name": "Express.js", "category": "backend", "level": "Advanced", "confidence": 90, "verifiedEvidenceCount": 3, "verificationStatus": "VERIFIED" },
+      { "name": "PostgreSQL", "category": "database", "level": "Advanced", "confidence": 88, "verifiedEvidenceCount": 4, "verificationStatus": "VERIFIED" },
+      { "name": "Docker", "category": "cloud_devops", "level": "Advanced", "confidence": 89, "verifiedEvidenceCount": 3, "verificationStatus": "VERIFIED" },
+      { "name": "Kubernetes", "category": "cloud_devops", "level": "Intermediate", "confidence": 78, "verifiedEvidenceCount": 2, "verificationStatus": "VERIFIED" },
+      { "name": "AWS", "category": "cloud_devops", "level": "Intermediate", "confidence": 82, "verifiedEvidenceCount": 3, "verificationStatus": "VERIFIED" },
+      { "name": "Go", "category": "programming", "level": "Intermediate", "confidence": 76, "verifiedEvidenceCount": 2, "verificationStatus": "VERIFIED" },
+      { "name": "REST APIs", "category": "backend", "level": "Advanced", "confidence": 95, "verifiedEvidenceCount": 5, "verificationStatus": "VERIFIED" },
+      { "name": "Git", "category": "collaboration", "level": "Advanced", "confidence": 92, "verifiedEvidenceCount": 4, "verificationStatus": "VERIFIED" }
+    ],
+    "projects": [
+      { "title": "High-Throughput Microservice API Gateway", "skills": ["Node.js", "Go", "Docker", "PostgreSQL", "Redis"] },
+      { "title": "Distributed Cloud Task Queue", "skills": ["AWS", "Docker", "Kubernetes", "Node.js"] }
+    ]
+  },
+  {
+    "id": "student-1025",
+    "anonymizedId": "VS-1025",
+    "passportId": "VP-2026-IND-1025",
+    "personal": {
+      "fullName": "Priya Sen",
+      "email": "priya@veriskill.demo",
+      "institution": "SOA University",
+      "degree": "B.Tech in Information Technology",
+      "graduationYear": 2026,
+      "location": "Bhubaneswar, India",
+      "gender": "Female",
+      "age": 21
+    },
+    "passportMetrics": {
+      "overallScore": 91,
+      "trustScore": 90,
+      "verifiedSkillsCount": 15,
+      "totalEvidenceCount": 24,
+      "credentialsCount": 5,
+      "projectsCount": 5,
+      "competitionsCount": 2,
+      "lastDemonstrated": "2026-08-20"
+    },
+    "skills": [
+      { "name": "React", "category": "frontend", "level": "Advanced", "confidence": 96, "verifiedEvidenceCount": 5, "verificationStatus": "VERIFIED" },
+      { "name": "Next.js", "category": "frontend", "level": "Advanced", "confidence": 92, "verifiedEvidenceCount": 4, "verificationStatus": "VERIFIED" },
+      { "name": "TypeScript", "category": "programming", "level": "Advanced", "confidence": 90, "verifiedEvidenceCount": 4, "verificationStatus": "VERIFIED" },
+      { "name": "Tailwind CSS", "category": "frontend", "level": "Advanced", "confidence": 95, "verifiedEvidenceCount": 5, "verificationStatus": "VERIFIED" },
+      { "name": "UI/UX Design", "category": "ui_ux", "level": "Advanced", "confidence": 93, "verifiedEvidenceCount": 4, "verificationStatus": "VERIFIED" },
+      { "name": "Figma", "category": "ui_ux", "level": "Advanced", "confidence": 94, "verifiedEvidenceCount": 4, "verificationStatus": "VERIFIED" },
+      { "name": "Design Systems", "category": "ui_ux", "level": "Advanced", "confidence": 89, "verifiedEvidenceCount": 3, "verificationStatus": "VERIFIED" },
+      { "name": "Git", "category": "collaboration", "level": "Advanced", "confidence": 88, "verifiedEvidenceCount": 3, "verificationStatus": "VERIFIED" }
+    ],
+    "projects": [
+      { "title": "Design System & Accessible Component Library", "skills": ["React", "TypeScript", "Tailwind CSS", "Figma", "Design Systems"] },
+      { "title": "Collaborative Real-time Whiteboard", "skills": ["Next.js", "TypeScript", "Tailwind CSS", "WebSockets"] }
+    ]
+  },
+  {
+    "id": "student-1033",
+    "anonymizedId": "VS-1033",
+    "passportId": "VP-2026-IND-1033",
+    "personal": {
+      "fullName": "Meera Nair",
+      "email": "meera@veriskill.demo",
+      "institution": "NIT Rourkela",
+      "degree": "B.Tech in Computer Science",
+      "graduationYear": 2026,
+      "location": "Rourkela, India",
+      "gender": "Female",
+      "age": 22
+    },
+    "passportMetrics": {
+      "overallScore": 86,
+      "trustScore": 88,
+      "verifiedSkillsCount": 12,
+      "totalEvidenceCount": 19,
+      "credentialsCount": 3,
+      "projectsCount": 4,
+      "competitionsCount": 1,
+      "lastDemonstrated": "2026-08-17"
+    },
+    "skills": [
+      { "name": "Python", "category": "programming", "level": "Advanced", "confidence": 90, "verifiedEvidenceCount": 4, "verificationStatus": "VERIFIED" },
+      { "name": "SQL", "category": "database", "level": "Advanced", "confidence": 94, "verifiedEvidenceCount": 5, "verificationStatus": "VERIFIED" },
+      { "name": "PostgreSQL", "category": "database", "level": "Advanced", "confidence": 91, "verifiedEvidenceCount": 4, "verificationStatus": "VERIFIED" },
+      { "name": "Docker", "category": "cloud_devops", "level": "Intermediate", "confidence": 80, "verifiedEvidenceCount": 2, "verificationStatus": "VERIFIED" },
+      { "name": "AWS", "category": "cloud_devops", "level": "Intermediate", "confidence": 78, "verifiedEvidenceCount": 2, "verificationStatus": "VERIFIED" },
+      { "name": "MLOps", "category": "ai_ml", "level": "Intermediate", "confidence": 77, "verifiedEvidenceCount": 2, "verificationStatus": "VERIFIED" },
+      { "name": "Machine Learning", "category": "ai_ml", "level": "Intermediate", "confidence": 80, "verifiedEvidenceCount": 3, "verificationStatus": "VERIFIED" }
+    ]
+  },
+  {
+    "id": "student-1051",
+    "anonymizedId": "VS-1051",
+    "passportId": "VP-2026-IND-1051",
+    "personal": {
+      "fullName": "Vikram Adithya",
+      "email": "vikram@veriskill.demo",
+      "institution": "SOA University",
+      "degree": "B.Tech in CSE",
+      "graduationYear": 2026,
+      "location": "Bhubaneswar, India",
+      "gender": "Male",
+      "age": 21
+    },
+    "passportMetrics": {
+      "overallScore": 87,
+      "trustScore": 89,
+      "verifiedSkillsCount": 13,
+      "totalEvidenceCount": 20,
+      "credentialsCount": 3,
+      "projectsCount": 4,
+      "competitionsCount": 1,
+      "lastDemonstrated": "2026-08-15"
+    },
+    "skills": [
+      { "name": "AWS", "category": "cloud_devops", "level": "Advanced", "confidence": 91, "verifiedEvidenceCount": 4, "verificationStatus": "VERIFIED" },
+      { "name": "Docker", "category": "cloud_devops", "level": "Advanced", "confidence": 93, "verifiedEvidenceCount": 4, "verificationStatus": "VERIFIED" },
+      { "name": "Kubernetes", "category": "cloud_devops", "level": "Advanced", "confidence": 88, "verifiedEvidenceCount": 3, "verificationStatus": "VERIFIED" },
+      { "name": "CI/CD (GitHub Actions)", "category": "cloud_devops", "level": "Advanced", "confidence": 90, "verifiedEvidenceCount": 3, "verificationStatus": "VERIFIED" },
+      { "name": "Linux", "category": "cloud_devops", "level": "Advanced", "confidence": 92, "verifiedEvidenceCount": 4, "verificationStatus": "VERIFIED" },
+      { "name": "Python", "category": "programming", "level": "Intermediate", "confidence": 80, "verifiedEvidenceCount": 2, "verificationStatus": "VERIFIED" }
+    ]
+  },
+  {
+    "id": "student-1064",
+    "anonymizedId": "VS-1064",
+    "passportId": "VP-2026-IND-1064",
+    "personal": {
+      "fullName": "Ananya Patel",
+      "email": "ananya@veriskill.demo",
+      "institution": "KIIT University",
+      "degree": "B.Des in Product & UX Design",
+      "graduationYear": 2026,
+      "location": "Bhubaneswar, India",
+      "gender": "Female",
+      "age": 21
+    },
+    "passportMetrics": {
+      "overallScore": 92,
+      "trustScore": 94,
+      "verifiedSkillsCount": 11,
+      "totalEvidenceCount": 21,
+      "credentialsCount": 4,
+      "projectsCount": 5,
+      "competitionsCount": 2,
+      "lastDemonstrated": "2026-08-19"
+    },
+    "skills": [
+      { "name": "Figma", "category": "ui_ux", "level": "Advanced", "confidence": 97, "verifiedEvidenceCount": 5, "verificationStatus": "VERIFIED" },
+      { "name": "UI/UX Design", "category": "ui_ux", "level": "Advanced", "confidence": 96, "verifiedEvidenceCount": 5, "verificationStatus": "VERIFIED" },
+      { "name": "User Research", "category": "ui_ux", "level": "Advanced", "confidence": 91, "verifiedEvidenceCount": 4, "verificationStatus": "VERIFIED" },
+      { "name": "Prototyping", "category": "ui_ux", "level": "Advanced", "confidence": 94, "verifiedEvidenceCount": 4, "verificationStatus": "VERIFIED" },
+      { "name": "Design Systems", "category": "ui_ux", "level": "Advanced", "confidence": 92, "verifiedEvidenceCount": 4, "verificationStatus": "VERIFIED" },
+      { "name": "Accessibility (a11y)", "category": "ui_ux", "level": "Advanced", "confidence": 88, "verifiedEvidenceCount": 3, "verificationStatus": "VERIFIED" }
+    ]
+  },
+  {
+    "id": "student-1077",
+    "anonymizedId": "VS-1077",
+    "passportId": "VP-2026-IND-1077",
+    "personal": {
+      "fullName": "Tanya Joshi",
+      "email": "tanya@veriskill.demo",
+      "institution": "SOA University",
+      "degree": "B.Tech in CSE (Cybersecurity)",
+      "graduationYear": 2026,
+      "location": "Bhubaneswar, India",
+      "gender": "Female",
+      "age": 21
+    },
+    "passportMetrics": {
+      "overallScore": 85,
+      "trustScore": 90,
+      "verifiedSkillsCount": 11,
+      "totalEvidenceCount": 17,
+      "credentialsCount": 3,
+      "projectsCount": 3,
+      "competitionsCount": 1,
+      "lastDemonstrated": "2026-08-14"
+    },
+    "skills": [
+      { "name": "Cryptography", "category": "cybersecurity", "level": "Advanced", "confidence": 91, "verifiedEvidenceCount": 3, "verificationStatus": "VERIFIED" },
+      { "name": "W3C Verifiable Credentials", "category": "cybersecurity", "level": "Advanced", "confidence": 89, "verifiedEvidenceCount": 3, "verificationStatus": "VERIFIED" },
+      { "name": "OAuth 2.0 / JWT", "category": "cybersecurity", "level": "Advanced", "confidence": 93, "verifiedEvidenceCount": 4, "verificationStatus": "VERIFIED" },
+      { "name": "Python", "category": "programming", "level": "Intermediate", "confidence": 82, "verifiedEvidenceCount": 3, "verificationStatus": "VERIFIED" },
+      { "name": "Linux", "category": "cloud_devops", "level": "Advanced", "confidence": 87, "verifiedEvidenceCount": 3, "verificationStatus": "VERIFIED" }
+    ]
+  },
+  {
+    "id": "student-1089",
+    "anonymizedId": "VS-1089",
+    "passportId": "VP-2026-IND-1089",
+    "personal": {
+      "fullName": "Kavya Menon",
+      "email": "kavya@veriskill.demo",
+      "institution": "IIIT Bhubaneswar",
+      "degree": "B.Tech in AI & Data Science",
+      "graduationYear": 2026,
+      "location": "Bhubaneswar, India",
+      "gender": "Female",
+      "age": 22
+    },
+    "passportMetrics": {
+      "overallScore": 90,
+      "trustScore": 93,
+      "verifiedSkillsCount": 16,
+      "totalEvidenceCount": 25,
+      "credentialsCount": 4,
+      "projectsCount": 5,
+      "competitionsCount": 2,
+      "lastDemonstrated": "2026-08-19"
+    },
+    "skills": [
+      { "name": "Python", "category": "programming", "level": "Advanced", "confidence": 95, "verifiedEvidenceCount": 5, "verificationStatus": "VERIFIED" },
+      { "name": "Machine Learning", "category": "ai_ml", "level": "Advanced", "confidence": 93, "verifiedEvidenceCount": 5, "verificationStatus": "VERIFIED" },
+      { "name": "Deep Learning", "category": "ai_ml", "level": "Advanced", "confidence": 92, "verifiedEvidenceCount": 4, "verificationStatus": "VERIFIED" },
+      { "name": "Computer Vision", "category": "ai_ml", "level": "Advanced", "confidence": 94, "verifiedEvidenceCount": 4, "verificationStatus": "VERIFIED" },
+      { "name": "PyTorch", "category": "ai_ml", "level": "Advanced", "confidence": 91, "verifiedEvidenceCount": 4, "verificationStatus": "VERIFIED" },
+      { "name": "TensorFlow", "category": "ai_ml", "level": "Intermediate", "confidence": 83, "verifiedEvidenceCount": 3, "verificationStatus": "VERIFIED" },
+      { "name": "SQL", "category": "database", "level": "Intermediate", "confidence": 80, "verifiedEvidenceCount": 3, "verificationStatus": "VERIFIED" },
+      { "name": "Docker", "category": "cloud_devops", "level": "Intermediate", "confidence": 75, "verifiedEvidenceCount": 2, "verificationStatus": "VERIFIED" }
+    ]
+  },
+  {
+    "id": "student-1092",
+    "anonymizedId": "VS-1092",
+    "passportId": "VP-2026-IND-1092",
+    "personal": {
+      "fullName": "Sameer Khan",
+      "email": "sameer@veriskill.demo",
+      "institution": "SOA University",
+      "degree": "B.Tech in CSE",
+      "graduationYear": 2026,
+      "location": "Bhubaneswar, India",
+      "gender": "Male",
+      "age": 21
+    },
+    "passportMetrics": {
+      "overallScore": 82,
+      "trustScore": 85,
+      "verifiedSkillsCount": 10,
+      "totalEvidenceCount": 16,
+      "credentialsCount": 2,
+      "projectsCount": 3,
+      "competitionsCount": 1,
+      "lastDemonstrated": "2026-08-11"
+    },
+    "skills": [
+      { "name": "Node.js", "category": "backend", "level": "Intermediate", "confidence": 84, "verifiedEvidenceCount": 3, "verificationStatus": "VERIFIED" },
+      { "name": "React", "category": "frontend", "level": "Intermediate", "confidence": 82, "verifiedEvidenceCount": 3, "verificationStatus": "VERIFIED" },
+      { "name": "PostgreSQL", "category": "database", "level": "Intermediate", "confidence": 78, "verifiedEvidenceCount": 2, "verificationStatus": "VERIFIED" },
+      { "name": "Git", "category": "collaboration", "level": "Intermediate", "confidence": 80, "verifiedEvidenceCount": 2, "verificationStatus": "VERIFIED" }
+    ]
+  },
+  {
+    "id": "student-1105",
+    "anonymizedId": "VS-1105",
+    "passportId": "VP-2026-IND-1105",
+    "personal": {
+      "fullName": "Deepak Verma",
+      "email": "deepak@veriskill.demo",
+      "institution": "Silicon Institute of Technology",
+      "degree": "B.Tech in CSE",
+      "graduationYear": 2026,
+      "location": "Bhubaneswar, India",
+      "gender": "Male",
+      "age": 22
+    },
+    "passportMetrics": {
+      "overallScore": 83,
+      "trustScore": 86,
+      "verifiedSkillsCount": 11,
+      "totalEvidenceCount": 18,
+      "credentialsCount": 3,
+      "projectsCount": 3,
+      "competitionsCount": 1,
+      "lastDemonstrated": "2026-08-13"
+    },
+    "skills": [
+      { "name": "Python", "category": "programming", "level": "Intermediate", "confidence": 82, "verifiedEvidenceCount": 3, "verificationStatus": "VERIFIED" },
+      { "name": "SQL", "category": "database", "level": "Advanced", "confidence": 89, "verifiedEvidenceCount": 4, "verificationStatus": "VERIFIED" },
+      { "name": "FastAPI", "category": "backend", "level": "Intermediate", "confidence": 80, "verifiedEvidenceCount": 3, "verificationStatus": "VERIFIED" },
+      { "name": "MongoDB", "category": "database", "level": "Intermediate", "confidence": 81, "verifiedEvidenceCount": 3, "verificationStatus": "VERIFIED" },
+      { "name": "Docker", "category": "cloud_devops", "level": "Intermediate", "confidence": 79, "verifiedEvidenceCount": 2, "verificationStatus": "VERIFIED" }
+    ]
+  }
+]

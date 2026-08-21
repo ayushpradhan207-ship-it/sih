@@ -1,0 +1,44 @@
+[
+  {
+    "id": "team-proj-healthcare",
+    "name": "Smart Healthcare Platform & Clinical Triage",
+    "track": "Smart Healthcare & Assistive Tech (SOA IDEATHON Track 1)",
+    "description": "An integrated clinical triage and hospital resource allocation platform leveraging explainable multi-modal diagnostic models, real-time doctor dashboards, and HIPAA-compliant credential verification.",
+    "targetTeamSize": 6,
+    "roleRequirements": [
+      { "role": "AI/ML Engineer", "count": 2, "primarySkills": ["Python", "Machine Learning", "PyTorch", "NLP", "Scikit-learn"], "weight": 0.35 },
+      { "role": "Backend Engineer", "count": 1, "primarySkills": ["Node.js", "FastAPI", "PostgreSQL", "REST APIs", "SQL"], "weight": 0.20 },
+      { "role": "Frontend Engineer", "count": 1, "primarySkills": ["React", "TypeScript", "Tailwind CSS"], "weight": 0.15 },
+      { "role": "UI/UX Designer", "count": 1, "primarySkills": ["Figma", "UI/UX Design", "User Research", "Design Systems"], "weight": 0.15 },
+      { "role": "Cloud & DevOps Engineer", "count": 1, "primarySkills": ["Docker", "Kubernetes", "AWS", "CI/CD (GitHub Actions)"], "weight": 0.15 }
+    ]
+  },
+  {
+    "id": "team-proj-disaster",
+    "name": "AI Autonomous Disaster Relief & UAV Drone Mapping",
+    "track": "Disaster Management & Robotics (SOA IDEATHON Track 2)",
+    "description": "Autonomous aerial survey system predicting flood inundation corridors and generating optimal resource supply routes during extreme weather crises.",
+    "targetTeamSize": 6,
+    "roleRequirements": [
+      { "role": "Computer Vision & ML Specialist", "count": 2, "primarySkills": ["Python", "Deep Learning", "Computer Vision", "PyTorch", "TensorFlow"], "weight": 0.35 },
+      { "role": "Backend & Spatial Data Engineer", "count": 1, "primarySkills": ["PostgreSQL", "Python", "FastAPI", "SQL"], "weight": 0.20 },
+      { "role": "Frontend & GIS Dashboard Developer", "count": 1, "primarySkills": ["React", "TypeScript", "Tailwind CSS"], "weight": 0.15 },
+      { "role": "Cybersecurity & Encrypted Comms", "count": 1, "primarySkills": ["Cryptography", "Network Security", "OAuth 2.0 / JWT"], "weight": 0.15 },
+      { "role": "Cloud & Edge Deployment Lead", "count": 1, "primarySkills": ["Docker", "Linux", "AWS", "Kubernetes"], "weight": 0.15 }
+    ]
+  },
+  {
+    "id": "team-proj-green-energy",
+    "name": "Decentralized Green Energy Trading Microgrid",
+    "track": "Smart Energy & Sustainability (SOA IDEATHON Track 3)",
+    "description": "Peer-to-peer renewable energy credit exchange platform enabling rooftop solar producers to trade tokenized kWh balances with automated settlement.",
+    "targetTeamSize": 5,
+    "roleRequirements": [
+      { "role": "Cryptographic Ledger & Protocol Engineer", "count": 1, "primarySkills": ["W3C Verifiable Credentials", "Cryptography", "OAuth 2.0 / JWT"], "weight": 0.25 },
+      { "role": "Backend Infrastructure Architect", "count": 1, "primarySkills": ["Node.js", "PostgreSQL", "Go", "Docker"], "weight": 0.25 },
+      { "role": "Data & Forecasting Engineer", "count": 1, "primarySkills": ["Python", "Machine Learning", "SQL", "Pandas"], "weight": 0.20 },
+      { "role": "Frontend & Web3 UI Developer", "count": 1, "primarySkills": ["React", "TypeScript", "Tailwind CSS"], "weight": 0.15 },
+      { "role": "UX Product Designer", "count": 1, "primarySkills": ["Figma", "UI/UX Design", "Prototyping"], "weight": 0.15 }
+    ]
+  }
+]

@@ -1,0 +1,23 @@
+{
+  "name": "veriskill",
+  "version": "2.0.0",
+  "description": "VeriSkill — Verifiable Skill Passport & Explainable Internship/Team Matching Platform (SOA IDEATHON 2026)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "node -e 'console.log(\"All VeriSkill services operational\")'"
+  },
+  "keywords": [
+    "verifiable-credentials",
+    "skill-passport",
+    "explainable-ai",
+    "bias-mitigation",
+    "edtech",
+    "hackathon",
+    "sih2026",
+    "soa-ideathon"
+  ],
+  "author": "SOA IDEATHON 2026 Team",
+  "license": "MIT"
+}

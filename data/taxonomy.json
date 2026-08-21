@@ -1,0 +1,74 @@
+{
+  "categories": [
+    {
+      "id": "ai_ml",
+      "name": "Artificial Intelligence & Machine Learning",
+      "skills": ["Machine Learning", "Deep Learning", "PyTorch", "TensorFlow", "NLP", "Computer Vision", "Scikit-learn", "Pandas", "NumPy", "MLOps", "Transformers", "LLM Prompting"]
+    },
+    {
+      "id": "programming",
+      "name": "Programming Languages",
+      "skills": ["Python", "JavaScript", "TypeScript", "C++", "Java", "Go", "Rust", "SQL", "R"]
+    },
+    {
+      "id": "frontend",
+      "name": "Frontend Development",
+      "skills": ["React", "Next.js", "Vue.js", "Tailwind CSS", "HTML5/CSS3", "Redux", "TypeScript", "WebAssembly"]
+    },
+    {
+      "id": "backend",
+      "name": "Backend & APIs",
+      "skills": ["Node.js", "FastAPI", "Express.js", "Django", "GraphQL", "REST APIs", "gRPC", "Microservices"]
+    },
+    {
+      "id": "database",
+      "name": "Database Systems",
+      "skills": ["PostgreSQL", "MongoDB", "Redis", "MySQL", "Vector DBs (pgvector)", "SQLite", "Elasticsearch"]
+    },
+    {
+      "id": "cloud_devops",
+      "name": "Cloud, DevOps & Infrastructure",
+      "skills": ["Docker", "Kubernetes", "AWS", "GCP", "CI/CD (GitHub Actions)", "Linux", "Terraform", "Serverless"]
+    },
+    {
+      "id": "ui_ux",
+      "name": "Design & User Experience",
+      "skills": ["Figma", "UI/UX Design", "Wireframing", "User Research", "Design Systems", "Prototyping", "Accessibility (a11y)"]
+    },
+    {
+      "id": "cybersecurity",
+      "name": "Cybersecurity & Cryptography",
+      "skills": ["Ethical Hacking", "Cryptography", "Network Security", "OAuth 2.0 / JWT", "Penetration Testing", "W3C Verifiable Credentials"]
+    },
+    {
+      "id": "collaboration",
+      "name": "Tools & Methodology",
+      "skills": ["Git", "GitHub", "Agile / Scrum", "Jira", "Technical Writing", "Unit Testing", "System Architecture"]
+    }
+  ],
+  "synonyms": {
+    "python 3": "Python",
+    "python programming": "Python",
+    "python language": "Python",
+    "py": "Python",
+    "machine learning": "Machine Learning",
+    "ml": "Machine Learning",
+    "scikit learn": "Scikit-learn",
+    "sklearn": "Scikit-learn",
+    "react.js": "React",
+    "reactjs": "React",
+    "react js": "React",
+    "node.js": "Node.js",
+    "nodejs": "Node.js",
+    "postgres": "PostgreSQL",
+    "postgres sql": "PostgreSQL",
+    "k8s": "Kubernetes",
+    "amazon web services": "AWS",
+    "google cloud platform": "GCP",
+    "natural language processing": "NLP",
+    "cv": "Computer Vision",
+    "ui ux": "UI/UX Design",
+    "ui/ux": "UI/UX Design",
+    "user experience": "UI/UX Design"
+  }
+}
