@@ -1,45 +1,60 @@
 /**
- * About, Innovation & Architecture View
+ * VeriSkill — Stitch About, Innovation & Architecture View
  */
 
 const AboutView = {
   render() {
     return `
-      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="text-center max-w-3xl mx-auto mb-12">
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold mb-3 border border-blue-200">
-            SOA IDEATHON 2026 Internal Selection Build
+      <div class="max-w-5xl mx-auto px-margin-mobile md:px-margin-desktop pt-24 md:pt-28 pb-section-gap flex flex-col gap-stack-lg min-h-screen">
+        
+        <!-- Header -->
+        <div class="text-center max-w-3xl mx-auto">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-fixed/50 text-secondary border border-secondary-fixed text-xs font-label-md font-semibold mb-3">
+            SOA IDEATHON 2026 Production Architecture
           </div>
-          <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+          <h1 class="font-display-lg text-3xl sm:text-4xl font-bold text-primary tracking-tight">
             VeriSkill Architectural Overview & Methodology
           </h1>
-          <p class="text-slate-600 text-sm mt-3 leading-relaxed">
+          <p class="font-body-lg text-on-surface-variant text-sm mt-3 leading-relaxed">
             A comprehensive verifiable skill and explainable matching infrastructure engineered to bridge the gap between academic education, proof of competency, and bias-aware talent matching.
           </p>
         </div>
 
-        <div class="space-y-8 text-sm text-slate-700 leading-relaxed">
+        <div class="space-y-8 font-body-md text-on-surface-variant leading-relaxed">
           <!-- CORE PROBLEM & INNOVATION -->
-          <div class="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm">
-            <h2 class="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
-              <i class="fa-solid fa-lightbulb text-amber-500"></i> The Core Problem & Innovation
-            </h2>
-            <p class="mb-4">
+          <section class="bg-surface-container-lowest rounded-3xl p-6 md:p-8 border border-surface-variant/40 shadow-[0_4px_20px_rgba(0,0,0,0.04)]">
+            <div class="flex items-center gap-2.5 mb-4">
+              <div class="w-10 h-10 rounded-xl bg-secondary-fixed text-secondary flex items-center justify-center font-bold text-lg">
+                <span class="material-symbols-outlined text-[22px]">lightbulb</span>
+              </div>
+              <h2 class="font-headline-md text-xl font-bold text-primary">
+                The Core Problem & Innovation
+              </h2>
+            </div>
+            <p class="text-sm mb-4">
               Traditional student resumes suffer from systemic flaws: students self-inflate unverified claims, recruiters cannot easily audit whether a claimed skill was genuinely demonstrated in code, and conventional Applicant Tracking Systems (ATS) operate as unexplainable black-boxes that often reproduce demographic biases.
             </p>
-            <div class="p-4 rounded-2xl bg-blue-50/75 border border-blue-200 text-xs text-blue-900">
-              <strong>The Paradigm Shift:</strong> VeriSkill transitions the hiring and opportunity matching paradigm from <em>"What does the student claim?"</em> to <em>"What can the student prove?"</em> via cryptographic proof chains and explainable AI.
+            <div class="p-4 rounded-2xl bg-secondary-fixed/20 border border-secondary-fixed text-xs text-primary flex items-start gap-3">
+              <span class="material-symbols-outlined text-secondary text-[20px] shrink-0 mt-0.5" style="font-variation-settings: 'FILL' 1;">stars</span>
+              <div>
+                <strong class="font-label-md">The Paradigm Shift:</strong> VeriSkill transitions the hiring and opportunity matching paradigm from <em class="font-serif">"What does the student claim?"</em> to <em class="font-serif">"What can the student prove?"</em> via cryptographic proof chains and explainable AI.
+              </div>
             </div>
-          </div>
+          </section>
 
           <!-- END-TO-END DATAFLOW PIPELINE -->
-          <div class="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm">
-            <h2 class="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
-              <i class="fa-solid fa-diagram-project text-blue-600"></i> Technical Architecture Pipeline
-            </h2>
+          <section class="bg-surface-container-lowest rounded-3xl p-6 md:p-8 border border-surface-variant/40 shadow-[0_4px_20px_rgba(0,0,0,0.04)]">
+            <div class="flex items-center gap-2.5 mb-4">
+              <div class="w-10 h-10 rounded-xl bg-secondary-fixed text-secondary flex items-center justify-center font-bold text-lg">
+                <span class="material-symbols-outlined text-[22px]">account_tree</span>
+              </div>
+              <h2 class="font-headline-md text-xl font-bold text-primary">
+                Technical Architecture Pipeline
+              </h2>
+            </div>
 
-            <div class="bg-slate-900 rounded-2xl p-6 text-slate-200 font-mono text-xs overflow-x-auto leading-relaxed shadow-inner">
-              <pre>
+            <div class="bg-primary-container rounded-2xl p-6 text-slate-200 font-mono text-xs overflow-x-auto leading-relaxed shadow-inner border border-primary/30">
+              <pre class="font-mono text-xs text-slate-300">
 Multi-source Inputs (GitHub, Course Transcripts, Hackathons, Certifications)
                                ↓
                  [Evidence Verification Service]
@@ -63,37 +78,78 @@ Multi-source Inputs (GitHub, Course Transcripts, Hackathons, Certifications)
 (Evidence Traces & Pathways)             (Combinatorial Complementarity)
               </pre>
             </div>
-          </div>
+          </section>
 
           <!-- HONEST DISCLOSURE & PROTOTYPE ROADMAP -->
-          <div class="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm">
-            <h2 class="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
-              <i class="fa-solid fa-scale-balanced text-purple-600"></i> Smart India Hackathon 2026 Production Roadmap
-            </h2>
+          <section class="bg-surface-container-lowest rounded-3xl p-6 md:p-8 border border-surface-variant/40 shadow-[0_4px_20px_rgba(0,0,0,0.04)]">
+            <div class="flex items-center gap-2.5 mb-4">
+              <div class="w-10 h-10 rounded-xl bg-secondary-fixed text-secondary flex items-center justify-center font-bold text-lg">
+                <span class="material-symbols-outlined text-[22px]">timeline</span>
+              </div>
+              <h2 class="font-headline-md text-xl font-bold text-primary">
+                Smart India Hackathon 2026 Production Roadmap
+              </h2>
+            </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-              <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
-                <div class="font-bold text-slate-900 mb-1">Current MVP Implementation</div>
-                <ul class="space-y-1 text-slate-600 list-disc list-inside">
-                  <li>Deterministic SHA-256 cryptographic proof hashing</li>
-                  <li>Simulated NLP AST & repository ingestion parser</li>
-                  <li>Transparent 5-factor explainable recommendation model</li>
-                  <li>Real-time Disparate Impact Ratio (0.94) fairness auditor</li>
-                  <li>Combinatorial team complementarity solver (94% coverage)</li>
+              <div class="p-5 rounded-2xl bg-surface-container-low border border-surface-variant/40">
+                <div class="font-label-md font-bold text-primary text-sm mb-2 flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-secondary text-[18px]">verified</span>
+                  <span>Current MVP Implementation</span>
+                </div>
+                <ul class="space-y-1.5 text-on-surface-variant">
+                  <li class="flex items-start gap-1.5">
+                    <span class="material-symbols-outlined text-secondary text-[14px] mt-0.5 shrink-0" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                    <span>Deterministic SHA-256 cryptographic proof hashing</span>
+                  </li>
+                  <li class="flex items-start gap-1.5">
+                    <span class="material-symbols-outlined text-secondary text-[14px] mt-0.5 shrink-0" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                    <span>Simulated NLP AST & repository ingestion parser</span>
+                  </li>
+                  <li class="flex items-start gap-1.5">
+                    <span class="material-symbols-outlined text-secondary text-[14px] mt-0.5 shrink-0" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                    <span>Transparent 5-factor explainable recommendation model</span>
+                  </li>
+                  <li class="flex items-start gap-1.5">
+                    <span class="material-symbols-outlined text-secondary text-[14px] mt-0.5 shrink-0" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                    <span>Real-time Disparate Impact Ratio (0.94) fairness auditor</span>
+                  </li>
+                  <li class="flex items-start gap-1.5">
+                    <span class="material-symbols-outlined text-secondary text-[14px] mt-0.5 shrink-0" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                    <span>Combinatorial team complementarity solver (94% coverage)</span>
+                  </li>
                 </ul>
               </div>
 
-              <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
-                <div class="font-bold text-slate-900 mb-1">SIH 2026 Production Integration Target</div>
-                <ul class="space-y-1 text-slate-600 list-disc list-inside">
-                  <li>National Academic Depository (NAD / DigiLocker) API links</li>
-                  <li>Production W3C DID & Polygon ID blockchain anchoring</li>
-                  <li>Fine-tuned CodeLlama / BERT embedding vector stores (pgvector)</li>
-                  <li>Direct integration with Enterprise ATS (Workday, Greenhouse)</li>
-                  <li>Cross-university federated credential validation</li>
+              <div class="p-5 rounded-2xl bg-surface-container-low border border-surface-variant/40">
+                <div class="font-label-md font-bold text-primary text-sm mb-2 flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-secondary text-[18px]">rocket_launch</span>
+                  <span>SIH 2026 Production Integration Target</span>
+                </div>
+                <ul class="space-y-1.5 text-on-surface-variant">
+                  <li class="flex items-start gap-1.5">
+                    <span class="material-symbols-outlined text-secondary text-[14px] mt-0.5 shrink-0">arrow_right</span>
+                    <span>National Academic Depository (NAD / DigiLocker) API links</span>
+                  </li>
+                  <li class="flex items-start gap-1.5">
+                    <span class="material-symbols-outlined text-secondary text-[14px] mt-0.5 shrink-0">arrow_right</span>
+                    <span>Production W3C DID & Polygon ID blockchain anchoring</span>
+                  </li>
+                  <li class="flex items-start gap-1.5">
+                    <span class="material-symbols-outlined text-secondary text-[14px] mt-0.5 shrink-0">arrow_right</span>
+                    <span>Fine-tuned CodeLlama / BERT embedding vector stores (pgvector)</span>
+                  </li>
+                  <li class="flex items-start gap-1.5">
+                    <span class="material-symbols-outlined text-secondary text-[14px] mt-0.5 shrink-0">arrow_right</span>
+                    <span>Direct integration with Enterprise ATS (Workday, Greenhouse)</span>
+                  </li>
+                  <li class="flex items-start gap-1.5">
+                    <span class="material-symbols-outlined text-secondary text-[14px] mt-0.5 shrink-0">arrow_right</span>
+                    <span>Cross-university federated credential validation</span>
+                  </li>
                 </ul>
               </div>
             </div>
-          </div>
+          </section>
         </div>
       </div>
     `;

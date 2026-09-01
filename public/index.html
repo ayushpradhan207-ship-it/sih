@@ -1,73 +1,160 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="light" lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VeriSkill — Verifiable Skill Passport & Explainable Matching Platform</title>
-  <meta name="description" content="Verifiable Skill Passport & Explainable Internship/Team Matching Platform built for SOA IDEATHON 2026 / Smart India Hackathon 2026.">
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>VeriSkill — Verifiable Skill Passport & Explainable Matching</title>
+  <meta name="description" content="VeriSkill turns coursework, projects, competitions and credentials into verified skills — then connects you with internships and student teams."/>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
-  
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
+
+  <!-- Google Fonts: Hanken Grotesk & Inter & Material Symbols Outlined -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@100..900&family=Inter:wght@100..900&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+  <!-- Tailwind CSS CDN with Plugins -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">
     tailwind.config = {
+      darkMode: "class",
       theme: {
         extend: {
           colors: {
-            brand: {
-              50: '#eff6ff',
-              100: '#dbeafe',
-              500: '#3b82f6',
-              600: '#2563eb',
-              700: '#1d4ed8',
-              800: '#1e40af',
-              900: '#1e3a8a',
-            }
+            "surface-bright": "#f8f9fa",
+            "on-error": "#ffffff",
+            "on-secondary": "#ffffff",
+            "tertiary": "#000801",
+            "surface-container": "#edeeef",
+            "on-tertiary-fixed-variant": "#005320",
+            "surface-container-high": "#e7e8e9",
+            "on-primary-fixed": "#1b1b1c",
+            "on-surface-variant": "#444748",
+            "tertiary-fixed-dim": "#6ddd81",
+            "surface-tint": "#5f5e5e",
+            "on-secondary-container": "#00285c",
+            "error": "#ba1a1a",
+            "secondary-fixed": "#d8e2ff",
+            "primary": "#060607",
+            "secondary-fixed-dim": "#adc6ff",
+            "surface": "#f8f9fa",
+            "on-tertiary": "#ffffff",
+            "outline": "#747878",
+            "on-tertiary-container": "#219a47",
+            "outline-variant": "#c4c7c7",
+            "primary-fixed": "#e5e2e1",
+            "on-primary-container": "#888686",
+            "secondary": "#005ac1",
+            "inverse-primary": "#c8c6c5",
+            "background": "#f8f9fa",
+            "surface-variant": "#e1e3e4",
+            "on-secondary-fixed": "#001a41",
+            "surface-container-lowest": "#ffffff",
+            "inverse-on-surface": "#f0f1f2",
+            "primary-container": "#1f1f1f",
+            "tertiary-fixed": "#89fa9b",
+            "on-primary-fixed-variant": "#474746",
+            "secondary-container": "#4d8efe",
+            "tertiary-container": "#00250a",
+            "on-primary": "#ffffff",
+            "surface-container-low": "#f3f4f5",
+            "primary-fixed-dim": "#c8c6c5",
+            "on-error-container": "#93000a",
+            "inverse-surface": "#2e3132",
+            "surface-dim": "#d9dadb",
+            "on-secondary-fixed-variant": "#004494",
+            "error-container": "#ffdad6",
+            "on-surface": "#191c1d",
+            "surface-container-highest": "#e1e3e4",
+            "on-background": "#191c1d",
+            "on-tertiary-fixed": "#002108"
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "2xl": "1rem",
+            "3xl": "1.5rem",
+            "full": "9999px"
+          },
+          spacing: {
+            "margin-desktop": "40px",
+            "gutter": "24px",
+            "stack-lg": "32px",
+            "stack-md": "16px",
+            "section-gap": "80px",
+            "container-max": "1280px",
+            "unit": "8px",
+            "stack-sm": "8px",
+            "margin-mobile": "16px"
+          },
+          fontFamily: {
+            "headline-md": ["Hanken Grotesk", "sans-serif"],
+            "headline-lg-mobile": ["Hanken Grotesk", "sans-serif"],
+            "headline-lg": ["Hanken Grotesk", "sans-serif"],
+            "body-lg": ["Inter", "sans-serif"],
+            "label-sm": ["Inter", "sans-serif"],
+            "body-md": ["Inter", "sans-serif"],
+            "label-md": ["Inter", "sans-serif"],
+            "display-lg": ["Hanken Grotesk", "sans-serif"]
+          },
+          fontSize: {
+            "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "500" }],
+            "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "600" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+            "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+            "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+            "display-lg": ["56px", { "lineHeight": "64px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
           }
         }
       }
-    }
+    };
   </script>
 
-  <!-- FontAwesome 6 Icons CDN -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-  <!-- Custom CSS -->
+  <!-- Custom Styles -->
   <link rel="stylesheet" href="/css/style.css">
 </head>
-<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col antialiased selection:bg-blue-600 selection:text-white">
+<body class="bg-background text-on-background font-body-md text-body-md antialiased min-h-screen flex flex-col selection:bg-secondary selection:text-white pb-20 md:pb-0">
 
-  <!-- TOP NAVIGATION & DEMO TOUR BAR -->
+  <!-- TOP APP BAR -->
   <header id="navbar-root"></header>
 
   <!-- MAIN APP CONTAINER -->
   <main id="app-root" class="flex-1"></main>
 
+  <!-- BOTTOM NAVIGATION BAR (Mobile & Tablet) -->
+  <nav id="bottomnav-root"></nav>
+
+  <!-- GLOBAL MODAL CONTAINER -->
+  <div id="modal-root"></div>
+
   <!-- TOAST NOTIFICATION CONTAINER -->
-  <div id="toast-container"></div>
+  <div id="toast-container" class="fixed bottom-20 md:bottom-6 right-4 z-[9999] flex flex-col gap-2 pointer-events-none"></div>
 
   <!-- FOOTER -->
-  <footer class="bg-white border-t border-slate-200 py-10 mt-auto text-xs text-slate-500">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
-      <div class="flex items-center gap-2 font-bold text-slate-900 text-sm">
-        <div class="w-6 h-6 rounded-lg bg-blue-600 flex items-center justify-center text-white text-xs">
-          <i class="fa-solid fa-shield-halved"></i>
+  <footer class="hidden md:block bg-surface-container-lowest border-t border-surface-variant/40 py-8 mt-auto text-xs text-on-surface-variant">
+    <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3 font-semibold text-primary text-sm">
+        <div class="w-7 h-7 rounded-lg bg-primary-container flex items-center justify-center text-on-primary">
+          <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">grid_view</span>
         </div>
-        <span>VeriSkill</span>
-        <span class="text-[10px] px-2 py-0.5 rounded bg-blue-50 text-blue-700 font-normal border border-blue-200">
-          SOA IDEATHON 2026 Internal Selection Build
+        <span class="font-headline-md text-base">VeriSkill</span>
+        <span class="text-[11px] px-2.5 py-0.5 rounded-full bg-secondary-fixed/40 text-on-secondary-fixed font-normal border border-secondary-fixed">
+          Verifiable Skill Passport Engine
         </span>
       </div>
 
-      <div class="flex items-center gap-6">
-        <a href="#/about" class="hover:text-slate-900 transition-colors">Architecture & Methodology</a>
-        <a href="#/admin/fairness" class="hover:text-slate-900 transition-colors">Ethical AI Audit</a>
-        <a href="#/verify/VP-2026-IND-1042" class="hover:text-slate-900 transition-colors">Public Verification</a>
-        <a href="#/student/privacy" class="hover:text-slate-900 transition-colors">Privacy by Design</a>
+      <div class="flex items-center gap-6 font-label-md">
+        <a href="#/about" class="text-on-surface-variant hover:text-primary transition-colors">How It Works</a>
+        <a href="#/onboarding" class="text-on-surface-variant hover:text-primary transition-colors">Student Onboarding</a>
+        <a href="#/admin/fairness" class="text-on-surface-variant hover:text-primary transition-colors">Ethical AI Audit</a>
+        <a href="#/verify/VP-2026-IND-1042" class="text-on-surface-variant hover:text-primary transition-colors">Public Verification</a>
+        <a href="#/student/privacy" class="text-on-surface-variant hover:text-primary transition-colors">Privacy by Design</a>
       </div>
 
-      <div class="text-slate-400">
-        Empowering students via <strong class="text-slate-600">Proof, Not Claims</strong>.
+      <div class="text-on-surface-variant text-[11px]">
+        Empowering students via <strong class="text-primary">Proof, Not Claims</strong>.
       </div>
     </div>
   </footer>
@@ -75,6 +162,7 @@
   <!-- COMPONENT & ROUTER SCRIPTS -->
   <script src="/js/utils.js"></script>
   <script src="/js/components/navbar.js"></script>
+  <script src="/js/components/onboardingView.js"></script>
   <script src="/js/components/landingView.js"></script>
   <script src="/js/components/aboutView.js"></script>
   <script src="/js/components/studentDashboardView.js"></script>
@@ -89,6 +177,7 @@
   <script src="/js/components/publicVerifyView.js"></script>
   <script src="/js/components/fairnessAuditView.js"></script>
   <script src="/js/components/privacyView.js"></script>
+  <script src="/js/components/demoTour.js"></script>
   <script src="/js/app.js"></script>
 </body>
 </html>

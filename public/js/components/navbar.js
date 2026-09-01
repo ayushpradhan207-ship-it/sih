@@ -1,133 +1,140 @@
 /**
- * Navbar & ⚡ Judge Demo Presets Floating Toolbar Component
+ * VeriSkill — Stitch TopAppBar & BottomNavBar Component
+ * Combines Stitch MD3 design with Persona Switcher & ⚡ Judge Demo Presets
  */
 
 const NavbarComponent = {
   render(currentRoute, currentRole, activeDemoStep = 1) {
+    const isStudent = currentRole === 'student';
+    const isRecruiter = currentRole === 'recruiter';
+    const isTeamLead = currentRole === 'teamlead';
+    const isAdmin = currentRole === 'admin';
+
+    // Desktop Nav Items
+    const isDashboard = currentRoute.includes('dashboard');
+    const isPassport = currentRoute.includes('passport');
+    const isMatch = currentRoute.includes('opportunities') || currentRoute.includes('matches') || currentRoute.includes('candidates');
+    const isGaps = currentRoute.includes('evidence');
+
     return `
-      <!-- FLOATING STICKY ⚡ JUDGE DEMO PRESETS TOOLBAR -->
-      <div id="judge-demo-bar" class="bg-gradient-to-r from-slate-950 via-indigo-950 to-slate-950 border-b border-indigo-500/30 text-xs text-white sticky top-0 z-50 shadow-xl backdrop-blur-md">
-        <div class="max-w-7xl mx-auto px-4 py-2 flex flex-col md:flex-row items-center justify-between gap-2.5">
+      <!-- TOP APP BAR -->
+      <header class="fixed top-0 w-full z-50 bg-surface/85 backdrop-blur-xl shadow-[0_4px_20px_rgba(0,0,0,0.04)] border-b border-surface-variant/30">
+        <div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop h-16 max-w-container-max mx-auto">
           
-          <!-- Left: Title & Hackathon Context -->
-          <div class="flex items-center gap-2 shrink-0">
-            <span class="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-amber-400 text-slate-950 font-extrabold text-[10px] uppercase tracking-wider shadow-sm">
-              <i class="fa-solid fa-bolt text-amber-900"></i> ⚡ Judge Demo Presets
-            </span>
-            <span class="text-indigo-200 text-xs hidden lg:inline font-semibold">1-Click Evaluation Actions:</span>
-          </div>
-
-          <!-- Center: 4 Required Judge Preset Buttons -->
-          <div class="flex items-center gap-2 flex-wrap justify-center">
-            <!-- Preset 1: AI Specialist Profile -->
-            <button onclick="App.judgePresetAISpecialist()" class="px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-md shadow-blue-500/20 transition-all flex items-center gap-1.5 border border-blue-400/40 hover:scale-105 active:scale-95">
-              <i class="fa-solid fa-brain text-[11px] text-blue-200"></i> [Preset 1: AI Specialist Profile]
-            </button>
-
-            <!-- Preset 2: Simulate Bias Audit -->
-            <button onclick="App.judgePresetSimulateBiasAudit()" class="px-3 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs shadow-md shadow-purple-500/20 transition-all flex items-center gap-1.5 border border-purple-400/40 hover:scale-105 active:scale-95">
-              <i class="fa-solid fa-scale-balanced text-[11px] text-purple-200"></i> [Preset 2: Simulate Bias Audit]
-            </button>
-
-            <!-- Preset 3: Squad Solver -->
-            <button onclick="App.judgePresetSquadSolver()" class="px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-md shadow-indigo-500/20 transition-all flex items-center gap-1.5 border border-indigo-400/40 hover:scale-105 active:scale-95">
-              <i class="fa-solid fa-people-group text-[11px] text-indigo-200"></i> [Preset 3: Squad Solver]
-            </button>
-
-            <!-- Preset 4: Validate Passport Hash -->
-            <button onclick="App.judgePresetValidatePassportHash()" class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-md shadow-emerald-500/20 transition-all flex items-center gap-1.5 border border-emerald-400/40 hover:scale-105 active:scale-95">
-              <i class="fa-solid fa-fingerprint text-[11px] text-emerald-200"></i> [Preset 4: Validate Passport Hash]
-            </button>
-          </div>
-
-          <!-- Right: Persona Dropdown -->
-          <div class="flex items-center gap-2 shrink-0">
-            <select onchange="App.setRole(this.value)" class="bg-slate-900 text-indigo-200 text-xs border border-indigo-500/40 rounded-xl px-2.5 py-1 font-semibold focus:outline-none focus:border-blue-400">
-              <option value="student" ${currentRole === 'student' ? 'selected' : ''}>Student (#VS-1042)</option>
-              <option value="recruiter" ${currentRole === 'recruiter' ? 'selected' : ''}>Recruiter (Apex Labs)</option>
-              <option value="teamlead" ${currentRole === 'teamlead' ? 'selected' : ''}>Team Lead (Organizer)</option>
-              <option value="admin" ${currentRole === 'admin' ? 'selected' : ''}>Ethics & Bias Auditor</option>
-              <option value="public" ${currentRole === 'public' ? 'selected' : ''}>Public Verifier</option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      <!-- MAIN NAVIGATION BAR -->
-      <nav class="bg-white border-b border-slate-200 sticky top-10 z-40 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="flex items-center justify-between h-16">
-            <!-- Brand Logo -->
-            <div class="flex items-center gap-6">
-              <a href="#/" class="flex items-center gap-2.5 text-slate-900 font-bold text-xl tracking-tight hover:opacity-90">
-                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-700 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-blue-500/20">
-                  <i class="fa-solid fa-shield-halved text-lg"></i>
-                </div>
-                <span>Veri<span class="text-blue-600">Skill</span></span>
-              </a>
-
-              <!-- Nav Links -->
-              <div class="hidden md:flex items-center gap-1">
-                ${currentRole === 'student' ? `
-                  <a href="#/student/dashboard" class="px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${currentRoute.startsWith('/student/dashboard') ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'}">
-                    <i class="fa-solid fa-chart-pie mr-1 text-xs"></i> Health
-                  </a>
-                  <a href="#/student/passport" class="px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${currentRoute.startsWith('/student/passport') ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'}">
-                    <i class="fa-solid fa-id-card mr-1 text-xs"></i> Skill Passport
-                  </a>
-                  <a href="#/student/evidence" class="px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${currentRoute.startsWith('/student/evidence') ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'}">
-                    <i class="fa-solid fa-code-commit mr-1 text-xs"></i> Evidence Sandbox
-                  </a>
-                  <a href="#/student/opportunities" class="px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${currentRoute.startsWith('/student/opportunities') || currentRoute.startsWith('/student/matches') ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'}">
-                    <i class="fa-solid fa-briefcase mr-1 text-xs"></i> Matches (91%)
-                  </a>
-                  <a href="#/student/privacy" class="px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${currentRoute.startsWith('/student/privacy') ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'}">
-                    <i class="fa-solid fa-lock mr-1 text-xs"></i> Privacy
-                  </a>
-                ` : currentRole === 'recruiter' ? `
-                  <a href="#/recruiter/dashboard" class="px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${currentRoute.startsWith('/recruiter/dashboard') ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'}">
-                    <i class="fa-solid fa-gauge mr-1 text-xs"></i> Dashboard
-                  </a>
-                  <a href="#/recruiter/candidates" class="px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${currentRoute.startsWith('/recruiter/candidates') ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'}">
-                    <i class="fa-solid fa-user-shield mr-1 text-xs text-emerald-600"></i> Blind Ranking
-                  </a>
-                  <a href="#/recruiter/jobs/create" class="px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${currentRoute.startsWith('/recruiter/jobs/create') ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'}">
-                    <i class="fa-solid fa-plus-circle mr-1 text-xs"></i> Post Role
-                  </a>
-                ` : currentRole === 'teamlead' ? `
-                  <a href="#/teams" class="px-3 py-1.5 rounded-lg text-sm font-medium transition-colors bg-blue-50 text-blue-700 font-semibold">
-                    <i class="fa-solid fa-people-group mr-1 text-xs"></i> Multidisciplinary Team Builder
-                  </a>
-                ` : currentRole === 'admin' ? `
-                  <a href="#/admin/fairness" class="px-3 py-1.5 rounded-lg text-sm font-medium transition-colors bg-blue-50 text-blue-700 font-semibold">
-                    <i class="fa-solid fa-scale-balanced mr-1 text-xs"></i> Bias & Fairness Audit
-                  </a>
-                ` : `
-                  <a href="#/" class="px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${currentRoute === '/' ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'}">Home</a>
-                  <a href="#/verify/VP-2026-IND-1042" class="px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${currentRoute.startsWith('/verify') ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'}">Public Verification</a>
-                  <a href="#/about" class="px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${currentRoute === '/about' ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'}">Architecture</a>
-                `}
-
-                <!-- Common Links -->
-                <a href="#/teams" class="px-3 py-1.5 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50">Teams</a>
-                <a href="#/admin/fairness" class="px-3 py-1.5 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50">Audit</a>
-                <a href="#/about" class="px-3 py-1.5 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50">About</a>
+          <!-- Logo & Brand -->
+          <div class="flex items-center gap-3">
+            <a href="#/" class="flex items-center gap-2 cursor-pointer active:scale-95 duration-200 transition-transform">
+              <div class="w-8 h-8 rounded-lg bg-primary-container text-on-primary flex items-center justify-center shadow-sm">
+                <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">grid_view</span>
               </div>
+              <span class="font-headline-md text-headline-md font-bold text-primary tracking-tight">VeriSkill</span>
+            </a>
+          </div>
+
+          <!-- Desktop Navigation Cluster -->
+          <nav class="hidden md:flex items-center gap-1">
+            <a href="#/student/dashboard" class="px-3.5 py-1.5 rounded-full font-label-md text-label-md transition-all duration-200 ${isDashboard ? 'text-secondary font-bold bg-secondary-fixed/40' : 'text-on-surface-variant hover:bg-surface-container hover:text-primary'}">
+              Dashboard
+            </a>
+            <a href="#/student/passport" class="px-3.5 py-1.5 rounded-full font-label-md text-label-md transition-all duration-200 ${isPassport ? 'text-secondary font-bold bg-secondary-fixed/40' : 'text-on-surface-variant hover:bg-surface-container hover:text-primary'}">
+              Passport
+            </a>
+            <a href="#/student/opportunities" class="px-3.5 py-1.5 rounded-full font-label-md text-label-md transition-all duration-200 ${isMatch ? 'text-secondary font-bold bg-secondary-fixed/40' : 'text-on-surface-variant hover:bg-surface-container hover:text-primary'}">
+              Match
+            </a>
+            <a href="#/student/evidence" class="px-3.5 py-1.5 rounded-full font-label-md text-label-md transition-all duration-200 ${isGaps ? 'text-secondary font-bold bg-secondary-fixed/40' : 'text-on-surface-variant hover:bg-surface-container hover:text-primary'}">
+              Evidence & Gaps
+            </a>
+            <a href="#/teams" class="px-3.5 py-1.5 rounded-full font-label-md text-label-md transition-all duration-200 ${currentRoute.startsWith('/teams') ? 'text-secondary font-bold bg-secondary-fixed/40' : 'text-on-surface-variant hover:bg-surface-container hover:text-primary'}">
+              Teams
+            </a>
+            <a href="#/admin/fairness" class="px-3.5 py-1.5 rounded-full font-label-md text-label-md transition-all duration-200 ${currentRoute.startsWith('/admin') ? 'text-secondary font-bold bg-secondary-fixed/40' : 'text-on-surface-variant hover:bg-surface-container hover:text-primary'}">
+              Audit
+            </a>
+          </nav>
+
+          <!-- Right Controls Cluster -->
+          <div class="flex items-center gap-3">
+            <!-- Persona Switcher -->
+            <div class="hidden sm:flex items-center">
+              <select onchange="App.setRole(this.value)" class="bg-surface-bright text-on-surface text-xs border border-outline-variant/50 rounded-full px-3 py-1.5 font-label-md focus:outline-none focus:border-secondary cursor-pointer shadow-sm">
+                <option value="student" ${currentRole === 'student' ? 'selected' : ''}>🎓 Student (Ashutosh)</option>
+                <option value="recruiter" ${currentRole === 'recruiter' ? 'selected' : ''}>💼 Recruiter (Apex Labs)</option>
+                <option value="teamlead" ${currentRole === 'teamlead' ? 'selected' : ''}>👥 Team Organizer</option>
+                <option value="admin" ${currentRole === 'admin' ? 'selected' : ''}>⚖️ Ethics & Bias Auditor</option>
+                <option value="public" ${currentRole === 'public' ? 'selected' : ''}>🔍 Public Verifier</option>
+              </select>
             </div>
 
-            <!-- Right Controls -->
-            <div class="flex items-center gap-3">
-              <a href="#/verify/VP-2026-IND-1042" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition-colors">
-                <i class="fa-solid fa-qrcode"></i> Verify #VS-1042
-              </a>
+            <!-- Public Verification Badge Link -->
+            <a href="#/verify/VP-2026-IND-1042" class="hidden lg:inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-tertiary-fixed/20 text-on-tertiary-fixed-variant border border-tertiary-fixed text-xs font-label-sm hover:bg-tertiary-fixed/30 transition-colors">
+              <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+              Verify #VS-1042
+            </a>
 
-              <button onclick="App.showDemoInfoModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200 flex items-center justify-center text-sm font-semibold transition-colors" title="Hackathon Context & Overview">
-                <i class="fa-solid fa-circle-info"></i>
+            <!-- User Avatar & Profile Quick View -->
+            <div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant bg-surface-container-highest cursor-pointer hover:ring-2 hover:ring-secondary transition-all" onclick="App.setRole('student')">
+              <img alt="User profile photo" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSWx0e2-SEWuIEGrXnsvm4ah9oeU6y1aOzAG4Hf9K4yxBpcSVeqnczMjJTZnq0xzbMBMgC8xTk-fai4OeLnjMB_zOat6msJCXv6S2jCT7eD2NGWg388APSwrIDqdYI3tmEU9LXwtWGPjApaWaw-tzeysQUFiiSrvMrkP9P8QAMV7y16_bdAgeXsAE9gCf_mEus3MjgRa-ZbPX38HW7vV6wdz-RuHIOPuawrFMKu4xyLIMr9L2jFZIwIQ"/>
+            </div>
+          </div>
+        </div>
+
+        <!-- ⚡ JUDGE DEMO PRESETS SUB-BAR -->
+        <div class="bg-surface-container-low/90 border-t border-surface-variant/40 py-1.5 px-margin-mobile md:px-margin-desktop text-xs">
+          <div class="max-w-container-max mx-auto flex items-center justify-between gap-2 overflow-x-auto">
+            <div class="flex items-center gap-2 shrink-0">
+              <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-primary-container text-on-primary font-bold text-[10px] uppercase tracking-wider">
+                <span class="material-symbols-outlined text-[12px] text-tertiary-fixed">bolt</span>
+                Judge Presets
+              </span>
+            </div>
+
+            <div class="flex items-center gap-2 shrink-0 flex-nowrap">
+              <button onclick="App.judgePresetAISpecialist()" class="px-3 py-1 rounded-full bg-surface-container-lowest border border-outline-variant/40 hover:border-secondary text-primary font-label-sm text-[11px] hover:bg-surface-bright transition-all shadow-sm flex items-center gap-1 cursor-pointer whitespace-nowrap">
+                <span class="material-symbols-outlined text-[13px] text-secondary">psychology</span>
+                Preset 1: AI Specialist
+              </button>
+              <button onclick="App.judgePresetSimulateBiasAudit()" class="px-3 py-1 rounded-full bg-surface-container-lowest border border-outline-variant/40 hover:border-secondary text-primary font-label-sm text-[11px] hover:bg-surface-bright transition-all shadow-sm flex items-center gap-1 cursor-pointer whitespace-nowrap">
+                <span class="material-symbols-outlined text-[13px] text-secondary">shield</span>
+                Preset 2: Bias Audit
+              </button>
+              <button onclick="App.judgePresetSquadSolver()" class="px-3 py-1 rounded-full bg-surface-container-lowest border border-outline-variant/40 hover:border-secondary text-primary font-label-sm text-[11px] hover:bg-surface-bright transition-all shadow-sm flex items-center gap-1 cursor-pointer whitespace-nowrap">
+                <span class="material-symbols-outlined text-[13px] text-secondary">groups</span>
+                Preset 3: Squad Solver
+              </button>
+              <button onclick="App.judgePresetValidatePassportHash()" class="px-3 py-1 rounded-full bg-surface-container-lowest border border-outline-variant/40 hover:border-secondary text-primary font-label-sm text-[11px] hover:bg-surface-bright transition-all shadow-sm flex items-center gap-1 cursor-pointer whitespace-nowrap">
+                <span class="material-symbols-outlined text-[13px] text-secondary">fingerprint</span>
+                Preset 4: Proof Hash
               </button>
             </div>
           </div>
         </div>
+      </header>
+
+      <!-- BOTTOM NAV BAR (Mobile & Tablet Docked) -->
+      <nav class="fixed bottom-0 w-full flex justify-around items-center py-2 px-4 md:hidden bg-surface/85 backdrop-blur-xl shadow-[0_-4px_20px_rgba(0,0,0,0.04)] z-50 rounded-t-2xl border-t border-surface-variant/40">
+        <a class="flex flex-col items-center justify-center text-on-surface-variant active:scale-90 duration-200 hover:bg-surface-container-low transition-all px-3 py-1 rounded-xl ${isDashboard ? 'text-secondary font-bold' : ''}" href="#/student/dashboard">
+          <span class="material-symbols-outlined text-[24px]" ${isDashboard ? "style=\"font-variation-settings: 'FILL' 1;\"" : ""}>dashboard</span>
+          <span class="font-label-sm text-[11px] mt-0.5">Dashboard</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-on-surface-variant active:scale-90 duration-200 hover:bg-surface-container-low transition-all px-3 py-1 rounded-xl ${isPassport ? 'text-secondary font-bold' : ''}" href="#/student/passport">
+          <span class="material-symbols-outlined text-[24px]" ${isPassport ? "style=\"font-variation-settings: 'FILL' 1;\"" : ""}>contact_page</span>
+          <span class="font-label-sm text-[11px] mt-0.5">Passport</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-on-surface-variant active:scale-90 duration-200 hover:bg-surface-container-low transition-all px-3 py-1 rounded-xl ${isMatch ? 'text-secondary font-bold' : ''}" href="#/student/opportunities">
+          <span class="material-symbols-outlined text-[24px]" ${isMatch ? "style=\"font-variation-settings: 'FILL' 1;\"" : ""}>handshake</span>
+          <span class="font-label-sm text-[11px] mt-0.5">Match</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-on-surface-variant active:scale-90 duration-200 hover:bg-surface-container-low transition-all px-3 py-1 rounded-xl ${isGaps ? 'text-secondary font-bold' : ''}" href="#/student/evidence">
+          <span class="material-symbols-outlined text-[24px]" ${isGaps ? "style=\"font-variation-settings: 'FILL' 1;\"" : ""}>analytics</span>
+          <span class="font-label-sm text-[11px] mt-0.5">Gaps</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-on-surface-variant active:scale-90 duration-200 hover:bg-surface-container-low transition-all px-3 py-1 rounded-xl" href="#/teams">
+          <span class="material-symbols-outlined text-[24px]">groups</span>
+          <span class="font-label-sm text-[11px] mt-0.5">Teams</span>
+        </a>
       </nav>
     `;
   }
 };
+

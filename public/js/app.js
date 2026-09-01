@@ -208,6 +208,9 @@ const App = {
         appRoot.innerHTML = LandingView.render();
       } else if (path === "/about") {
         appRoot.innerHTML = AboutView.render();
+      } else if (path.startsWith("/onboarding")) {
+        this.state.role = "student";
+        appRoot.innerHTML = OnboardingView.render(1);
       } else if (path.startsWith("/student/dashboard")) {
         this.state.role = "student";
         appRoot.innerHTML = await StudentDashboardView.render(this.state.studentId);
@@ -250,14 +253,19 @@ const App = {
       }
 
       window.scrollTo(0, 0);
+
+      // Notify DemoTour so the floating HUD stays visible after navigation
+      if (typeof DemoTour !== "undefined" && DemoTour.isActive) {
+        DemoTour.onRouteRendered(path);
+      }
     } catch (err) {
       console.error("Routing error:", err);
       appRoot.innerHTML = `
-        <div class="max-w-xl mx-auto my-16 p-8 bg-white rounded-3xl border border-rose-200 text-center shadow-lg">
-          <i class="fa-solid fa-triangle-exclamation text-rose-500 text-4xl mb-4"></i>
-          <h2 class="text-xl font-bold text-slate-900">Failed to render view</h2>
-          <p class="text-xs text-slate-600 mt-2">${err.message}</p>
-          <a href="#/" class="mt-6 inline-block px-5 py-2.5 rounded-xl bg-blue-600 text-white font-semibold text-xs">Return to Home</a>
+        <div class="max-w-xl mx-auto my-16 p-8 bg-surface-container-lowest rounded-3xl border border-error/30 text-center shadow-lg">
+          <span class="material-symbols-outlined text-error text-4xl mb-3">error</span>
+          <h2 class="font-headline-md text-xl font-bold text-primary">Failed to render view</h2>
+          <p class="font-body-md text-xs text-on-surface-variant mt-2">${err.message}</p>
+          <a href="#/" class="mt-6 inline-block px-5 py-2.5 rounded-full bg-primary-container text-on-primary font-label-md text-xs">Return to Home</a>
         </div>
       `;
     }
@@ -273,43 +281,44 @@ const App = {
     if (!content) return;
 
     content.innerHTML = `
-      <div class="flex items-center justify-between pb-4 border-b border-slate-100">
-        <div class="flex items-center gap-2">
-          <div class="w-8 h-8 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-sm">
-            <i class="fa-solid fa-rocket"></i>
+      <div class="flex items-center justify-between pb-4 border-b border-surface-variant/40">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-secondary-fixed text-secondary flex items-center justify-center font-bold text-sm">
+            <span class="material-symbols-outlined text-[20px]">rocket_launch</span>
           </div>
           <div>
-            <h3 class="text-base font-bold text-slate-900">Bridge Gap Lab: ${skillName}</h3>
-            <p class="text-[11px] text-slate-500">Targeted micro-credential to unlock 1.0x verified matching weight.</p>
+            <h3 class="font-headline-md text-base font-bold text-primary">Bridge Gap Lab: ${skillName}</h3>
+            <p class="font-body-md text-[11px] text-on-surface-variant">Targeted micro-credential to unlock 1.0x verified matching weight.</p>
           </div>
         </div>
-        <button onclick="Utils.closeModal('bridge-gap-modal')" class="text-slate-400 hover:text-slate-600">
-          <i class="fa-solid fa-xmark text-lg"></i>
+        <button type="button" onclick="Utils.closeModal('bridge-gap-modal')" class="text-on-surface-variant hover:text-primary cursor-pointer">
+          <span class="material-symbols-outlined text-[20px]">close</span>
         </button>
       </div>
 
-      <div class="my-4 space-y-3 text-xs">
-        <div class="p-4 rounded-2xl bg-blue-50/75 border border-blue-200">
-          <div class="font-bold text-blue-900 text-sm mb-1">${labTitle}</div>
-          <p class="text-blue-800 leading-relaxed">
+      <div class="my-4 space-y-3 text-xs font-body-md">
+        <div class="p-4 rounded-2xl bg-secondary-fixed/20 border border-secondary-fixed">
+          <div class="font-label-md font-bold text-primary text-sm mb-1">${labTitle}</div>
+          <p class="text-on-surface-variant leading-relaxed">
             Complete this hands-on lab containing production Dockerfiles, CI/CD pipeline automation, and automated validation tests.
           </p>
-          <div class="mt-3 flex items-center gap-3 text-[11px] font-semibold text-blue-700">
-            <span><i class="fa-solid fa-clock mr-1"></i> Estimated Time: ${hours} Hours</span>
-            <span><i class="fa-solid fa-trophy mr-1 text-amber-500"></i> Reward: ${reward}</span>
+          <div class="mt-3 flex items-center gap-3 text-[11px] font-label-md font-semibold text-secondary">
+            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">schedule</span> Estimated Time: ${hours} Hours</span>
+            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px] text-amber-500" style="font-variation-settings: 'FILL' 1;">emoji_events</span> Reward: ${reward}</span>
           </div>
         </div>
 
-        <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 font-mono text-[11px] text-slate-700">
-          <span class="text-[10px] text-slate-400 font-sans font-bold uppercase block mb-1">Starter Template:</span>
+        <div class="p-3.5 rounded-xl bg-surface-container-low border border-surface-variant/40 font-mono text-[11px] text-primary">
+          <span class="text-[10px] text-on-surface-variant font-sans font-label-md font-bold uppercase block mb-1">Starter Template:</span>
           <div>git clone https://github.com/veriskill-templates/${skillName.toLowerCase()}-starter.git</div>
         </div>
       </div>
 
-      <div class="pt-3 flex justify-end gap-2 border-t border-slate-100">
-        <button type="button" onclick="Utils.closeModal('bridge-gap-modal')" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs">Cancel</button>
-        <button onclick="App.simulateBridgeCompletion('${skillName}')" class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md shadow-emerald-500/20 flex items-center gap-1.5 hover:scale-105 active:scale-95">
-          <i class="fa-solid fa-circle-check"></i> Simulate Completion & Recalculate Score
+      <div class="pt-3 flex justify-end gap-2 border-t border-surface-variant/40">
+        <button type="button" onclick="Utils.closeModal('bridge-gap-modal')" class="px-4 py-2 rounded-full bg-surface-container hover:bg-surface-container-high text-primary font-label-md font-semibold text-xs cursor-pointer">Cancel</button>
+        <button type="button" onclick="App.simulateBridgeCompletion('${skillName}')" class="px-5 py-2.5 rounded-full bg-primary-container hover:bg-primary text-on-primary font-label-md font-bold text-xs shadow-sm flex items-center gap-1.5 cursor-pointer">
+          <span class="material-symbols-outlined text-[16px]">check_circle</span>
+          <span>Simulate Completion & Recalculate Score</span>
         </button>
       </div>
     `;
@@ -501,7 +510,7 @@ const App = {
       return;
     }
 
-    if (btn) btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Parsing NLP AST & Commits...`;
+    if (btn) btn.innerHTML = `<span class="material-symbols-outlined text-[16px] animate-spin">sync</span> Parsing NLP AST & Commits...`;
 
     try {
       const res = await Utils.fetchAPI("/api/extract-skills", {
@@ -515,52 +524,58 @@ const App = {
       if (resultsDiv) {
         resultsDiv.classList.remove("hidden");
         resultsDiv.innerHTML = `
-          <div class="p-6 rounded-2xl bg-slate-900/90 border border-slate-700 text-xs">
+          <div class="p-6 rounded-2xl bg-primary-container border border-primary/20 text-xs text-on-primary font-body-md shadow-lg">
             <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
               <div>
-                <span class="text-emerald-400 font-bold uppercase text-[10px]"><i class="fa-solid fa-check-circle"></i> AI Extraction Complete</span>
-                <h3 class="text-sm font-bold text-white mt-0.5">${res.extractedSkills?.length || 0} Competencies Extracted</h3>
+                <span class="text-tertiary-fixed-dim font-label-md font-bold uppercase text-[10px] flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                  <span>AI Extraction Complete</span>
+                </span>
+                <h3 class="font-headline-md text-sm font-bold text-white mt-0.5">${res.extractedSkills?.length || 0} Competencies Extracted</h3>
               </div>
-              <button onclick="App.addSandboxSkillsToPassport()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-md transition-all flex items-center gap-1.5">
-                <i class="fa-solid fa-plus"></i> Add All Extracted to Passport
+              <button type="button" onclick="App.addSandboxSkillsToPassport()" class="px-4 py-2 rounded-full bg-tertiary-fixed text-on-tertiary-fixed-variant hover:bg-tertiary-fixed-dim font-label-md font-bold text-xs shadow-md transition-all flex items-center gap-1.5 cursor-pointer">
+                <span class="material-symbols-outlined text-[16px]">add_task</span>
+                <span>Add All Extracted to Passport</span>
               </button>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5 mb-4">
               ${(res.extractedSkills || []).map(s => `
-                <div class="p-3 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-between">
+                <div class="p-3 rounded-xl bg-white/5 border border-white/10 flex items-center justify-between">
                   <div>
-                    <div class="font-bold text-white">${s.name}</div>
-                    <div class="text-[10px] text-blue-300 font-medium">${s.level} • ${s.categoryName || s.category}</div>
+                    <div class="font-label-md font-bold text-white">${s.name}</div>
+                    <div class="text-[10px] text-secondary-fixed font-medium">${s.level} • ${s.categoryName || s.category}</div>
                   </div>
                   <div class="text-right">
-                    <span class="font-extrabold text-emerald-400">${s.confidence}%</span>
-                    <div class="text-[9px] text-slate-400">confidence</div>
+                    <span class="font-display-lg text-base font-bold text-tertiary-fixed-dim">${s.confidence}%</span>
+                    <div class="text-[9px] text-on-primary-container">confidence</div>
                   </div>
                 </div>
               `).join("")}
             </div>
 
-            <div class="p-3 rounded-xl bg-slate-950 border border-slate-800 font-mono text-[11px] text-slate-300 flex items-center justify-between">
+            <div class="p-3 rounded-xl bg-primary/40 border border-white/10 font-mono text-[11px] text-slate-300 flex items-center justify-between">
               <div>
-                <span class="text-[10px] text-slate-400 uppercase font-sans font-bold">Proof Signature:</span>
-                <span class="ml-1 text-slate-300">${res.proofHash}</span>
+                <span class="text-[10px] text-on-primary-container uppercase font-sans font-label-md font-bold">Proof Signature:</span>
+                <span class="ml-1 text-slate-300 font-mono">${res.proofHash}</span>
               </div>
-              <span class="text-emerald-400 font-sans font-bold">Verified ✓</span>
+              <span class="text-tertiary-fixed-dim font-label-md font-bold flex items-center gap-0.5">
+                <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">verified</span> Verified
+              </span>
             </div>
           </div>
         `;
       }
 
       if (btn) {
-        btn.innerHTML = `<i class="fa-solid fa-check text-emerald-400"></i> Extracted ${res.extractedSkills?.length} Skills!`;
-        btn.className = "px-5 py-2.5 rounded-xl bg-emerald-600 text-white font-bold text-xs shadow-lg shadow-emerald-600/30 transition-all flex items-center gap-2";
+        btn.innerHTML = `<span class="material-symbols-outlined text-[16px]">check_circle</span> Extracted ${res.extractedSkills?.length} Skills!`;
+        btn.className = "px-5 py-2.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed-variant font-label-md font-bold text-xs shadow-sm transition-all flex items-center gap-2 cursor-pointer";
       }
 
       Utils.showToast(`Extracted ${res.extractedSkills?.length} skills with confidence scores!`, "success");
     } catch (err) {
       console.error(err);
-      if (btn) btn.innerHTML = `<i class="fa-solid fa-brain"></i> Run AI Skill Extraction &rarr;`;
+      if (btn) btn.innerHTML = `<span class="material-symbols-outlined text-[16px]">psychology</span> Run AI Skill Extraction &rarr;`;
     }
   },
 
@@ -636,7 +651,7 @@ const App = {
       return;
     }
 
-    if (btn) btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Calculating 5-Factor Score...`;
+    if (btn) btn.innerHTML = `<span class="material-symbols-outlined text-[16px] animate-spin">sync</span> Calculating 5-Factor Score...`;
 
     try {
       const res = await Utils.fetchAPI("/api/match/custom", {
@@ -656,54 +671,54 @@ const App = {
       if (resultsDiv) {
         resultsDiv.classList.remove("hidden");
         resultsDiv.innerHTML = `
-          <div class="p-6 rounded-3xl bg-slate-900/90 border border-slate-700 text-xs">
+          <div class="p-6 rounded-3xl bg-primary-container border border-primary/20 text-xs text-on-primary font-body-md shadow-lg">
             <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-6">
               <div>
-                <span class="px-2.5 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30 text-[10px] font-bold uppercase">
+                <span class="px-3 py-1 rounded-full bg-secondary-fixed/30 text-secondary-fixed border border-secondary-fixed/40 text-[10px] font-label-md font-bold uppercase">
                   Explainable Match Calculated
                 </span>
-                <h3 class="text-base font-bold text-white mt-1">${title} @ ${company}</h3>
+                <h3 class="font-headline-md text-base font-bold text-white mt-1.5">${title} @ ${company}</h3>
               </div>
-              <div class="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-2xl border border-white/10">
-                <span class="text-3xl font-extrabold text-emerald-400">${match.matchScore}%</span>
-                <span class="text-[10px] text-blue-200 uppercase font-semibold">Match</span>
+              <div class="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-2xl border border-white/15">
+                <span class="font-display-lg text-3xl font-bold text-tertiary-fixed-dim">${match.matchScore}%</span>
+                <span class="text-[10px] font-label-md text-secondary-fixed uppercase font-semibold">Match</span>
               </div>
             </div>
 
             <div class="grid grid-cols-2 md:grid-cols-4 gap-2.5 mb-6">
-              <div class="p-3 rounded-xl bg-slate-800 border border-slate-700">
-                <span class="text-slate-400">Skill Alignment:</span>
-                <div class="text-lg font-bold text-blue-400">${match.scoreBreakdown?.skillAlignment || 45}%</div>
+              <div class="p-3 rounded-xl bg-white/5 border border-white/10">
+                <span class="text-on-primary-container text-[11px]">Skill Alignment:</span>
+                <div class="font-display-lg text-lg font-bold text-secondary-fixed">${match.scoreBreakdown?.skillAlignment || 45}%</div>
               </div>
-              <div class="p-3 rounded-xl bg-slate-800 border border-slate-700">
-                <span class="text-slate-400">Evidence Strength:</span>
-                <div class="text-lg font-bold text-emerald-400">${match.scoreBreakdown?.evidenceStrength || 25}%</div>
+              <div class="p-3 rounded-xl bg-white/5 border border-white/10">
+                <span class="text-on-primary-container text-[11px]">Evidence Strength:</span>
+                <div class="font-display-lg text-lg font-bold text-tertiary-fixed-dim">${match.scoreBreakdown?.evidenceStrength || 25}%</div>
               </div>
-              <div class="p-3 rounded-xl bg-slate-800 border border-slate-700">
-                <span class="text-slate-400">Project Relevance:</span>
-                <div class="text-lg font-bold text-indigo-400">${match.scoreBreakdown?.projectRelevance || 15}%</div>
+              <div class="p-3 rounded-xl bg-white/5 border border-white/10">
+                <span class="text-on-primary-container text-[11px]">Project Relevance:</span>
+                <div class="font-display-lg text-lg font-bold text-secondary-fixed">${match.scoreBreakdown?.projectRelevance || 15}%</div>
               </div>
-              <div class="p-3 rounded-xl bg-slate-800 border border-slate-700">
-                <span class="text-slate-400">Credential Proofs:</span>
-                <div class="text-lg font-bold text-purple-400">${match.scoreBreakdown?.credentialVerification || 10}%</div>
+              <div class="p-3 rounded-xl bg-white/5 border border-white/10">
+                <span class="text-on-primary-container text-[11px]">Credential Proofs:</span>
+                <div class="font-display-lg text-lg font-bold text-secondary-fixed">${match.scoreBreakdown?.credentialVerification || 10}%</div>
               </div>
             </div>
 
             <div class="mb-4">
-              <span class="text-[10px] font-bold text-slate-400 uppercase mb-2 block">Verified Matched Skills:</span>
+              <span class="text-[10px] font-label-md font-bold text-on-primary-container uppercase mb-2 block tracking-wider">Verified Matched Skills:</span>
               <div class="flex flex-wrap gap-2">
                 ${(match.matchedSkills || []).map(s => `
-                  <span class="px-2.5 py-1 rounded-lg bg-emerald-500/10 text-emerald-300 border border-emerald-500/20 text-xs font-semibold">
-                    ✓ ${s.name} (${s.confidence}%)
+                  <span class="px-3 py-1 rounded-full bg-secondary-fixed/20 text-secondary-fixed border border-secondary-fixed/30 text-xs font-label-md font-semibold flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[14px]">check</span> ${s.name} (${s.confidence}%)
                   </span>
                 `).join("")}
               </div>
             </div>
 
             ${match.missingSkills && match.missingSkills.length > 0 ? `
-              <div class="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-200">
-                <span class="font-bold text-amber-300 block mb-1">Identified Skill Gaps:</span>
-                <div class="space-y-1 text-slate-300">
+              <div class="p-4 rounded-2xl bg-amber-500/15 border border-amber-500/30 text-amber-200">
+                <span class="font-label-md font-bold text-amber-300 block mb-1">Identified Skill Gaps:</span>
+                <div class="space-y-1 text-slate-200">
                   ${match.missingSkills.map(g => `<div>• <strong>${g.name}</strong> (${g.gapSeverity} Gap) &rarr; ${g.remediationAction}</div>`).join("")}
                 </div>
               </div>
@@ -713,14 +728,14 @@ const App = {
       }
 
       if (btn) {
-        btn.innerHTML = `<i class="fa-solid fa-check text-emerald-300"></i> Match Score: ${match.matchScore}%`;
-        btn.className = "px-5 py-2.5 rounded-xl bg-emerald-600 text-white font-bold text-xs shadow-lg shadow-emerald-600/30 transition-all flex items-center gap-2";
+        btn.innerHTML = `<span class="material-symbols-outlined text-[16px]">check_circle</span> Match Score: ${match.matchScore}%`;
+        btn.className = "px-5 py-2.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed-variant font-label-md font-bold text-xs shadow-sm transition-all flex items-center gap-2 cursor-pointer";
       }
 
       Utils.showToast(`Custom Match calculated: ${match.matchScore}% match for ${title}!`, "success");
     } catch (err) {
       console.error(err);
-      if (btn) btn.innerHTML = `<i class="fa-solid fa-calculator"></i> Calculate Match & Explain &rarr;`;
+      if (btn) btn.innerHTML = `<span class="material-symbols-outlined text-[16px]">calculate</span> Calculate Match & Explain &rarr;`;
     }
   },
 
@@ -995,52 +1010,52 @@ const App = {
       if (!modalContent) return;
 
       modalContent.innerHTML = `
-        <div class="p-6 bg-slate-900 text-white flex items-center justify-between">
+        <div class="p-6 bg-primary-container text-on-primary flex items-center justify-between">
           <div>
-            <div class="text-[10px] font-bold uppercase tracking-wider text-blue-300">Skill Proof Evidence Drawer</div>
-            <h2 class="text-xl font-extrabold text-white mt-0.5">${skill.name} (${skill.level})</h2>
+            <div class="text-[10px] font-label-md font-bold uppercase tracking-wider text-secondary-fixed">Skill Proof Evidence Drawer</div>
+            <h2 class="font-headline-md text-xl font-bold text-white mt-0.5">${skill.name} (${skill.level})</h2>
           </div>
-          <button onclick="Utils.closeModal('skill-evidence-modal')" class="text-slate-400 hover:text-white text-lg">
-            <i class="fa-solid fa-xmark"></i>
+          <button type="button" onclick="Utils.closeModal('skill-evidence-modal')" class="text-on-primary-container hover:text-white cursor-pointer">
+            <span class="material-symbols-outlined text-[20px]">close</span>
           </button>
         </div>
 
-        <div class="p-6 space-y-6 max-h-[75vh] overflow-y-auto text-xs">
+        <div class="p-6 space-y-6 max-h-[75vh] overflow-y-auto text-xs font-body-md">
           <div class="grid grid-cols-3 gap-3 text-center">
-            <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200">
-              <span class="text-slate-500 font-semibold text-[10px] uppercase">Confidence</span>
-              <div class="text-2xl font-extrabold text-blue-700">${skill.confidence}%</div>
+            <div class="p-3.5 rounded-2xl bg-surface-container-low border border-surface-variant/40">
+              <span class="font-label-md text-on-surface-variant font-semibold text-[10px] uppercase">Confidence</span>
+              <div class="font-display-lg text-2xl font-bold text-secondary mt-0.5">${skill.confidence}%</div>
             </div>
-            <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200">
-              <span class="text-slate-500 font-semibold text-[10px] uppercase">Verified Proofs</span>
-              <div class="text-2xl font-extrabold text-emerald-700">${matchingEvidence.length || skill.verifiedEvidenceCount}</div>
+            <div class="p-3.5 rounded-2xl bg-surface-container-low border border-surface-variant/40">
+              <span class="font-label-md text-on-surface-variant font-semibold text-[10px] uppercase">Verified Proofs</span>
+              <div class="font-display-lg text-2xl font-bold text-tertiary-fixed-dim mt-0.5">${matchingEvidence.length || skill.verifiedEvidenceCount}</div>
             </div>
-            <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200">
-              <span class="text-slate-500 font-semibold text-[10px] uppercase">Last Demonstrated</span>
-              <div class="text-xs font-bold text-slate-800 mt-1">${skill.lastDemonstrated}</div>
+            <div class="p-3.5 rounded-2xl bg-surface-container-low border border-surface-variant/40">
+              <span class="font-label-md text-on-surface-variant font-semibold text-[10px] uppercase">Last Demonstrated</span>
+              <div class="font-label-md text-xs font-bold text-primary mt-1.5">${skill.lastDemonstrated}</div>
             </div>
           </div>
 
           <!-- Proof Hash -->
-          <div class="p-3.5 rounded-2xl bg-slate-900 text-slate-200 font-mono text-[11px]">
-            <div class="text-slate-400 text-[10px] font-sans font-bold uppercase mb-1">Cryptographic Proof Hash</div>
-            <div class="break-all">${skill.proofHash || 'sha256:7b12c4e9f08a34d567890123456789abcdef0123456789abcdef0123456789ab'}</div>
+          <div class="p-4 rounded-2xl bg-primary-container text-white font-mono text-[11px] border border-primary/20">
+            <div class="text-on-primary-container text-[10px] font-label-md uppercase mb-1">Cryptographic Proof Hash</div>
+            <div class="text-slate-300 break-all">${skill.proofHash || 'sha256:7b12c4e9f08a34d567890123456789abcdef0123456789abcdef0123456789ab'}</div>
           </div>
 
           <!-- Supporting Evidence List -->
           <div>
-            <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3">Supporting Verified Artifacts (${matchingEvidence.length})</h3>
+            <h3 class="font-headline-md text-xs font-bold text-primary uppercase tracking-wider mb-3">Supporting Verified Artifacts (${matchingEvidence.length})</h3>
             <div class="space-y-3">
               ${matchingEvidence.map((ev, i) => `
-                <div class="p-4 rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 transition-colors">
+                <div class="p-4 rounded-2xl border border-surface-variant/40 bg-surface-container-lowest hover:bg-surface-bright transition-colors shadow-sm">
                   <div class="flex items-center justify-between mb-1">
-                    <span class="font-bold text-blue-700">${i + 1}. ${ev.type}: ${ev.title}</span>
+                    <span class="font-label-md font-bold text-primary">${i + 1}. ${ev.type}: ${ev.title}</span>
                     ${Utils.renderVerificationBadge(ev.verificationStatus)}
                   </div>
-                  <p class="text-slate-600 mt-1">${ev.description}</p>
-                  <div class="mt-2 text-[10px] text-slate-400 flex items-center justify-between">
-                    <span>Source: <strong>${ev.source}</strong></span>
-                    <span class="font-mono">${Utils.truncateHash(ev.proofHash, 6, 4)}</span>
+                  <p class="font-body-md text-on-surface-variant mt-1">${ev.description}</p>
+                  <div class="mt-2.5 text-[10px] text-on-surface-variant flex items-center justify-between">
+                    <span>Source: <strong class="text-primary">${ev.source}</strong></span>
+                    <span class="font-mono text-secondary font-semibold">${Utils.truncateHash(ev.proofHash, 6, 4)}</span>
                   </div>
                 </div>
               `).join("")}
@@ -1048,8 +1063,8 @@ const App = {
           </div>
         </div>
 
-        <div class="p-4 bg-slate-50 border-t border-slate-200 text-right">
-          <button onclick="Utils.closeModal('skill-evidence-modal')" class="px-5 py-2 rounded-xl bg-slate-800 text-white font-semibold text-xs">
+        <div class="p-4 bg-surface-container-low border-t border-surface-variant/40 text-right">
+          <button type="button" onclick="Utils.closeModal('skill-evidence-modal')" class="px-5 py-2 rounded-full bg-primary-container hover:bg-primary text-on-primary font-label-md font-semibold text-xs cursor-pointer">
             Close Drawer
           </button>
         </div>
@@ -1075,70 +1090,72 @@ const App = {
       if (!modalContent) return;
 
       modalContent.innerHTML = `
-        <div class="p-6 bg-slate-900 text-white flex items-center justify-between">
+        <div class="p-6 bg-primary-container text-on-primary flex items-center justify-between">
           <div>
-            <div class="text-[10px] font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1">
-              <i class="fa-solid fa-shield-check"></i> Attribute-Blind Explainable Ranking Evaluation
+            <div class="text-[10px] font-label-md font-bold uppercase tracking-wider text-secondary-fixed flex items-center gap-1">
+              <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">shield</span>
+              <span>Attribute-Blind Explainable Ranking Evaluation</span>
             </div>
-            <h2 class="text-xl font-extrabold text-white mt-0.5">Why Candidate #${anonymizedId} Ranked #1 (91% Match)</h2>
+            <h2 class="font-headline-md text-lg md:text-xl font-bold text-white mt-0.5">Why Candidate #${anonymizedId} Ranked #1 (91% Match)</h2>
           </div>
-          <button onclick="Utils.closeModal('recruiter-explain-modal')" class="text-slate-400 hover:text-white text-lg">
-            <i class="fa-solid fa-xmark"></i>
+          <button type="button" onclick="Utils.closeModal('recruiter-explain-modal')" class="text-on-primary-container hover:text-white cursor-pointer">
+            <span class="material-symbols-outlined text-[20px]">close</span>
           </button>
         </div>
 
-        <div class="p-6 space-y-6 max-h-[75vh] overflow-y-auto text-xs">
-          <div class="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-900">
-            <div class="font-bold text-sm mb-1">Algorithmic Decision Rationale</div>
-            <p>Candidate #${anonymizedId} is ranked #1 because they demonstrate verified project, coursework, and hackathon evidence across all 4 mandatory role requirements (Python, Machine Learning, SQL, PyTorch).</p>
+        <div class="p-6 space-y-6 max-h-[75vh] overflow-y-auto text-xs font-body-md">
+          <div class="p-4 rounded-2xl bg-secondary-fixed/20 border border-secondary-fixed text-primary">
+            <div class="font-label-md font-bold text-sm mb-1">Algorithmic Decision Rationale</div>
+            <p class="leading-relaxed">Candidate #${anonymizedId} is ranked #1 because they demonstrate verified project, coursework, and hackathon evidence across all 4 mandatory role requirements (Python, Machine Learning, SQL, PyTorch).</p>
           </div>
 
           <div>
-            <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3">Satisfied Competency Traces</h3>
+            <h3 class="font-headline-md text-xs font-bold text-primary uppercase tracking-wider mb-3">Satisfied Competency Traces</h3>
             <div class="space-y-2.5">
-              <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex justify-between items-center">
+              <div class="p-3.5 rounded-xl bg-surface-container-low border border-surface-variant/40 flex justify-between items-center">
                 <div>
-                  <div class="font-bold text-slate-900">✓ Python (Advanced • 94% Confidence)</div>
-                  <div class="text-slate-500 text-[11px]">Backed by Placement Predictor Project & 340+ GitHub Commits</div>
+                  <div class="font-label-md font-bold text-primary">✓ Python (Advanced • 94% Confidence)</div>
+                  <div class="text-on-surface-variant text-[11px] mt-0.5">Backed by Placement Predictor Project & 340+ GitHub Commits</div>
                 </div>
-                <span class="badge-verified px-2 py-0.5 rounded font-bold text-[10px]">Verified (1.0x)</span>
+                <span class="px-2.5 py-0.5 rounded-full bg-secondary-fixed/50 text-secondary border border-secondary-fixed font-label-md font-bold text-[10px]">Verified (1.0x)</span>
               </div>
-              <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex justify-between items-center">
+              <div class="p-3.5 rounded-xl bg-surface-container-low border border-surface-variant/40 flex justify-between items-center">
                 <div>
-                  <div class="font-bold text-slate-900">✓ Machine Learning (Advanced • 88% Confidence)</div>
-                  <div class="text-slate-500 text-[11px]">Backed by DeepLearning.AI Specialization & CS-402 Coursework (Grade O)</div>
+                  <div class="font-label-md font-bold text-primary">✓ Machine Learning (Advanced • 88% Confidence)</div>
+                  <div class="text-on-surface-variant text-[11px] mt-0.5">Backed by DeepLearning.AI Specialization & CS-402 Coursework (Grade O)</div>
                 </div>
-                <span class="badge-verified px-2 py-0.5 rounded font-bold text-[10px]">Verified (1.0x)</span>
+                <span class="px-2.5 py-0.5 rounded-full bg-secondary-fixed/50 text-secondary border border-secondary-fixed font-label-md font-bold text-[10px]">Verified (1.0x)</span>
               </div>
-              <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex justify-between items-center">
+              <div class="p-3.5 rounded-xl bg-surface-container-low border border-surface-variant/40 flex justify-between items-center">
                 <div>
-                  <div class="font-bold text-slate-900">✓ PyTorch (Intermediate • 76% Confidence)</div>
-                  <div class="text-slate-500 text-[11px]">Demonstrated in BioBERT NLP Healthcare Triage Repository</div>
+                  <div class="font-label-md font-bold text-primary">✓ PyTorch (Intermediate • 76% Confidence)</div>
+                  <div class="text-on-surface-variant text-[11px] mt-0.5">Demonstrated in BioBERT NLP Healthcare Triage Repository</div>
                 </div>
-                <span class="badge-verified px-2 py-0.5 rounded font-bold text-[10px]">Verified (1.0x)</span>
+                <span class="px-2.5 py-0.5 rounded-full bg-secondary-fixed/50 text-secondary border border-secondary-fixed font-label-md font-bold text-[10px]">Verified (1.0x)</span>
               </div>
-              <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex justify-between items-center">
+              <div class="p-3.5 rounded-xl bg-surface-container-low border border-surface-variant/40 flex justify-between items-center">
                 <div>
-                  <div class="font-bold text-slate-900">✓ SQL (Intermediate • 79% Confidence)</div>
-                  <div class="text-slate-500 text-[11px]">Backed by University of Michigan PostgreSQL Specialization</div>
+                  <div class="font-label-md font-bold text-primary">✓ SQL (Intermediate • 79% Confidence)</div>
+                  <div class="text-on-surface-variant text-[11px] mt-0.5">Backed by University of Michigan PostgreSQL Specialization</div>
                 </div>
-                <span class="badge-verified px-2 py-0.5 rounded font-bold text-[10px]">Verified (1.0x)</span>
+                <span class="px-2.5 py-0.5 rounded-full bg-secondary-fixed/50 text-secondary border border-secondary-fixed font-label-md font-bold text-[10px]">Verified (1.0x)</span>
               </div>
             </div>
           </div>
 
-          <div class="p-4 rounded-2xl bg-slate-900 text-slate-300 font-mono text-[11px]">
-            <div class="text-emerald-400 font-bold uppercase mb-2 font-sans">Attribute-Blind Invariance Check</div>
-            <div>Excluded from scoring: [Name, Gender, Age, Photo, College Tier, Pincode, Social Background]</div>
-            <div class="mt-1 text-slate-400">Pure feature vector: Verified Code AST, Cryptographic Proofs, Skill Confidence.</div>
+          <div class="p-4 rounded-2xl bg-primary-container text-white font-mono text-[11px] border border-primary/20">
+            <div class="text-tertiary-fixed-dim font-label-md font-bold uppercase mb-2">Attribute-Blind Invariance Check</div>
+            <div class="text-slate-300">Excluded from scoring: [Name, Gender, Age, Photo, College Tier, Pincode, Social Background]</div>
+            <div class="mt-1.5 text-on-primary-container">Pure feature vector: Verified Code AST, Cryptographic Proofs, Skill Confidence.</div>
           </div>
         </div>
 
-        <div class="p-4 bg-slate-50 border-t border-slate-200 flex justify-between items-center">
-          <button onclick="App.openInterviewModal('${anonymizedId}')" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-sm transition-colors flex items-center gap-1">
-            <i class="fa-solid fa-calendar-check"></i> Invite / Shortlist #${anonymizedId}
+        <div class="p-4 bg-surface-container-low border-t border-surface-variant/40 flex justify-between items-center">
+          <button type="button" onclick="App.openInterviewModal('${anonymizedId}')" class="px-4 py-2 rounded-full bg-primary-container hover:bg-primary text-on-primary font-label-md font-bold text-xs shadow-sm transition-colors flex items-center gap-1 cursor-pointer">
+            <span class="material-symbols-outlined text-[16px]">calendar_add_on</span>
+            <span>Invite / Shortlist #${anonymizedId}</span>
           </button>
-          <button onclick="Utils.closeModal('recruiter-explain-modal')" class="px-4 py-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold text-xs">
+          <button type="button" onclick="Utils.closeModal('recruiter-explain-modal')" class="px-4 py-2 rounded-full bg-surface-container hover:bg-surface-container-high text-primary font-label-md font-semibold text-xs cursor-pointer">
             Close
           </button>
         </div>
@@ -1156,16 +1173,16 @@ const App = {
   simulateImproveMatch() {
     const btn = document.getElementById("btn-improve-match");
     const scoreEl = document.getElementById("live-match-score");
-    if (btn) btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Ingesting Docker & AWS Mini-Project...`;
+    if (btn) btn.innerHTML = `<span class="material-symbols-outlined text-[16px] animate-spin">sync</span> Ingesting Docker & AWS Mini-Project...`;
 
     setTimeout(() => {
       if (scoreEl) {
         scoreEl.innerText = "97%";
-        scoreEl.classList.add("text-emerald-400", "scale-110");
+        scoreEl.classList.add("text-tertiary-fixed-dim", "scale-110");
       }
       if (btn) {
-        btn.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-300"></i> Match Improved: 97%! (Gap Closed)`;
-        btn.className = "px-5 py-2.5 rounded-xl bg-emerald-600 text-white font-bold text-xs shadow-md shrink-0 flex items-center gap-2";
+        btn.innerHTML = `<span class="material-symbols-outlined text-[16px]">check_circle</span> Match Improved: 97%! (Gap Closed)`;
+        btn.className = "px-5 py-2.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed-variant font-label-md font-bold text-xs shadow-sm shrink-0 flex items-center gap-2 cursor-pointer";
       }
       Utils.showToast("🎉 Verified Docker + AWS mini-project ingested! Match score jumped from 91% -> 97%", "success");
     }, 900);
@@ -1221,7 +1238,7 @@ const App = {
    */
   async runLiveFairnessAudit() {
     const btn = document.getElementById("btn-run-audit");
-    if (btn) btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Running Demographic Audit...`;
+    if (btn) btn.innerHTML = `<span class="material-symbols-outlined text-[16px] animate-spin">sync</span> Running Demographic Audit...`;
 
     setTimeout(async () => {
       await Utils.fetchAPI("/api/audit/fairness", { method: "POST" });

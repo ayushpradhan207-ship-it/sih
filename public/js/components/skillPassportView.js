@@ -1,240 +1,292 @@
 /**
- * Verifiable Skill Passport View (Two-Tier Verified vs. Self-Reported Skill Distinction)
+ * VeriSkill — Stitch Skill Passport Component (Source of Truth)
  */
 
 const SkillPassportView = {
   async render(studentId = "student-1042") {
     const student = await Utils.fetchAPI(`/api/students/${studentId}`);
     const allSkills = student.skills || [];
+    const metrics = student.passportMetrics || {};
+    const completionRate = metrics.overallScore || 78;
 
-    const verifiedSkills = allSkills.filter(s => s.verificationStatus === "VERIFIED");
-    const unverifiedSkills = allSkills.filter(s => s.verificationStatus !== "VERIFIED");
+    // Group skills by category
+    const programmingSkills = allSkills.filter(s => s.category === "Programming" || ["Python", "Java", "SQL", "TypeScript", "C++", "JavaScript", "Go"].includes(s.name));
+    const dataAISkills = allSkills.filter(s => s.category === "Machine Learning" || s.category === "Data Science" || s.category === "Data & AI" || ["Machine Learning", "Data Analysis", "Deep Learning", "NLP", "Computer Vision", "Scikit-Learn"].includes(s.name));
+    const professionalSkills = allSkills.filter(s => s.category === "Soft Skills" || s.category === "Professional" || ["Problem Solving", "Team Collaboration", "Communication", "System Design", "Agile"].includes(s.name) || (!programmingSkills.includes(s) && !dataAISkills.includes(s)));
 
     return `
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <!-- DEMO STEP 2 CALLOUT BANNER -->
-        <div class="mb-6 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-sm">
-          <div class="flex items-center gap-3">
-            <div class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-sm">2</div>
-            <div>
-              <h3 class="text-sm font-bold text-slate-900">DEMO STEP 2: Verifiable Skill Passport & Verification Multipliers</h3>
-              <p class="text-xs text-slate-600">Notice the strict distinction between <strong class="text-emerald-700 font-semibold">Cryptographically Verified Skills (1.0x Weight)</strong> vs <strong class="text-amber-800 font-semibold">Self-Reported Skills (0.3x Weight Discount)</strong>.</p>
-            </div>
+      <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop pt-24 md:pt-28 pb-section-gap flex flex-col gap-stack-lg min-h-screen">
+        
+        <!-- Action Toolbar -->
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+          <div class="flex items-center gap-2 text-xs font-label-md text-on-surface-variant">
+            <span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">shield</span>
+            <span>W3C Standard Verifiable Credential Passport v1.1</span>
           </div>
+
           <div class="flex items-center gap-2">
-            <button onclick="Utils.openModal('add-skill-modal')" class="px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5">
-              <i class="fa-solid fa-plus"></i> Add Skill
+            <button onclick="Utils.openModal('add-skill-modal')" class="px-4 py-2 bg-primary-container text-on-primary font-label-md text-label-md rounded-full hover:bg-primary transition-all shadow-sm flex items-center gap-1.5 cursor-pointer text-xs">
+              <span class="material-symbols-outlined text-[16px]">add</span> Add Skill
             </button>
-            <button onclick="App.runDemoStep(3)" class="px-3.5 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5">
-              Next: Match 91% <i class="fa-solid fa-arrow-right text-[10px]"></i>
+            <button onclick="Utils.openModal('add-cred-modal')" class="px-4 py-2 bg-surface-container hover:bg-surface-container-high text-primary font-label-md text-label-md rounded-full transition-all border border-outline-variant/30 flex items-center gap-1.5 cursor-pointer text-xs">
+              <span class="material-symbols-outlined text-[16px]">card_membership</span> Add Certificate
+            </button>
+            <button onclick="App.exportPassportVC('${student.id}')" class="px-4 py-2 bg-surface-container hover:bg-surface-container-high text-primary font-label-md text-label-md rounded-full transition-all border border-outline-variant/30 flex items-center gap-1.5 cursor-pointer text-xs">
+              <span class="material-symbols-outlined text-[16px]">code</span> Export JSON-LD
             </button>
           </div>
         </div>
 
-        <!-- PASSPORT HEADER -->
-        <div class="bg-white rounded-3xl p-6 md:p-8 border border-slate-200 shadow-sm mb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-          <div>
+        <!-- Profile Header Section -->
+        <section class="relative bg-surface-container-lowest rounded-2xl p-6 md:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.04)] overflow-hidden flex flex-col md:flex-row gap-6 md:gap-8 items-start md:items-center ai-glow border border-surface-variant/40">
+          
+          <!-- Avatar with Floating Verification Badge -->
+          <div class="relative shrink-0">
+            <div class="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden border-2 border-surface-container p-1 bg-white shadow-sm z-10 relative">
+              <img alt="${student.personal?.fullName || "Ashutosh Pradhan"}" class="w-full h-full rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSWx0e2-SEWuIEGrXnsvm4ah9oeU6y1aOzAG4Hf9K4yxBpcSVeqnczMjJTZnq0xzbMBMgC8xTk-fai4OeLnjMB_zOat6msJCXv6S2jCT7eD2NGWg388APSwrIDqdYI3tmEU9LXwtWGPjApaWaw-tzeysQUFiiSrvMrkP9P8QAMV7y16_bdAgeXsAE9gCf_mEus3MjgRa-ZbPX38HW7vV6wdz-RuHIOPuawrFMKu4xyLIMr9L2jFZIwIQ"/>
+            </div>
+            <!-- Verification Badge Floating -->
+            <div class="absolute bottom-0 right-0 bg-white rounded-full p-1 shadow-md z-20 flex items-center justify-center">
+              <span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">verified</span>
+            </div>
+          </div>
+
+          <!-- Identity & Summary -->
+          <div class="flex-grow flex flex-col gap-2">
             <div class="flex items-center gap-3 flex-wrap">
-              <h1 class="text-2xl font-extrabold text-slate-900">Verifiable Skill Passport</h1>
-              <span class="px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-800 font-mono">
+              <h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary font-bold">
+                ${student.personal?.fullName || "Ashutosh Pradhan"}
+              </h1>
+              <span class="px-3 py-1 bg-secondary-fixed/50 text-secondary font-label-sm text-label-sm rounded-full flex items-center gap-1 font-semibold">
+                <span class="material-symbols-outlined text-[14px]">shield</span> Identity Verified
+              </span>
+              <span class="px-2.5 py-0.5 bg-surface-container text-on-surface-variant font-mono text-xs rounded-full font-medium">
                 ${student.passportId}
               </span>
-              <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold badge-verified">
-                <i class="fa-solid fa-shield-check mr-1"></i> Root Verified
-              </span>
             </div>
-            <p class="text-xs text-slate-500 mt-1.5">
-              Holder: <strong class="text-slate-800">${student.personal?.fullName}</strong> • Anonymized Recruiter Token: <strong class="font-mono text-blue-600">${student.anonymizedId}</strong>
+            <p class="font-body-md text-body-md text-on-surface-variant max-w-2xl leading-relaxed text-sm">
+              Data-driven software engineer specializing in Python and machine learning. Proven track record in analytical problem-solving and cross-functional team collaboration.
             </p>
           </div>
 
-          <div class="flex flex-wrap items-center gap-2">
-            <button onclick="Utils.openModal('add-skill-modal')" class="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-md shadow-blue-500/20 transition-all flex items-center gap-2">
-              <i class="fa-solid fa-plus-circle"></i> + Add Custom Skill
-            </button>
-            <button onclick="Utils.openModal('add-cred-modal')" class="px-4 py-2.5 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 font-bold text-xs transition-colors flex items-center gap-2">
-              <i class="fa-solid fa-certificate"></i> + Add Certificate
-            </button>
-            <button onclick="App.exportPassportVC('${student.id}')" class="px-4 py-2.5 rounded-xl bg-white hover:bg-slate-50 text-slate-700 font-semibold text-xs border border-slate-300 shadow-sm transition-colors flex items-center gap-2">
-              <i class="fa-solid fa-file-code text-blue-600"></i> Export JSON-LD
-            </button>
+          <!-- Completion Widget -->
+          <div class="w-full md:w-64 bg-surface-bright rounded-xl p-4 border border-outline-variant/30 flex flex-col gap-3 shrink-0">
+            <div class="flex justify-between items-end">
+              <span class="font-label-md text-label-md text-on-surface font-semibold">Passport Completion</span>
+              <span class="font-headline-md text-headline-md text-primary font-bold tracking-tight">${completionRate}%</span>
+            </div>
+            <!-- Sleek Progress Bar -->
+            <div class="h-2 w-full bg-surface-variant rounded-full overflow-hidden">
+              <div class="h-full bg-gradient-to-r from-secondary to-tertiary-fixed-dim rounded-full" style="width: ${completionRate}%;"></div>
+            </div>
+            <p class="font-label-sm text-label-sm text-on-surface-variant text-right font-medium">Strong Verification Tier</p>
           </div>
-        </div>
+        </section>
 
-        <!-- 2-TIER VERIFICATION METRICS SUMMARY -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-          <!-- Tier 1: Verified -->
-          <div class="bg-gradient-to-br from-emerald-950 to-slate-900 rounded-3xl p-6 text-white border border-emerald-500/30 shadow-lg">
-            <div class="flex items-center justify-between mb-2">
-              <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
-                <i class="fa-solid fa-shield-halved text-emerald-400"></i> Cryptographically Verified Skills
-              </span>
-              <span class="text-xs font-bold text-emerald-400 font-mono">1.0x Weight Factor</span>
+        <!-- 3-Column Categorized Passport Grid -->
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+          
+          <!-- Category: Programming -->
+          <div class="bg-surface-container-lowest rounded-2xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.04)] hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] transition-all duration-300 flex flex-col gap-stack-md border border-surface-variant/40">
+            <div class="flex items-center gap-2 mb-1">
+              <span class="material-symbols-outlined text-secondary">code</span>
+              <h2 class="font-headline-md text-headline-md text-primary font-bold text-xl">Programming</h2>
             </div>
-            <div class="flex items-baseline gap-3 mt-3">
-              <div class="text-4xl font-extrabold text-white">${verifiedSkills.length}</div>
-              <div class="text-xs text-emerald-200">Backed by repository commits, AST analysis, & course records.</div>
-            </div>
-          </div>
-
-          <!-- Tier 2: Self-Reported -->
-          <div class="bg-gradient-to-br from-slate-900 to-amber-950 rounded-3xl p-6 text-white border border-amber-500/30 shadow-lg">
-            <div class="flex items-center justify-between mb-2">
-              <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40">
-                <i class="fa-solid fa-user-pen text-amber-400"></i> Self-Reported / Unverified Claims
-              </span>
-              <span class="text-xs font-bold text-amber-400 font-mono">0.3x Weight (70% Discount)</span>
-            </div>
-            <div class="flex items-baseline gap-3 mt-3">
-              <div class="text-4xl font-extrabold text-white">${unverifiedSkills.length}</div>
-              <div class="text-xs text-amber-200">Awaiting repository audit or institutional signature.</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- VERIFIED SKILLS SECTION -->
-        <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden mb-8">
-          <div class="p-6 border-b border-slate-200 bg-emerald-50/50 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
-            <div>
-              <div class="flex items-center gap-2">
-                <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
-                <h2 class="text-base font-bold text-emerald-950">Cryptographically Verified Skills (${verifiedSkills.length})</h2>
-              </div>
-              <p class="text-xs text-emerald-800 mt-0.5">Anchored with immutable SHA-256 signatures. Ingested into matching engine at full 1.0x weight.</p>
-            </div>
-
-            <div class="relative flex-1 max-w-xs">
-              <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-xs"></i>
-              <input type="text" onkeyup="App.handleSkillSearch(this.value)" placeholder="Search verified skills..." class="w-full pl-9 pr-4 py-2 bg-white border border-slate-300 rounded-xl text-xs focus:border-emerald-500 focus:outline-none">
-            </div>
-          </div>
-
-          <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-slate-200 text-left text-sm">
-              <thead class="bg-slate-100/75 text-slate-600 text-xs uppercase tracking-wider font-semibold">
-                <tr>
-                  <th class="py-3.5 px-6">Skill Name</th>
-                  <th class="py-3.5 px-4">Proficiency</th>
-                  <th class="py-3.5 px-6">Confidence Meter</th>
-                  <th class="py-3.5 px-4 text-center">Verified Proofs</th>
-                  <th class="py-3.5 px-4">Cryptographic Hash Preview</th>
-                  <th class="py-3.5 px-6 text-right">Action</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-slate-100 bg-white" id="passport-skills-tbody">
-                ${verifiedSkills.map(skill => `
-                  <tr class="hover:bg-emerald-50/30 transition-colors cursor-pointer skill-row" data-name="${skill.name.toLowerCase()}" data-category="${skill.category || ''}" onclick="App.viewSkillDetail('${skill.id || skill.name}')">
-                    <td class="py-4 px-6 font-bold text-slate-900 flex items-center gap-2.5">
-                      <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0"></div>
-                      <span class="text-sm">${skill.name}</span>
-                    </td>
-                    <td class="py-4 px-4">
-                      ${Utils.renderLevelBadge(skill.level)}
-                    </td>
-                    <td class="py-4 px-6">
-                      <div class="flex items-center gap-3">
-                        <div class="w-24 bg-slate-200 rounded-full h-2 overflow-hidden">
-                          <div class="bg-emerald-600 h-2 rounded-full" style="width: ${skill.confidence}%"></div>
-                        </div>
-                        <span class="font-extrabold text-emerald-700 text-xs">${skill.confidence}%</span>
-                      </div>
-                    </td>
-                    <td class="py-4 px-4 text-center">
-                      <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                        <i class="fa-solid fa-file-shield text-[10px]"></i> ${skill.verifiedEvidenceCount || 1} proofs
-                      </span>
-                    </td>
-                    <td class="py-4 px-4 font-mono text-[11px] text-slate-500">
-                      <span class="bg-slate-100 px-2 py-0.5 rounded border border-slate-200 text-slate-700 font-mono" title="${skill.proofHash}">
-                        ${Utils.truncateHash(skill.proofHash, 8, 6)}
-                      </span>
-                    </td>
-                    <td class="py-4 px-6 text-right">
-                      <button class="px-3 py-1 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-semibold transition-colors">
-                        Inspect &rarr;
-                      </button>
-                    </td>
-                  </tr>
-                `).join("")}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- UNVERIFIED / SELF-REPORTED SKILLS SECTION -->
-        <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden mb-8">
-          <div class="p-6 border-b border-slate-200 bg-amber-50/50 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
-            <div>
-              <div class="flex items-center gap-2">
-                <span class="w-3 h-3 rounded-full bg-amber-500"></span>
-                <h2 class="text-base font-bold text-amber-950">Self-Reported / Unverified Claims (${unverifiedSkills.length})</h2>
-              </div>
-              <p class="text-xs text-amber-800 mt-0.5">Calculated with a 70% weight discount (0.3x) during candidate ranking until evidence is attached.</p>
-            </div>
-            <a href="#/student/evidence" class="px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shadow-sm transition-colors flex items-center justify-center gap-1.5">
-              <i class="fa-solid fa-cloud-arrow-up"></i> Ingest Evidence to Verify
-            </a>
-          </div>
-
-          <div class="divide-y divide-slate-100">
-            ${unverifiedSkills.map(skill => `
-              <div class="p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 hover:bg-amber-50/20 transition-colors">
-                <div>
+            
+            <div class="flex flex-col gap-4">
+              <!-- Python -->
+              <div class="flex flex-col gap-1.5 pb-3 border-b border-surface-variant/40 cursor-pointer" onclick="App.viewSkillDetail('sk-python')">
+                <div class="flex justify-between items-start">
                   <div class="flex items-center gap-2">
-                    <span class="text-base font-bold text-slate-900">${skill.name}</span>
-                    ${Utils.renderLevelBadge(skill.level)}
-                    <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold badge-self">
-                      <i class="fa-solid fa-triangle-exclamation text-amber-600 mr-1"></i> Self-Claimed (0.3x wt)
-                    </span>
+                    <span class="font-label-md text-label-md text-primary font-semibold">Python</span>
+                    <span class="material-symbols-outlined text-[14px] text-tertiary-fixed-dim" style="font-variation-settings: 'FILL' 1;">stars</span>
                   </div>
-                  <p class="text-xs text-slate-500 mt-1">Claimed confidence: <strong>${skill.confidence}%</strong> • Requires repository code commit or course certificate to unlock full 1.0x matching weight.</p>
+                  <span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container px-2 py-0.5 rounded-full font-medium">Advanced</span>
                 </div>
-
-                <div class="flex items-center gap-2 shrink-0">
-                  <a href="#/student/evidence" class="px-3.5 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-semibold border border-blue-200 transition-colors flex items-center gap-1.5">
-                    <i class="fa-solid fa-link"></i> Attach Proof
-                  </a>
+                <div class="flex items-center gap-3">
+                  <div class="flex-grow h-1.5 bg-surface-variant rounded-full overflow-hidden">
+                    <div class="h-full bg-tertiary-fixed-dim rounded-full" style="width: 95%;"></div>
+                  </div>
+                  <span class="font-label-sm text-label-sm text-on-surface-variant whitespace-nowrap text-xs">4 verified items</span>
                 </div>
               </div>
-            `).join("")}
+
+              <!-- SQL -->
+              <div class="flex flex-col gap-1.5 pb-3 border-b border-surface-variant/40 cursor-pointer" onclick="App.viewSkillDetail('sk-sql')">
+                <div class="flex justify-between items-start">
+                  <div class="flex items-center gap-2">
+                    <span class="font-label-md text-label-md text-primary font-semibold">SQL</span>
+                    <span class="material-symbols-outlined text-[14px] text-tertiary-fixed-dim" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                  </div>
+                  <span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container px-2 py-0.5 rounded-full font-medium">Proficient</span>
+                </div>
+                <div class="flex items-center gap-3">
+                  <div class="flex-grow h-1.5 bg-surface-variant rounded-full overflow-hidden">
+                    <div class="h-full bg-tertiary-fixed-dim rounded-full" style="width: 75%;"></div>
+                  </div>
+                  <span class="font-label-sm text-label-sm text-on-surface-variant whitespace-nowrap text-xs">1 verified item</span>
+                </div>
+              </div>
+
+              <!-- Java -->
+              <div class="flex flex-col gap-1.5">
+                <div class="flex justify-between items-start">
+                  <span class="font-label-md text-label-md text-primary font-semibold">Java</span>
+                  <span class="font-label-sm text-label-sm text-on-surface-variant">Intermediate</span>
+                </div>
+                <div class="flex items-center gap-3">
+                  <div class="flex-grow h-1.5 bg-surface-variant rounded-full overflow-hidden">
+                    <div class="h-full bg-outline rounded-full" style="width: 60%;"></div>
+                  </div>
+                  <span class="font-label-sm text-label-sm text-on-surface-variant whitespace-nowrap opacity-60 text-xs">Unverified (0.3x)</span>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
+
+          <!-- Category: Data & AI -->
+          <div class="bg-surface-container-lowest rounded-2xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.04)] hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] transition-all duration-300 flex flex-col gap-stack-md border border-surface-variant/40 relative overflow-hidden">
+            <div class="absolute -right-10 -top-10 w-32 h-32 bg-secondary-fixed/20 blur-2xl rounded-full pointer-events-none"></div>
+            
+            <div class="flex items-center gap-2 mb-1 relative z-10">
+              <span class="material-symbols-outlined text-secondary">psychology</span>
+              <h2 class="font-headline-md text-headline-md text-primary font-bold text-xl">Data & AI</h2>
+            </div>
+            
+            <div class="flex flex-col gap-4 relative z-10">
+              <!-- Machine Learning -->
+              <div class="flex flex-col gap-1.5 pb-3 border-b border-surface-variant/40 cursor-pointer" onclick="App.viewSkillDetail('sk-ml')">
+                <div class="flex justify-between items-start">
+                  <div class="flex items-center gap-2">
+                    <span class="font-label-md text-label-md text-primary font-semibold">Machine Learning</span>
+                    <div class="verified-gradient-border rounded-full px-2 py-[1px] flex items-center gap-1">
+                      <span class="material-symbols-outlined text-[12px] text-secondary" style="font-variation-settings: 'FILL' 1;">verified</span>
+                      <span class="text-[9px] font-bold tracking-wider text-secondary uppercase">Verified</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="flex items-center gap-3">
+                  <div class="flex-grow h-1.5 bg-surface-variant rounded-full overflow-hidden progress-track" style="--progress: 85%;"></div>
+                  <span class="font-label-sm text-label-sm text-on-surface-variant whitespace-nowrap text-xs">High Confidence</span>
+                </div>
+              </div>
+
+              <!-- Data Analysis -->
+              <div class="flex flex-col gap-1.5 pb-3 border-b border-surface-variant/40 cursor-pointer" onclick="App.viewSkillDetail('sk-data')">
+                <div class="flex justify-between items-start">
+                  <div class="flex items-center gap-2">
+                    <span class="font-label-md text-label-md text-primary font-semibold">Data Analysis</span>
+                  </div>
+                  <span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container px-2 py-0.5 rounded-full font-medium">Verified</span>
+                </div>
+                <div class="flex items-center gap-3">
+                  <div class="flex-grow h-1.5 bg-surface-variant rounded-full overflow-hidden progress-track" style="--progress: 75%;"></div>
+                  <span class="font-label-sm text-label-sm text-on-surface-variant whitespace-nowrap text-xs">Med-High Confidence</span>
+                </div>
+              </div>
+
+              <!-- NLP / Deep Learning -->
+              <div class="flex flex-col gap-1.5 cursor-pointer" onclick="App.viewSkillDetail('sk-nlp')">
+                <div class="flex justify-between items-start">
+                  <span class="font-label-md text-label-md text-primary font-semibold">NLP & Transformers</span>
+                  <span class="font-label-sm text-label-sm text-on-surface-variant">Coursework</span>
+                </div>
+                <div class="flex items-center gap-3">
+                  <div class="flex-grow h-1.5 bg-surface-variant rounded-full overflow-hidden progress-track" style="--progress: 80%;"></div>
+                  <span class="font-label-sm text-label-sm text-on-surface-variant whitespace-nowrap text-xs">Verified A- Grade</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Category: Professional -->
+          <div class="bg-surface-container-lowest rounded-2xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.04)] hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] transition-all duration-300 flex flex-col gap-stack-md border border-surface-variant/40">
+            <div class="flex items-center gap-2 mb-1">
+              <span class="material-symbols-outlined text-secondary">groups</span>
+              <h2 class="font-headline-md text-headline-md text-primary font-bold text-xl">Professional</h2>
+            </div>
+            
+            <div class="flex flex-col gap-4">
+              <!-- Problem Solving -->
+              <div class="flex flex-col gap-1.5 pb-3 border-b border-surface-variant/40">
+                <div class="flex justify-between items-start">
+                  <span class="font-label-md text-label-md text-primary font-semibold">Problem Solving</span>
+                  <span class="material-symbols-outlined text-[16px] text-tertiary-fixed-dim" title="Verified by Hackathon Record">group_add</span>
+                </div>
+                <div class="flex items-center gap-3">
+                  <div class="flex-grow h-1.5 bg-surface-variant rounded-full overflow-hidden">
+                    <div class="h-full bg-outline rounded-full" style="width: 80%;"></div>
+                  </div>
+                  <span class="font-label-sm text-label-sm text-on-surface-variant whitespace-nowrap text-xs">Hackathon Rank</span>
+                </div>
+              </div>
+
+              <!-- Team Collaboration -->
+              <div class="flex flex-col gap-1.5 pb-3 border-b border-surface-variant/40">
+                <div class="flex justify-between items-start">
+                  <span class="font-label-md text-label-md text-primary font-semibold">Team Collaboration</span>
+                  <span class="font-label-sm text-label-sm text-on-surface-variant">Peer Review</span>
+                </div>
+                <div class="flex items-center gap-3">
+                  <div class="flex-grow h-1.5 bg-surface-variant rounded-full overflow-hidden">
+                    <div class="h-full bg-outline rounded-full" style="width: 75%;"></div>
+                  </div>
+                  <span class="font-label-sm text-label-sm text-on-surface-variant whitespace-nowrap text-xs">Peer Attested</span>
+                </div>
+              </div>
+
+              <!-- Git & Version Control -->
+              <div class="flex flex-col gap-1.5">
+                <div class="flex justify-between items-start">
+                  <span class="font-label-md text-label-md text-primary font-semibold">Git & Version Control</span>
+                  <span class="material-symbols-outlined text-[14px] text-tertiary-fixed-dim" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                </div>
+                <div class="flex items-center gap-3">
+                  <div class="flex-grow h-1.5 bg-surface-variant rounded-full overflow-hidden">
+                    <div class="h-full bg-tertiary-fixed-dim rounded-full" style="width: 90%;"></div>
+                  </div>
+                  <span class="font-label-sm text-label-sm text-on-surface-variant whitespace-nowrap text-xs">Active Repo Verified</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </section>
 
         <!-- MODAL: ADD SKILL INTERACTIVELY -->
         <div id="add-skill-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
-          <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-200">
-            <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+          <div class="bg-surface-container-lowest rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-surface-variant/40">
+            <div class="flex items-center justify-between pb-4 border-b border-surface-variant/40">
               <div class="flex items-center gap-2">
-                <div class="w-8 h-8 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-sm">
-                  <i class="fa-solid fa-plus"></i>
+                <div class="w-8 h-8 rounded-xl bg-secondary-fixed/40 text-secondary flex items-center justify-center font-bold text-sm">
+                  <span class="material-symbols-outlined text-[18px]">add</span>
                 </div>
-                <h3 class="text-base font-bold text-slate-900">Add Skill to Passport</h3>
+                <h3 class="font-headline-md text-headline-md text-primary font-bold text-lg">Add Skill to Passport</h3>
               </div>
-              <button onclick="Utils.closeModal('add-skill-modal')" class="text-slate-400 hover:text-slate-600">
-                <i class="fa-solid fa-xmark text-lg"></i>
+              <button onclick="Utils.closeModal('add-skill-modal')" class="text-on-surface-variant hover:text-primary cursor-pointer">
+                <span class="material-symbols-outlined">close</span>
               </button>
             </div>
 
             <form onsubmit="App.handleAddSkillSubmit(event)" class="mt-4 space-y-4 text-xs">
-              <div class="p-3 bg-blue-50/75 rounded-xl border border-blue-200">
-                <span class="text-[10px] font-bold uppercase tracking-wider text-blue-800 block mb-1.5">Quick Autofill Preset:</span>
+              <div class="p-3 bg-surface-container-low rounded-xl border border-outline-variant/30">
+                <span class="text-[10px] font-bold uppercase tracking-wider text-secondary block mb-1.5">Quick Autofill Sample:</span>
                 <div class="flex flex-wrap gap-1.5">
-                  <button type="button" onclick="App.fillSkillPreset('FastAPI', 'Intermediate', 85, 'REST API Backend Capstone')" class="px-2 py-1 bg-white text-blue-700 rounded-md border border-blue-200 font-semibold text-[11px] hover:bg-blue-50">FastAPI (85%)</button>
-                  <button type="button" onclick="App.fillSkillPreset('Kubernetes', 'Intermediate', 78, 'K8s Multi-cluster Deployment')" class="px-2 py-1 bg-white text-blue-700 rounded-md border border-blue-200 font-semibold text-[11px] hover:bg-blue-50">Kubernetes (78%)</button>
-                  <button type="button" onclick="App.fillSkillPreset('Transformers', 'Advanced', 92, 'BioBERT Medical Sentiment Pipeline')" class="px-2 py-1 bg-white text-blue-700 rounded-md border border-blue-200 font-semibold text-[11px] hover:bg-blue-50">Transformers (92%)</button>
-                  <button type="button" onclick="App.fillSkillPreset('Flutter', 'Intermediate', 80, 'Cross-Platform Mobile App')" class="px-2 py-1 bg-white text-blue-700 rounded-md border border-blue-200 font-semibold text-[11px] hover:bg-blue-50">Flutter (80%)</button>
+                  <button type="button" onclick="App.fillSkillPreset('FastAPI', 'Intermediate', 85, 'REST API Backend Capstone')" class="px-2.5 py-1 bg-surface-container-lowest text-primary rounded-full border border-outline-variant/40 font-semibold text-[11px] hover:bg-surface-bright">FastAPI (85%)</button>
+                  <button type="button" onclick="App.fillSkillPreset('Kubernetes', 'Intermediate', 78, 'K8s Multi-cluster Deployment')" class="px-2.5 py-1 bg-surface-container-lowest text-primary rounded-full border border-outline-variant/40 font-semibold text-[11px] hover:bg-surface-bright">Kubernetes (78%)</button>
+                  <button type="button" onclick="App.fillSkillPreset('Transformers', 'Advanced', 92, 'BioBERT Medical Sentiment Pipeline')" class="px-2.5 py-1 bg-surface-container-lowest text-primary rounded-full border border-outline-variant/40 font-semibold text-[11px] hover:bg-surface-bright">Transformers (92%)</button>
                 </div>
               </div>
 
               <div>
-                <label class="block font-bold text-slate-700 mb-1">Skill Name</label>
-                <input type="text" id="manual-skill-name" required placeholder="e.g. FastAPI, Docker, Next.js, Rust" class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl focus:border-blue-500 focus:outline-none text-sm">
+                <label class="block font-bold text-on-surface mb-1">Skill Name</label>
+                <input type="text" id="manual-skill-name" required placeholder="e.g. FastAPI, Docker, Next.js, Rust" class="w-full px-3.5 py-2.5 bg-surface-bright border border-outline-variant rounded-xl focus:border-secondary focus:outline-none text-sm">
               </div>
 
               <div class="grid grid-cols-2 gap-3">
                 <div>
-                  <label class="block font-bold text-slate-700 mb-1">Proficiency Level</label>
-                  <select id="manual-skill-level" class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:border-blue-500 focus:outline-none text-xs bg-white">
+                  <label class="block font-bold text-on-surface mb-1">Proficiency Level</label>
+                  <select id="manual-skill-level" class="w-full px-3 py-2 bg-surface-bright border border-outline-variant rounded-xl focus:border-secondary focus:outline-none text-xs">
                     <option value="Beginner">Beginner</option>
                     <option value="Intermediate" selected>Intermediate</option>
                     <option value="Advanced">Advanced</option>
@@ -243,20 +295,20 @@ const SkillPassportView = {
                 </div>
 
                 <div>
-                  <label class="block font-bold text-slate-700 mb-1">Confidence Score: <span id="manual-conf-label" class="text-blue-600 font-bold">85%</span></label>
-                  <input type="range" id="manual-skill-conf" min="50" max="99" value="85" oninput="document.getElementById('manual-conf-label').innerText = this.value + '%'" class="w-full mt-2 accent-blue-600">
+                  <label class="block font-bold text-on-surface mb-1">Confidence Score: <span id="manual-conf-label" class="text-secondary font-bold">85%</span></label>
+                  <input type="range" id="manual-skill-conf" min="50" max="99" value="85" oninput="document.getElementById('manual-conf-label').innerText = this.value + '%'" class="w-full mt-2 accent-secondary">
                 </div>
               </div>
 
               <div>
-                <label class="block font-bold text-slate-700 mb-1">Supporting Project / Evidence Title</label>
-                <input type="text" id="manual-skill-evidence" placeholder="e.g. Production Microservice Gateway Project" class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl focus:border-blue-500 focus:outline-none text-xs">
+                <label class="block font-bold text-on-surface mb-1">Supporting Project / Evidence Title</label>
+                <input type="text" id="manual-skill-evidence" placeholder="e.g. Production Microservice Gateway Project" class="w-full px-3.5 py-2.5 bg-surface-bright border border-outline-variant rounded-xl focus:border-secondary focus:outline-none text-xs">
               </div>
 
-              <div class="pt-3 flex justify-end gap-2 border-t border-slate-100">
-                <button type="button" onclick="Utils.closeModal('add-skill-modal')" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold">Cancel</button>
-                <button type="submit" class="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold shadow-md shadow-blue-500/20 flex items-center gap-1.5">
-                  <i class="fa-solid fa-plus"></i> Save to Passport
+              <div class="pt-3 flex justify-end gap-2 border-t border-surface-variant/40">
+                <button type="button" onclick="Utils.closeModal('add-skill-modal')" class="px-4 py-2 rounded-full bg-surface-container hover:bg-surface-container-high text-primary font-semibold cursor-pointer">Cancel</button>
+                <button type="submit" class="px-5 py-2 rounded-full bg-primary-container hover:bg-primary text-on-primary font-bold shadow-sm flex items-center gap-1.5 cursor-pointer">
+                  Save to Passport
                 </button>
               </div>
             </form>
@@ -265,47 +317,39 @@ const SkillPassportView = {
 
         <!-- MODAL: ADD CREDENTIAL INTERACTIVELY -->
         <div id="add-cred-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
-          <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-200">
-            <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+          <div class="bg-surface-container-lowest rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-surface-variant/40">
+            <div class="flex items-center justify-between pb-4 border-b border-surface-variant/40">
               <div class="flex items-center gap-2">
-                <div class="w-8 h-8 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center font-bold text-sm">
-                  <i class="fa-solid fa-certificate"></i>
+                <div class="w-8 h-8 rounded-xl bg-secondary-fixed/40 text-secondary flex items-center justify-center font-bold text-sm">
+                  <span class="material-symbols-outlined text-[18px]">card_membership</span>
                 </div>
-                <h3 class="text-base font-bold text-slate-900">Add Verified Credential</h3>
+                <h3 class="font-headline-md text-headline-md text-primary font-bold text-lg">Add Verified Credential</h3>
               </div>
-              <button onclick="Utils.closeModal('add-cred-modal')" class="text-slate-400 hover:text-slate-600">
-                <i class="fa-solid fa-xmark text-lg"></i>
+              <button onclick="Utils.closeModal('add-cred-modal')" class="text-on-surface-variant hover:text-primary cursor-pointer">
+                <span class="material-symbols-outlined">close</span>
               </button>
             </div>
 
             <form onsubmit="App.handleAddCredentialSubmit(event)" class="mt-4 space-y-4 text-xs">
-              <div class="p-3 bg-purple-50/75 rounded-xl border border-purple-200">
-                <span class="text-[10px] font-bold uppercase tracking-wider text-purple-800 block mb-1.5">Quick Autofill Sample:</span>
-                <div class="flex flex-wrap gap-1.5">
-                  <button type="button" onclick="App.fillCredPreset('AWS Certified Solutions Architect', 'Amazon Web Services (AWS)', 'AWS, Cloud Infrastructure, Docker')" class="px-2 py-1 bg-white text-purple-700 rounded-md border border-purple-200 font-semibold text-[11px] hover:bg-purple-50">AWS Architect</button>
-                  <button type="button" onclick="App.fillCredPreset('Deep Learning Nanodegree', 'Udacity & NVIDIA', 'Deep Learning, PyTorch, Computer Vision')" class="px-2 py-1 bg-white text-purple-700 rounded-md border border-purple-200 font-semibold text-[11px] hover:bg-purple-50">Deep Learning (Udacity)</button>
-                </div>
+              <div>
+                <label class="block font-bold text-on-surface mb-1">Credential Title</label>
+                <input type="text" id="manual-cred-title" required placeholder="e.g. AWS Certified Solutions Architect" class="w-full px-3.5 py-2.5 bg-surface-bright border border-outline-variant rounded-xl focus:border-secondary focus:outline-none text-sm">
               </div>
 
               <div>
-                <label class="block font-bold text-slate-700 mb-1">Credential Title</label>
-                <input type="text" id="manual-cred-title" required placeholder="e.g. AWS Certified Developer Associate" class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl focus:border-purple-500 focus:outline-none text-sm">
+                <label class="block font-bold text-on-surface mb-1">Issuing Organization</label>
+                <input type="text" id="manual-cred-issuer" required placeholder="e.g. Stanford Online, AWS, Meta, DeepLearning.AI" class="w-full px-3.5 py-2.5 bg-surface-bright border border-outline-variant rounded-xl focus:border-secondary focus:outline-none text-sm">
               </div>
 
               <div>
-                <label class="block font-bold text-slate-700 mb-1">Issuing Organization</label>
-                <input type="text" id="manual-cred-issuer" required placeholder="e.g. Stanford Online, AWS, Meta, DeepLearning.AI" class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl focus:border-purple-500 focus:outline-none text-sm">
+                <label class="block font-bold text-on-surface mb-1">Skills Demonstrated (Comma Separated)</label>
+                <input type="text" id="manual-cred-skills" required placeholder="e.g. AWS, Docker, Kubernetes, Cloud" class="w-full px-3.5 py-2.5 bg-surface-bright border border-outline-variant rounded-xl focus:border-secondary focus:outline-none text-xs">
               </div>
 
-              <div>
-                <label class="block font-bold text-slate-700 mb-1">Skills Demonstrated (Comma Separated)</label>
-                <input type="text" id="manual-cred-skills" required placeholder="e.g. AWS, Docker, Kubernetes, Cloud" class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl focus:border-purple-500 focus:outline-none text-xs">
-              </div>
-
-              <div class="pt-3 flex justify-end gap-2 border-t border-slate-100">
-                <button type="button" onclick="Utils.closeModal('add-cred-modal')" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold">Cancel</button>
-                <button type="submit" class="px-5 py-2 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold shadow-md shadow-purple-500/20 flex items-center gap-1.5">
-                  <i class="fa-solid fa-shield-check"></i> Generate Proof & Anchor
+              <div class="pt-3 flex justify-end gap-2 border-t border-surface-variant/40">
+                <button type="button" onclick="Utils.closeModal('add-cred-modal')" class="px-4 py-2 rounded-full bg-surface-container hover:bg-surface-container-high text-primary font-semibold cursor-pointer">Cancel</button>
+                <button type="submit" class="px-5 py-2 rounded-full bg-primary-container hover:bg-primary text-on-primary font-bold shadow-sm flex items-center gap-1.5 cursor-pointer">
+                  Anchor Proof
                 </button>
               </div>
             </form>
@@ -314,11 +358,13 @@ const SkillPassportView = {
 
         <!-- EVIDENCE TRACE MODAL CONTAINER (Dynamic) -->
         <div id="skill-evidence-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
-          <div class="bg-white rounded-3xl max-w-2xl w-full shadow-2xl border border-slate-200 overflow-hidden transform transition-all" id="skill-modal-content">
+          <div class="bg-surface-container-lowest rounded-3xl max-w-2xl w-full shadow-2xl border border-surface-variant/40 overflow-hidden" id="skill-modal-content">
             <!-- Rendered via App.viewSkillDetail() -->
           </div>
         </div>
+
       </div>
     `;
   }
 };
+

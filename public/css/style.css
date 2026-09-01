@@ -1,121 +1,172 @@
-/* VeriSkill Custom Design System & Utility Styles */
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+/* ==========================================================================
+   VeriSkill — Stitch Design System & Antigravity Styles
+   ========================================================================== */
 
 :root {
-  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
-  --primary: #2563eb;
-  --primary-dark: #1d4ed8;
-  --success: #10b981;
-  --warning: #f59e0b;
-  --danger: #ef4444;
-  --bg-slate: #0f172a;
+  --primary: #060607;
+  --secondary: #005ac1;
+  --secondary-container: #4d8efe;
+  --tertiary-fixed-dim: #6ddd81;
+  --tertiary-fixed: #89fa9b;
+  --surface: #f8f9fa;
+  --surface-bright: #f8f9fa;
+  --surface-container-lowest: #ffffff;
+  --surface-container-low: #f3f4f5;
+  --surface-container: #edeeef;
+  --surface-container-high: #e7e8e9;
+  --surface-container-highest: #e1e3e4;
+  --outline: #747878;
+  --outline-variant: #c4c7c7;
 }
 
 body {
-  font-family: var(--font-sans);
-  background-color: #f8fafc;
-  color: #0f172a;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: #f8f9fa;
+  color: #191c1d;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-.font-mono {
-  font-family: var(--font-mono);
+h1, h2, h3, h4, h5, h6, .font-headline, .font-display {
+  font-family: 'Hanken Grotesk', sans-serif;
 }
 
-/* Glassmorphism effects */
+/* Material Symbols Outlined Default Styling */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 1;
+}
+
+.material-symbols-outlined.fill-1 {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* Stitch Dual-Gradient Skill Chip */
+.skill-chip-verified {
+  background: linear-gradient(to right, #ffffff, #ffffff) padding-box,
+              linear-gradient(to right, #005ac1, #6ddd81) border-box;
+  border: 1px solid transparent;
+}
+
+.verified-gradient-border {
+  background: linear-gradient(white, white) padding-box,
+              linear-gradient(to right, #4d8efe, #6ddd81) border-box;
+  border: 1px solid transparent;
+}
+
+/* AI Glow & Match Backgrounds */
+.ai-match-bg {
+  background: linear-gradient(135deg, rgba(77, 142, 254, 0.05) 0%, rgba(109, 221, 129, 0.05) 100%);
+}
+
+.ai-glow {
+  background: radial-gradient(circle at 50% 0%, rgba(77, 142, 254, 0.08) 0%, rgba(255, 255, 255, 0) 70%);
+}
+
+.magic-gradient {
+  background: linear-gradient(135deg, rgba(77, 142, 254, 0.05) 0%, rgba(137, 250, 155, 0.05) 100%);
+}
+
+.magic-bg {
+  background: linear-gradient(135deg, rgba(77, 142, 254, 0.05) 0%, rgba(216, 226, 255, 0.1) 100%);
+}
+
+.antigravity-bg {
+  background: radial-gradient(circle at top right, rgba(248, 249, 250, 0.8), rgba(255, 255, 255, 1)),
+              radial-gradient(circle at bottom left, rgba(237, 238, 239, 0.4), rgba(255, 255, 255, 0));
+}
+
+/* Glassmorphism & Shadow Utilities */
 .glass-panel {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(226, 232, 240, 0.8);
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
 }
 
-.glass-panel-dark {
-  background: rgba(15, 23, 42, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(51, 65, 85, 0.6);
+.ambient-shadow {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
 }
 
-/* Verification Badges */
-.badge-verified {
-  background-color: #ecfdf5;
-  color: #065f46;
-  border: 1px solid #a7f3d0;
+.ambient-shadow-hover:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  transform: translateY(-2px);
 }
 
-.badge-pending {
-  background-color: #fffbeb;
-  color: #92400e;
-  border: 1px solid #fde68a;
+.antigravity-shadow {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-.badge-self {
-  background-color: #f1f5f9;
-  color: #475569;
-  border: 1px solid #cbd5e1;
+.antigravity-shadow:hover {
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
 }
 
-.badge-gap {
-  background-color: #fef2f2;
-  color: #991b1b;
-  border: 1px solid #fecaca;
+.hover-lift {
+  transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1);
 }
 
-/* Match Score Radial Animations */
-.score-circle {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
-/* Demo Tour Bar Highlighting */
+/* Interactive Interest Pill for Onboarding */
+.interest-pill {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.interest-pill.selected {
+  background-color: #1f1f1f;
+  color: #ffffff;
+  border-color: #1f1f1f;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Progress Tracks & Bars */
+.progress-track {
+  background: linear-gradient(90deg, #4d8efe var(--progress, 50%), #e1e3e4 var(--progress, 50%));
+}
+
+.progress-bar-fill {
+  transition: width 0.5s ease-in-out;
+}
+
+/* Subtle float animation */
+.float-animation {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0px); }
+}
+
+/* Demo Step Highlight Pill */
 .demo-step-active {
-  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  background-color: #005ac1 !important;
   color: #ffffff !important;
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
-  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 90, 193, 0.3);
 }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: #f8f9fa;
 }
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 4px;
+  background: #c4c7c7;
+  border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: #747878;
 }
 
-/* Animated gradient text */
-.gradient-text {
-  background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #06b6d4 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-/* Card hover transitions */
-.hover-lift {
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.hover-lift:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
-}
-
-/* Pulse animation for verification indicators */
-@keyframes soft-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.6; }
-}
-.animate-soft-pulse {
-  animation: soft-pulse 2.5s infinite ease-in-out;
-}

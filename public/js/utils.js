@@ -40,20 +40,20 @@ const Utils = {
   renderVerificationBadge(status) {
     const s = (status || "VERIFIED").toUpperCase();
     if (s === "VERIFIED") {
-      return `<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold badge-verified">
-        <i class="fa-solid fa-circle-check text-emerald-600 text-[11px]"></i> VERIFIED
+      return `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-secondary-fixed/50 text-secondary border border-secondary-fixed">
+        <span class="material-symbols-outlined text-[13px]" style="font-variation-settings: 'FILL' 1;">verified</span> VERIFIED
       </span>`;
     } else if (s === "PENDING") {
-      return `<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold badge-pending">
-        <i class="fa-solid fa-clock text-amber-600 text-[11px]"></i> PENDING
+      return `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-50 text-amber-800 border border-amber-200">
+        <span class="material-symbols-outlined text-[13px]">schedule</span> PENDING
       </span>`;
     } else if (s === "SELF-DECLARED") {
-      return `<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold badge-self">
-        <i class="fa-solid fa-user-pen text-slate-500 text-[11px]"></i> SELF-DECLARED
+      return `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-surface-container text-on-surface-variant border border-outline-variant/40">
+        <span class="material-symbols-outlined text-[13px]">edit_note</span> SELF-DECLARED
       </span>`;
     } else {
-      return `<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold badge-gap">
-        <i class="fa-solid fa-triangle-exclamation text-red-600 text-[11px]"></i> ${s}
+      return `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-error-container text-on-error-container border border-error/20">
+        <span class="material-symbols-outlined text-[13px]">warning</span> ${s}
       </span>`;
     }
   },
@@ -64,11 +64,11 @@ const Utils = {
   renderLevelBadge(level) {
     const l = (level || "Intermediate").toLowerCase();
     if (l === "advanced" || l === "expert") {
-      return `<span class="px-2 py-0.5 rounded text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200">Advanced</span>`;
+      return `<span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-secondary-fixed/40 text-secondary border border-secondary-fixed">Advanced</span>`;
     } else if (l === "intermediate") {
-      return `<span class="px-2 py-0.5 rounded text-xs font-medium bg-indigo-50 text-indigo-700 border border-indigo-200">Intermediate</span>`;
+      return `<span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-surface-container-high text-primary border border-outline-variant/30">Intermediate</span>`;
     } else {
-      return `<span class="px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-700 border border-slate-200">Beginner</span>`;
+      return `<span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-surface-container text-on-surface-variant border border-outline-variant/20">Beginner</span>`;
     }
   },
 
@@ -79,18 +79,21 @@ const Utils = {
     const container = document.getElementById("toast-container") || document.body;
     const toast = document.createElement("div");
     
-    let icon = "fa-info-circle text-blue-500";
-    let border = "border-blue-200 bg-white";
+    let iconName = "info";
+    let iconColor = "text-secondary";
+    let border = "border-surface-variant/60 bg-surface-container-lowest text-primary shadow-[0_8px_30px_rgba(0,0,0,0.12)]";
     if (type === "success") {
-      icon = "fa-check-circle text-emerald-500";
-      border = "border-emerald-200 bg-emerald-50/95";
+      iconName = "check_circle";
+      iconColor = "text-tertiary-fixed-dim";
+      border = "border-secondary-fixed bg-surface-container-lowest text-primary shadow-[0_8px_30px_rgba(0,0,0,0.12)]";
     } else if (type === "error") {
-      icon = "fa-circle-xmark text-rose-500";
-      border = "border-rose-200 bg-rose-50/95";
+      iconName = "error";
+      iconColor = "text-error";
+      border = "border-error/30 bg-surface-container-lowest text-primary shadow-[0_8px_30px_rgba(0,0,0,0.12)]";
     }
 
-    toast.className = `fixed bottom-6 right-6 z-50 flex items-center gap-3 px-4 py-3 rounded-2xl shadow-xl border ${border} text-slate-800 text-sm font-medium transition-all duration-300 transform translate-y-4 opacity-0`;
-    toast.innerHTML = `<i class="fa-solid ${icon} text-base shrink-0"></i> <span>${message}</span>`;
+    toast.className = `flex items-center gap-2.5 px-4 py-3 rounded-2xl border ${border} text-xs md:text-sm font-body-md font-medium transition-all duration-300 transform translate-y-4 opacity-0 pointer-events-auto max-w-md`;
+    toast.innerHTML = `<span class="material-symbols-outlined ${iconColor} text-[20px] shrink-0" style="font-variation-settings: 'FILL' 1;">${iconName}</span> <span>${message}</span>`;
     
     container.appendChild(toast);
 

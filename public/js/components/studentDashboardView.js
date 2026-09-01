@@ -1,274 +1,152 @@
 /**
- * Student Dashboard View (Demo Step 1)
+ * VeriSkill — Stitch Student Dashboard Component (Source of Truth)
  */
 
 const StudentDashboardView = {
   async render(studentId = "student-1042") {
     const student = await Utils.fetchAPI(`/api/students/${studentId}`);
     const metrics = student.passportMetrics || {};
+    const skills = student.skills || [];
+    const evidenceList = student.evidenceList || [];
+    const verifiedSkills = skills.filter(s => s.verificationStatus === 'VERIFIED');
+    const completionRate = metrics.overallScore || 78;
 
     return `
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <!-- DEMO STEP 1 CALLOUT BANNER -->
-        <div class="mb-6 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-2xl p-4 flex items-center justify-between shadow-sm">
+      <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop pt-24 md:pt-28 pb-section-gap flex flex-col gap-stack-lg min-h-screen">
+        
+        <!-- Greeting Section -->
+        <section class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
+          <div class="flex flex-col gap-1">
+            <h1 class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-primary font-bold">
+              Good evening, ${student.personal?.fullName || "Ashutosh"}.
+            </h1>
+            <p class="font-body-lg text-body-lg text-on-surface-variant">
+              Here’s what’s happening with your verified skills and internship opportunities.
+            </p>
+          </div>
+          
           <div class="flex items-center gap-3">
-            <div class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-sm">1</div>
-            <div>
-              <h3 class="text-sm font-bold text-slate-900">DEMO STEP 1: Student Skill Passport Health</h3>
-              <p class="text-xs text-slate-600">Showing verified candidate <strong class="text-blue-700">${student.personal?.fullName || "Aarav Sharma"}</strong> (${student.anonymizedId}) with portable credential ledger.</p>
+            <a href="#/student/evidence" class="px-5 py-2.5 bg-surface-container hover:bg-surface-container-high text-primary font-label-md text-label-md rounded-full transition-all border border-outline-variant/30 flex items-center gap-1.5 shadow-sm">
+              <span class="material-symbols-outlined text-[18px]">add_circle</span>
+              Add Evidence
+            </a>
+            <a href="#/verify/${student.passportId}" class="px-5 py-2.5 bg-secondary-fixed/40 text-secondary font-label-md text-label-md rounded-full hover:bg-secondary-fixed/60 transition-all border border-secondary-fixed flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+              Public QR
+            </a>
+          </div>
+        </section>
+
+        <!-- Bento Grid Layout -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+          
+          <!-- Skill Passport Completion (Large Highlight Card) -->
+          <div class="md:col-span-8 bg-surface-container-lowest p-6 md:p-8 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.04)] hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] transition-all duration-300 relative overflow-hidden group border border-surface-variant/40">
+            <!-- AI Magic Glow Background -->
+            <div class="absolute inset-0 bg-gradient-to-br from-secondary/5 to-transparent opacity-60 pointer-events-none"></div>
+            
+            <div class="flex flex-col h-full justify-between relative z-10 gap-stack-md">
+              <div class="flex justify-between items-start">
+                <div class="flex flex-col gap-1">
+                  <span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest font-semibold">Skill Passport</span>
+                  <h2 class="font-headline-md text-headline-md text-primary font-bold">Almost there.</h2>
+                </div>
+                <div class="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center">
+                  <span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">stars</span>
+                </div>
+              </div>
+
+              <div class="flex flex-col gap-4">
+                <div class="flex items-baseline gap-2">
+                  <span class="font-display-lg text-4xl md:text-display-lg text-primary font-bold leading-none">${completionRate}<span class="text-2xl text-on-surface-variant font-normal">%</span></span>
+                  <span class="text-xs font-label-md text-on-surface-variant ml-1 font-medium">• Strong Verification Tier</span>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="w-full h-2.5 bg-surface-container rounded-full overflow-hidden">
+                  <div class="h-full bg-gradient-to-r from-secondary to-tertiary-fixed-dim rounded-full transition-all duration-700" style="width: ${completionRate}%;"></div>
+                </div>
+                <p class="font-body-md text-body-md text-on-surface-variant text-sm">
+                  Complete your pending Evidence items to reach 100% verification confidence.
+                </p>
+              </div>
             </div>
           </div>
-          <button onclick="App.runDemoStep(2)" class="px-3.5 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5">
-            Next: Skill Passport <i class="fa-solid fa-arrow-right text-[10px]"></i>
-          </button>
-        </div>
 
-        <!-- PROFILE HEADER -->
-        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm mb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-          <div class="flex items-center gap-4">
-            <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center text-2xl font-bold shadow-md shadow-blue-500/20">
-              ${(student.personal?.fullName || "AS").split(" ").map(n => n[0]).join("")}
+          <!-- Verified Skills Counter Card -->
+          <div class="md:col-span-4 bg-surface-container-lowest p-6 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.04)] hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] transition-all duration-300 flex flex-col justify-between gap-stack-md border border-surface-variant/40">
+            <div class="flex justify-between items-center text-on-surface-variant">
+              <span class="font-label-md text-label-md uppercase tracking-widest font-semibold">Verified Skills</span>
+              <span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">verified</span>
             </div>
-            <div>
+            
+            <div class="font-display-lg text-3xl md:text-display-lg text-primary font-bold">${verifiedSkills.length || 24}</div>
+            
+            <!-- Skill Chips Preview -->
+            <div class="flex flex-wrap gap-1.5 mt-auto">
+              ${skills.slice(0, 2).map(s => `
+                <span class="px-3 py-1 bg-surface-container text-on-surface text-label-sm font-label-sm rounded-full border border-outline-variant/30 flex items-center gap-1">
+                  ${s.name} <span class="material-symbols-outlined text-[14px] text-tertiary-fixed-dim" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                </span>
+              `).join("")}
+              <span class="px-2.5 py-1 bg-surface-container text-on-surface-variant text-label-sm font-label-sm rounded-full border border-outline-variant/30">
+                +${Math.max(skills.length - 2, 22)}
+              </span>
+            </div>
+          </div>
+
+          <!-- Evidence Items Counter Card -->
+          <div class="md:col-span-4 bg-surface-container-lowest p-6 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.04)] hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] transition-all duration-300 flex flex-col justify-between gap-stack-md border border-surface-variant/40">
+            <div class="flex justify-between items-center text-on-surface-variant">
+              <span class="font-label-md text-label-md uppercase tracking-widest font-semibold">Evidence Items</span>
+              <span class="material-symbols-outlined text-outline">description</span>
+            </div>
+            <div class="font-display-lg text-3xl md:text-display-lg text-primary font-bold">${evidenceList.length || 17}</div>
+            <p class="font-body-md text-body-md text-on-surface-variant text-sm">2 awaiting review</p>
+          </div>
+
+          <!-- Opportunity Matches Counter Card -->
+          <div class="md:col-span-4 bg-surface-container-lowest p-6 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.04)] hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] transition-all duration-300 flex flex-col justify-between gap-stack-md relative overflow-hidden border border-surface-variant/40">
+            <div class="absolute -right-4 -top-4 w-24 h-24 bg-secondary/10 rounded-full blur-2xl pointer-events-none"></div>
+            <div class="flex justify-between items-center text-on-surface-variant relative z-10">
+              <span class="font-label-md text-label-md uppercase tracking-widest font-semibold">Opportunity Matches</span>
+              <span class="material-symbols-outlined text-secondary">work</span>
+            </div>
+            <div class="font-display-lg text-3xl md:text-display-lg text-primary font-bold relative z-10">12</div>
+            <p class="font-body-md text-body-md text-secondary relative z-10 font-semibold text-sm">3 new high-confidence matches</p>
+          </div>
+
+          <!-- Team Matches Counter Card -->
+          <div class="md:col-span-4 bg-surface-container-lowest p-6 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.04)] hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] transition-all duration-300 flex flex-col justify-between gap-stack-md border border-surface-variant/40">
+            <div class="flex justify-between items-center text-on-surface-variant">
+              <span class="font-label-md text-label-md uppercase tracking-widest font-semibold">Team Matches</span>
+              <span class="material-symbols-outlined text-outline">groups</span>
+            </div>
+            <div class="font-display-lg text-3xl md:text-display-lg text-primary font-bold">6</div>
+            <p class="font-body-md text-body-md text-on-surface-variant text-sm">Based on complementary skills</p>
+          </div>
+
+          <!-- AI Recommended Next Skill (Full Width Banner) -->
+          <div class="md:col-span-12 bg-surface-container-lowest p-6 md:p-8 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] transition-all duration-300 flex flex-col md:flex-row gap-stack-lg items-start md:items-center justify-between border-l-4 border-secondary border-y border-r border-surface-variant/40">
+            <div class="flex flex-col gap-2">
               <div class="flex items-center gap-2">
-                <h1 class="text-2xl font-extrabold text-slate-900">${student.personal?.fullName}</h1>
-                <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-800 font-mono">
-                  ${student.anonymizedId}
-                </span>
-                <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold badge-verified">
-                  <i class="fa-solid fa-shield-check mr-1"></i> Passport Active
-                </span>
+                <span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+                <span class="font-label-sm text-label-sm text-secondary uppercase tracking-wider font-bold">AI Recommended Next Skill</span>
               </div>
-              <p class="text-xs text-slate-500 mt-1">
-                ${student.personal?.degree} • ${student.personal?.institution} • Class of ${student.personal?.graduationYear}
+              <h3 class="font-headline-md text-headline-md text-primary font-bold">REST API Development</h3>
+              <p class="font-body-md text-body-md text-on-surface-variant max-w-2xl text-sm leading-relaxed">
+                Acquiring this skill will increase your match rate for Backend Engineering and Cloud roles by <strong class="text-primary font-semibold">42%</strong>. We found 3 verified learning labs tailored to your current Python knowledge graph.
               </p>
-              <div class="flex items-center gap-3 mt-2 text-xs text-slate-500">
-                <span><i class="fa-solid fa-passport text-blue-600 mr-1"></i> <strong>Passport ID:</strong> ${student.passportId}</span>
-                <span><i class="fa-solid fa-fingerprint text-emerald-600 mr-1"></i> W3C Cryptographic Root Verified</span>
-              </div>
             </div>
+            <button onclick="App.openBridgeGapModal('REST API Development', 'FastAPI & REST Microservices Bridge Lab', 3.5, '+42% Match Rate Boost')" class="bg-primary-container text-on-primary font-label-md text-label-md px-6 py-3 rounded-full hover:bg-primary transition-all whitespace-nowrap cursor-pointer shadow-sm active:scale-95">
+              View Learning Path
+            </button>
           </div>
 
-          <div class="flex flex-wrap items-center gap-2">
-            <a href="#/student/evidence" class="px-4 py-2 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold text-xs transition-colors border border-blue-200 flex items-center gap-1.5">
-              <i class="fa-solid fa-plus-circle"></i> Ingest New Evidence
-            </a>
-            <a href="#/verify/${student.passportId}" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs transition-colors shadow-sm flex items-center gap-1.5">
-              <i class="fa-solid fa-qrcode"></i> Public QR Verify
-            </a>
-          </div>
         </div>
 
-        <!-- 5 KEY PASSPORT METRIC CARDS -->
-        <div class="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
-          <!-- Card 1: Passport Score -->
-          <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm hover-lift">
-            <div class="flex items-center justify-between text-xs text-slate-500 mb-2">
-              <span class="font-semibold uppercase tracking-wider">Passport Score</span>
-              <i class="fa-solid fa-chart-line text-blue-600"></i>
-            </div>
-            <div class="text-3xl font-extrabold text-blue-600">${metrics.overallScore || 84}<span class="text-lg text-slate-400 font-normal">/100</span></div>
-            <div class="mt-2 text-[11px] text-slate-500">Comprehensive readiness index</div>
-          </div>
-
-          <!-- Card 2: Trust Score -->
-          <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm hover-lift">
-            <div class="flex items-center justify-between text-xs text-slate-500 mb-2">
-              <span class="font-semibold uppercase tracking-wider">Evidence Trust</span>
-              <i class="fa-solid fa-shield-heart text-emerald-600"></i>
-            </div>
-            <div class="text-3xl font-extrabold text-emerald-600">${metrics.trustScore || 87}<span class="text-lg text-slate-400 font-normal">/100</span></div>
-            <div class="mt-2 text-[11px] text-emerald-700 font-medium">96% Cryptographically Verified</div>
-          </div>
-
-          <!-- Card 3: Verified Skills -->
-          <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm hover-lift">
-            <div class="flex items-center justify-between text-xs text-slate-500 mb-2">
-              <span class="font-semibold uppercase tracking-wider">Verified Skills</span>
-              <i class="fa-solid fa-brain text-purple-600"></i>
-            </div>
-            <div class="text-3xl font-extrabold text-slate-900">${metrics.verifiedSkillsCount || 17}</div>
-            <div class="mt-2 text-[11px] text-slate-500">Across 6 tech categories</div>
-          </div>
-
-          <!-- Card 4: Evidence Items -->
-          <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm hover-lift">
-            <div class="flex items-center justify-between text-xs text-slate-500 mb-2">
-              <span class="font-semibold uppercase tracking-wider">Evidence Items</span>
-              <i class="fa-solid fa-layer-group text-amber-600"></i>
-            </div>
-            <div class="text-3xl font-extrabold text-slate-900">${metrics.totalEvidenceCount || 26}</div>
-            <div class="mt-2 text-[11px] text-slate-500">Projects, commits, syllabi</div>
-          </div>
-
-          <!-- Card 5: Credentials & Hackathons -->
-          <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm hover-lift col-span-2 lg:col-span-1">
-            <div class="flex items-center justify-between text-xs text-slate-500 mb-2">
-              <span class="font-semibold uppercase tracking-wider">Credentials / VC</span>
-              <i class="fa-solid fa-certificate text-indigo-600"></i>
-            </div>
-            <div class="text-3xl font-extrabold text-slate-900">${metrics.credentialsCount || 4}</div>
-            <div class="mt-2 text-[11px] text-slate-500">W3C & Open Badges 3.0</div>
-          </div>
-        </div>
-
-        <!-- MAIN DASHBOARD CONTENT GRID -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <!-- LEFT 2 COLUMNS: Top Skills & Evidence Preview -->
-          <div class="lg:col-span-2 space-y-8">
-            <!-- Top Verified Skills Card -->
-            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
-              <div class="flex items-center justify-between mb-4">
-                <div>
-                  <h3 class="text-lg font-bold text-slate-900">Core Verified Skills</h3>
-                  <p class="text-xs text-slate-500">Skills backed by multi-point verified proof artifacts</p>
-                </div>
-                <a href="#/student/passport" class="text-xs font-semibold text-blue-600 hover:text-blue-800">
-                  Full Skill Passport (${student.skills?.length || 17}) &rarr;
-                </a>
-              </div>
-
-              <div class="space-y-4">
-                ${(student.skills || []).slice(0, 5).map(skill => `
-                  <div class="p-4 rounded-xl border border-slate-100 hover:border-blue-200 bg-slate-50/50 hover:bg-blue-50/30 transition-all cursor-pointer" onclick="App.viewSkillDetail('${skill.id}')">
-                    <div class="flex items-center justify-between mb-1.5">
-                      <div class="flex items-center gap-2">
-                        <span class="font-bold text-slate-900 text-sm">${skill.name}</span>
-                        ${Utils.renderLevelBadge(skill.level)}
-                        ${Utils.renderVerificationBadge(skill.verificationStatus)}
-                      </div>
-                      <div class="text-right">
-                        <span class="text-sm font-extrabold text-blue-700">${skill.confidence}%</span>
-                        <span class="text-[11px] text-slate-500 ml-1">confidence</span>
-                      </div>
-                    </div>
-                    <div class="w-full bg-slate-200 rounded-full h-2 overflow-hidden mb-2">
-                      <div class="bg-blue-600 h-2 rounded-full" style="width: ${skill.confidence}%"></div>
-                    </div>
-                    <div class="flex items-center justify-between text-[11px] text-slate-500">
-                      <span><i class="fa-solid fa-file-shield text-emerald-600 mr-1"></i> ${skill.verifiedEvidenceCount || 3} verified evidence proofs</span>
-                      <span>Last demonstrated: ${skill.lastDemonstrated}</span>
-                    </div>
-                  </div>
-                `).join("")}
-              </div>
-            </div>
-
-            <!-- Recent Projects & Evidence -->
-            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
-              <div class="flex items-center justify-between mb-4">
-                <div>
-                  <h3 class="text-lg font-bold text-slate-900">Recent Verified Projects</h3>
-                  <p class="text-xs text-slate-500">Cryptographically signed codebases and outcomes</p>
-                </div>
-                <a href="#/student/evidence" class="text-xs font-semibold text-blue-600 hover:text-blue-800">
-                  View All Evidence &rarr;
-                </a>
-              </div>
-
-              <div class="space-y-3">
-                ${(student.evidenceList || []).slice(0, 3).map(ev => `
-                  <div class="p-4 rounded-xl border border-slate-100 bg-white hover:bg-slate-50 transition-colors">
-                    <div class="flex items-start justify-between gap-4">
-                      <div>
-                        <div class="flex items-center gap-2">
-                          <span class="text-xs font-semibold text-blue-600 uppercase tracking-wide">${ev.type}</span>
-                          <span class="text-slate-300">•</span>
-                          <h4 class="text-sm font-bold text-slate-900">${ev.title}</h4>
-                        </div>
-                        <p class="text-xs text-slate-600 mt-1 line-clamp-2">${ev.description}</p>
-                        <div class="flex flex-wrap gap-1.5 mt-2">
-                          ${(ev.skills || []).map(s => `<span class="px-2 py-0.5 rounded bg-slate-100 text-slate-700 text-[10px] font-medium">${s}</span>`).join("")}
-                        </div>
-                      </div>
-                      <div class="text-right shrink-0">
-                        ${Utils.renderVerificationBadge(ev.verificationStatus)}
-                        <div class="mt-2 text-[10px] font-mono text-slate-400">
-                          ${Utils.truncateHash(ev.proofHash, 6, 4)}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                `).join("")}
-              </div>
-            </div>
-          </div>
-
-          <!-- RIGHT COLUMN: Recommended Matches & Trust Breakdown -->
-          <div class="space-y-8">
-            <!-- HIGHLIGHTED INTERNSHIP MATCH (AI/ML INTERN 91%) -->
-            <div class="bg-gradient-to-b from-blue-900 to-indigo-950 rounded-2xl p-6 text-white shadow-lg relative overflow-hidden">
-              <div class="absolute -right-8 -top-8 w-32 h-32 bg-blue-500/20 rounded-full blur-2xl"></div>
-              
-              <div class="flex items-center justify-between text-xs text-blue-300 font-semibold mb-3 uppercase tracking-wider">
-                <span>Top Explainable Match</span>
-                <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">91% Match</span>
-              </div>
-
-              <div class="text-xl font-extrabold text-white">Machine Learning Intern</div>
-              <div class="text-sm text-blue-200 mt-1">Apex Neural Labs • Bangalore / Remote</div>
-
-              <div class="my-4 p-3.5 rounded-xl bg-white/10 backdrop-blur-sm border border-white/10 text-xs space-y-2">
-                <div class="flex justify-between">
-                  <span class="text-blue-200">Skill Alignment:</span>
-                  <span class="font-bold text-emerald-300">45% / 45%</span>
-                </div>
-                <div class="flex justify-between">
-                  <span class="text-blue-200">Evidence Strength:</span>
-                  <span class="font-bold text-emerald-300">25% / 25%</span>
-                </div>
-                <div class="flex justify-between">
-                  <span class="text-blue-200">Gap Skills:</span>
-                  <span class="font-bold text-amber-300">Docker, AWS</span>
-                </div>
-              </div>
-
-              <a href="#/student/matches/opp-ml-intern" class="w-full py-2.5 rounded-xl bg-blue-500 hover:bg-blue-400 text-white font-bold text-xs text-center block transition-colors shadow-md">
-                Why 91%? Explain My Score &rarr;
-              </a>
-            </div>
-
-            <!-- Evidence Trust Score Breakdown -->
-            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
-              <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider mb-4">Trust Score Breakdown</h3>
-              <div class="space-y-4 text-xs">
-                <div>
-                  <div class="flex justify-between font-medium mb-1">
-                    <span class="text-slate-600">Verification Quality (50% wt)</span>
-                    <span class="font-bold text-emerald-600">48 / 50</span>
-                  </div>
-                  <div class="w-full bg-slate-100 rounded-full h-1.5">
-                    <div class="bg-emerald-500 h-1.5 rounded-full" style="width: 96%"></div>
-                  </div>
-                </div>
-                <div>
-                  <div class="flex justify-between font-medium mb-1">
-                    <span class="text-slate-600">Evidence Diversity (20% wt)</span>
-                    <span class="font-bold text-blue-600">19 / 20</span>
-                  </div>
-                  <div class="w-full bg-slate-100 rounded-full h-1.5">
-                    <div class="bg-blue-500 h-1.5 rounded-full" style="width: 95%"></div>
-                  </div>
-                </div>
-                <div>
-                  <div class="flex justify-between font-medium mb-1">
-                    <span class="text-slate-600">Recency & Activity (30% wt)</span>
-                    <span class="font-bold text-indigo-600">27 / 30</span>
-                  </div>
-                  <div class="w-full bg-slate-100 rounded-full h-1.5">
-                    <div class="bg-indigo-500 h-1.5 rounded-full" style="width: 90%"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="mt-5 p-3 rounded-xl bg-slate-50 border border-slate-200 text-[11px] text-slate-600">
-                <i class="fa-solid fa-circle-info text-blue-600 mr-1"></i>
-                Represents evidence validity only. Does not measure personal human worth.
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     `;
   }
 };
+
