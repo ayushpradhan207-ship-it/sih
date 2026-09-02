@@ -62,7 +62,7 @@ export const Login = () => {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form noValidate onSubmit={handleSubmit} className="space-y-4">
           {isSignup && (
             <div>
               <label className="block text-xs font-semibold text-on-surface-variant mb-1">Full Name</label>
@@ -78,12 +78,12 @@ export const Login = () => {
           )}
 
           <div>
-            <label className="block text-xs font-semibold text-on-surface-variant mb-1">Email</label>
+            <label className="block text-xs font-semibold text-on-surface-variant mb-1">Email or Username</label>
             <input
-              type="email"
+              type="text"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="ashutosh@soa.ac.in"
+              placeholder="student@veriskill.demo or your name"
               required
               className="w-full px-4 py-2.5 rounded-xl border border-outline-variant text-xs focus:outline-none focus:border-secondary"
             />

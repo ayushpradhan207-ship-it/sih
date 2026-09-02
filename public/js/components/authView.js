@@ -56,20 +56,20 @@ const AuthView = {
             </h2>
 
             <!-- ===================== LOGIN FORM ===================== -->
-            <form id="auth-login-form" class="${isLogin ? '' : 'hidden'} space-y-4" onsubmit="event.preventDefault(); AuthView.submitLogin();">
+            <form id="auth-login-form" novalidate class="${isLogin ? '' : 'hidden'} space-y-4" onsubmit="event.preventDefault(); AuthView.submitLogin();">
               <div id="login-form-error" class="hidden p-3 rounded-2xl bg-error-container text-on-error-container text-xs font-body-md border border-error/20 flex items-center gap-2">
                 <span class="material-symbols-outlined text-[16px] text-error shrink-0">error</span>
                 <span id="login-error-text">Invalid email or password.</span>
               </div>
 
               <div>
-                <label class="block font-label-sm text-xs font-medium text-on-surface-variant mb-1.5" for="login-email">Email Address</label>
+                <label class="block font-label-sm text-xs font-medium text-on-surface-variant mb-1.5" for="login-email">Email or Full Name</label>
                 <div class="relative">
-                  <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-[18px] text-on-surface-variant">mail</span>
+                  <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-[18px] text-on-surface-variant">person</span>
                   <input
-                    type="email"
+                    type="text"
                     id="login-email"
-                    placeholder="student@veriskill.demo"
+                    placeholder="student@veriskill.demo or your name"
                     class="w-full pl-10 pr-4 py-3 rounded-2xl border border-outline-variant text-xs md:text-sm font-body-md focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary transition-all bg-surface-container-lowest"
                     autocomplete="username"
                   />
@@ -131,7 +131,7 @@ const AuthView = {
             </form>
 
             <!-- ===================== SIGNUP FORM ===================== -->
-            <form id="auth-signup-form" class="${!isLogin ? '' : 'hidden'} space-y-4" onsubmit="event.preventDefault(); AuthView.submitSignup();">
+            <form id="auth-signup-form" novalidate class="${!isLogin ? '' : 'hidden'} space-y-4" onsubmit="event.preventDefault(); AuthView.submitSignup();">
               <div id="signup-form-error" class="hidden p-3 rounded-2xl bg-error-container text-on-error-container text-xs font-body-md border border-error/20 flex items-center gap-2">
                 <span class="material-symbols-outlined text-[16px] text-error shrink-0">error</span>
                 <span id="signup-error-text">Please fill out all required fields.</span>
@@ -292,18 +292,14 @@ const AuthView = {
     if (tab === 'login') {
       loginForm.classList.remove('hidden');
       signupForm.classList.add('hidden');
-      loginTab.classList.add('bg-surface-container-lowest', 'text-primary', 'shadow-sm');
-      loginTab.classList.remove('text-on-surface-variant');
-      signupTab.classList.remove('bg-surface-container-lowest', 'text-primary', 'shadow-sm');
-      signupTab.classList.add('text-on-surface-variant');
+      if (loginTab) loginTab.className = 'flex-1 py-2.5 rounded-xl font-label-md text-xs font-semibold transition-all duration-200 cursor-pointer bg-surface-container-lowest text-primary shadow-sm';
+      if (signupTab) signupTab.className = 'flex-1 py-2.5 rounded-xl font-label-md text-xs font-semibold transition-all duration-200 cursor-pointer text-on-surface-variant hover:text-primary';
       if (authTitle) authTitle.textContent = 'Welcome back';
     } else {
       loginForm.classList.add('hidden');
       signupForm.classList.remove('hidden');
-      signupTab.classList.add('bg-surface-container-lowest', 'text-primary', 'shadow-sm');
-      signupTab.classList.remove('text-on-surface-variant');
-      loginTab.classList.remove('bg-surface-container-lowest', 'text-primary', 'shadow-sm');
-      loginTab.classList.add('text-on-surface-variant');
+      if (signupTab) signupTab.className = 'flex-1 py-2.5 rounded-xl font-label-md text-xs font-semibold transition-all duration-200 cursor-pointer bg-surface-container-lowest text-primary shadow-sm';
+      if (loginTab) loginTab.className = 'flex-1 py-2.5 rounded-xl font-label-md text-xs font-semibold transition-all duration-200 cursor-pointer text-on-surface-variant hover:text-primary';
       if (authTitle) authTitle.textContent = 'Create your account';
     }
   },
@@ -399,10 +395,7 @@ const AuthView = {
     if (formErr) formErr.classList.add('hidden');
 
     if (!email) {
-      this.showFieldError('login-email', 'Email address is required.');
-      hasError = true;
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      this.showFieldError('login-email', 'Please enter a valid email address.');
+      this.showFieldError('login-email', 'Email address or name is required.');
       hasError = true;
     }
 
