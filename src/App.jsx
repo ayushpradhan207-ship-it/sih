@@ -8,6 +8,11 @@ import About from './components/About';
 import Login from './components/Login';
 import Onboarding from './components/Onboarding';
 import StudentDashboard from './components/StudentDashboard';
+import SkillPassport from './components/SkillPassport';
+import Opportunities from './components/Opportunities';
+import Evidence from './components/Evidence';
+import Teams from './components/Teams';
+import Audit from './components/Audit';
 import PublicVerify from './components/PublicVerify';
 
 export const App = () => {
@@ -25,7 +30,12 @@ export const App = () => {
                 <Route path="/login" element={<Login />} />
                 <Route path="/onboarding" element={<Onboarding />} />
                 <Route path="/student/dashboard" element={<StudentDashboard />} />
-                <Route path="/student/passport" element={<StudentDashboard />} />
+                <Route path="/student/passport" element={<SkillPassport />} />
+                <Route path="/student/opportunities" element={<Opportunities />} />
+                <Route path="/student/evidence" element={<Evidence />} />
+                <Route path="/teams" element={<Teams />} />
+                <Route path="/admin/fairness" element={<Audit />} />
+                <Route path="/audit" element={<Audit />} />
                 <Route path="/verify/:id" element={<PublicVerify />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
