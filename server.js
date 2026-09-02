@@ -97,22 +97,29 @@ const server = http.createServer(async (req, res) => {
       });
     }
 
-    // 2. Demo Auth Login
+    // 2. Auth Login
     if (pathname === "/api/auth/login" && method === "POST") {
-      const { email, role } = await parseBody(req);
+      const { email, role, password } = await parseBody(req);
       let user = null;
 
-      if (email === "student@veriskill.demo" || role === "student") {
+      if (email === "student@veriskill.demo") {
         user = {
+          isDemo: true,
           role: "student",
           studentId: "student-1042",
           anonymizedId: "VS-1042",
           name: "Aarav Sharma",
           email: "student@veriskill.demo",
-          passportId: "VP-2026-IND-1042"
+          passportId: "VP-2026-IND-1042",
+          ncrfCredits: 4.5,
+          overallScore: 84,
+          trustScore: 87,
+          verifiedSkillsCount: 17,
+          hasSyncedDigiLocker: true
         };
       } else if (email === "recruiter@veriskill.demo" || role === "recruiter") {
         user = {
+          isDemo: true,
           role: "recruiter",
           name: "Dr. Rohini Mehta",
           company: "Apex Neural Labs",
@@ -120,29 +127,124 @@ const server = http.createServer(async (req, res) => {
         };
       } else if (email === "teamlead@veriskill.demo" || role === "teamlead") {
         user = {
+          isDemo: true,
           role: "teamlead",
           name: "Prof. S. Mohapatra",
           organization: "SOA Ideathon 2026 Organizing Committee",
           email: "teamlead@veriskill.demo"
         };
-      } else if (email === "admin@veriskill.demo" || role === "admin") {
+      } else if (email === "admin@veriskill.demo" || role === "admin" || role === "institution") {
         user = {
+          isDemo: true,
           role: "admin",
-          name: "Ethics & Compliance Auditor",
+          name: "Academic Verification & Fairness Auditor",
+          organization: "Siksha 'O' Anusandhan University (SOA)",
           email: "admin@veriskill.demo"
         };
       } else {
+        const derivedName = email ? email.split("@")[0].replace(/[._]/g, " ").replace(/\b\w/g, l => l.toUpperCase()) : "Real User";
         user = {
-          role: "student",
-          studentId: "student-1042",
-          anonymizedId: "VS-1042",
-          name: "Aarav Sharma",
-          email: email || "student@veriskill.demo",
-          passportId: "VP-2026-IND-1042"
+          isDemo: false,
+          role: role || "student",
+          studentId: `user-${Date.now()}`,
+          anonymizedId: `VS-${Math.floor(1000 + Math.random() * 9000)}`,
+          name: derivedName,
+          email: email || "user@example.com",
+          passportId: `VP-2026-IND-${Math.floor(1000 + Math.random() * 9000)}`,
+          ncrfCredits: 0,
+          overallScore: 0,
+          trustScore: 0,
+          verifiedSkillsCount: 0,
+          hasSyncedDigiLocker: false
         };
       }
 
-      return sendJSON(res, 200, { success: true, user, token: "demo-jwt-token-veriskill-2026" });
+      return sendJSON(res, 200, { success: true, user, token: `jwt-${user.role}-${Date.now()}` });
+    }
+
+    // 2b. Auth Signup
+    if (pathname === "/api/auth/signup" && method === "POST") {
+      const { fullName, email, password, role } = await parseBody(req);
+
+      if (!fullName || !email || !password || !role) {
+        return sendJSON(res, 400, { success: false, error: "All fields are required." });
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        return sendJSON(res, 400, { success: false, error: "Please enter a valid email address." });
+      }
+      if (password.length < 8) {
+        return sendJSON(res, 400, { success: false, error: "Password must be at least 8 characters." });
+      }
+
+      let user;
+      if (role === "student") {
+        user = {
+          isDemo: false,
+          role: "student",
+          studentId: `user-${Date.now()}`,
+          anonymizedId: `VS-${Math.floor(1000 + Math.random() * 9000)}`,
+          name: fullName,
+          email: email,
+          passportId: `VP-2026-IND-${Math.floor(1000 + Math.random() * 9000)}`,
+          ncrfCredits: 0,
+          overallScore: 0,
+          trustScore: 0,
+          verifiedSkillsCount: 0,
+          hasSyncedDigiLocker: false
+        };
+      } else if (role === "recruiter") {
+        user = {
+          isDemo: false,
+          role: "recruiter",
+          name: fullName,
+          email: email,
+          company: "Enterprise Partner"
+        };
+      } else if (role === "institution") {
+        user = {
+          isDemo: false,
+          role: "admin",
+          name: fullName,
+          email: email,
+          organization: "Partner Academic Institution"
+        };
+      } else {
+        user = {
+          isDemo: false,
+          role: "student",
+          studentId: `user-${Date.now()}`,
+          anonymizedId: `VS-${Math.floor(1000 + Math.random() * 9000)}`,
+          name: fullName,
+          email: email,
+          passportId: `VP-2026-IND-${Math.floor(1000 + Math.random() * 9000)}`,
+          ncrfCredits: 0,
+          overallScore: 0,
+          trustScore: 0,
+          verifiedSkillsCount: 0,
+          hasSyncedDigiLocker: false
+        };
+      }
+
+      return sendJSON(res, 201, {
+        success: true,
+        user,
+        token: `jwt-${user.role}-${Date.now()}`,
+        message: "Account created successfully."
+      });
+    }
+
+    // 2c. Auth Logout
+    if (pathname === "/api/auth/logout" && method === "POST") {
+      return sendJSON(res, 200, { success: true, message: "Logged out successfully." });
+    }
+
+    // 2d. Auth Me
+    if (pathname === "/api/auth/me" && method === "GET") {
+      const authHeader = req.headers["authorization"] || "";
+      if (!authHeader.startsWith("Bearer ") || !authHeader.includes("demo-jwt")) {
+        return sendJSON(res, 401, { success: false, error: "Not authenticated" });
+      }
+      return sendJSON(res, 200, { success: true, authenticated: true });
     }
 
     // 3. Taxonomy

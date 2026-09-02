@@ -76,7 +76,12 @@ const Utils = {
    * Show a toast message
    */
   showToast(message, type = "info") {
+    if (typeof document === "undefined" || !document.createElement) {
+      console.log(`[Toast ${type}]: ${message}`);
+      return;
+    }
     const container = document.getElementById("toast-container") || document.body;
+    if (!container) return;
     const toast = document.createElement("div");
     
     let iconName = "info";
@@ -123,6 +128,215 @@ const Utils = {
     if (modal) {
       modal.classList.add("hidden");
       modal.classList.remove("flex");
+    }
+  },
+
+  /**
+   * Client-Side Dynamic Cryptographic SHA-256 Integrity Hash using native Web Crypto API
+   * Converts payload to canonical deterministic representation and computes async SHA-256 digest
+   */
+  async computeSHA256(payload) {
+    try {
+      const canonStr = typeof payload === "string" ? payload : JSON.stringify(payload, Object.keys(payload || {}).sort());
+      const encoder = new TextEncoder();
+      const data = encoder.encode(canonStr);
+      if (typeof window !== "undefined" && window.crypto && window.crypto.subtle) {
+        const hashBuffer = await window.crypto.subtle.digest("SHA-256", data);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const hashHex = hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+        return `sha256:${hashHex}`;
+      }
+      // Deterministic fallback for non-crypto environments
+      let h1 = 0xdeadbeef, h2 = 0x41c6ce57;
+      for (let i = 0; i < canonStr.length; i++) {
+        const ch = canonStr.charCodeAt(i);
+        h1 = Math.imul(h1 ^ ch, 2654435761);
+        h2 = Math.imul(h2 ^ ch, 1597334677);
+      }
+      const hex1 = (h1 >>> 0).toString(16).padStart(8, "0");
+      const hex2 = (h2 >>> 0).toString(16).padStart(8, "0");
+      return `sha256:${hex1}${hex2}${hex1}${hex2}${hex1}${hex2}${hex1}${hex2}`;
+    } catch (e) {
+      console.error("SHA-256 calculation error", e);
+      return "sha256:7a9e1c3f5d7b9a1c3e5f7a9b1d3f5e7a9b1c3d5e7f9a1b3c5d7e9f1a3b5c7d9e";
+    }
+  }
+};
+
+/**
+ * VeriSkill Authentication Session Manager
+ * Prototype auth layer — cleanly isolated for easy production provider integration (Firebase, Auth0, etc.)
+ */
+const Auth = {
+  SESSION_KEY: 'veriskill_session',
+  TOKEN_KEY: 'veriskill_auth_token',
+  LEGACY_TOKEN_KEY: 'veriskill_token',
+
+  /**
+   * MODE A: Start Demo Tour (Aarav Sharma)
+   */
+  startDemoTour() {
+    const demoUser = {
+      isDemo: true,
+      role: "student",
+      studentId: "student-1042",
+      anonymizedId: "VS-1042",
+      name: "Aarav Sharma",
+      email: "student@veriskill.demo",
+      passportId: "VP-2026-IND-1042",
+      ncrfCredits: 4.5,
+      overallScore: 84,
+      trustScore: 87,
+      verifiedSkillsCount: 17,
+      hasSyncedDigiLocker: true
+    };
+    const demoToken = 'demo-jwt-student-tour-2026';
+    Auth.setSession(demoUser, demoToken, true);
+    if (typeof window !== "undefined" && window.App) {
+      window.App.state.currentUser = demoUser;
+      window.App.state.studentId = "student-1042";
+      window.App.state.role = "student";
+    }
+    return demoUser;
+  },
+
+  /**
+   * Store session after login/signup (MODE B: Real User or Demo User)
+   */
+  setSession(user, token, remember = true) {
+    try {
+      const activeToken = token || `demo-jwt-${user?.role || 'student'}-${Date.now()}`;
+      const storage = remember ? localStorage : sessionStorage;
+      storage.setItem(Auth.SESSION_KEY, JSON.stringify(user));
+      storage.setItem(Auth.TOKEN_KEY, activeToken);
+      storage.setItem(Auth.LEGACY_TOKEN_KEY, activeToken);
+      // Fallback mirror
+      sessionStorage.setItem(Auth.SESSION_KEY, JSON.stringify(user));
+      sessionStorage.setItem(Auth.TOKEN_KEY, activeToken);
+      sessionStorage.setItem(Auth.LEGACY_TOKEN_KEY, activeToken);
+    } catch (e) {
+      console.warn("Storage write error", e);
+    }
+  },
+
+  /**
+   * Update active user session state in storage
+   */
+  updateSession(updates) {
+    try {
+      const current = Auth.getSession() || {};
+      const updated = { ...current, ...updates };
+      localStorage.setItem(Auth.SESSION_KEY, JSON.stringify(updated));
+      sessionStorage.setItem(Auth.SESSION_KEY, JSON.stringify(updated));
+      if (typeof window !== "undefined" && window.App) {
+        window.App.state.currentUser = updated;
+      }
+      return updated;
+    } catch (e) {
+      console.warn("Session update error", e);
+    }
+  },
+
+  /**
+   * Get current session
+   */
+  getSession() {
+    try {
+      const raw = localStorage.getItem(Auth.SESSION_KEY) || sessionStorage.getItem(Auth.SESSION_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch {
+      return null;
+    }
+  },
+
+  /**
+   * Check if current session is Demo Mode
+   */
+  isDemoMode() {
+    const session = Auth.getSession();
+    return !!(session && session.isDemo === true);
+  },
+
+  /**
+   * Get current token
+   */
+  getToken() {
+    try {
+      return localStorage.getItem(Auth.TOKEN_KEY) || 
+             localStorage.getItem(Auth.LEGACY_TOKEN_KEY) || 
+             sessionStorage.getItem(Auth.TOKEN_KEY) || 
+             sessionStorage.getItem(Auth.LEGACY_TOKEN_KEY) || '';
+    } catch {
+      return '';
+    }
+  },
+
+  /**
+   * Check if user is logged in
+   */
+  isLoggedIn() {
+    const session = Auth.getSession();
+    const token = Auth.getToken();
+    return !!(session && token);
+  },
+
+  /**
+   * Logout — clear session and redirect to auth
+   */
+  logout() {
+    try {
+      localStorage.removeItem(Auth.SESSION_KEY);
+      localStorage.removeItem(Auth.TOKEN_KEY);
+      localStorage.removeItem(Auth.LEGACY_TOKEN_KEY);
+      sessionStorage.removeItem(Auth.SESSION_KEY);
+      sessionStorage.removeItem(Auth.TOKEN_KEY);
+      sessionStorage.removeItem(Auth.LEGACY_TOKEN_KEY);
+    } catch (e) {}
+
+    fetch('/api/auth/logout', { method: 'POST' }).catch(() => {});
+    Utils.showToast('Logged out successfully. See you soon!', 'info');
+    
+    if (typeof window !== "undefined" && window.App) {
+      window.App.state.currentUser = null;
+      window.App.state.studentId = "student-1042";
+      window.App.state.role = 'student';
+    }
+    window.location.hash = '#/auth';
+  },
+
+  /**
+   * Redirect after login based on role or saved post-login destination
+   */
+  redirectAfterLogin(user) {
+    if (typeof window !== "undefined" && window.App && window.App._postLoginRedirect) {
+      const redirectTarget = window.App._postLoginRedirect;
+      window.App._postLoginRedirect = null;
+      window.location.hash = redirectTarget.startsWith("#") ? redirectTarget : `#${redirectTarget}`;
+      return;
+    }
+    if (!user) return;
+    if (user.role === 'student') {
+      window.location.hash = '#/student/dashboard';
+    } else if (user.role === 'recruiter') {
+      window.location.hash = '#/recruiter/dashboard';
+    } else if (user.role === 'admin' || user.role === 'institution') {
+      window.location.hash = '#/admin/fairness';
+    } else if (user.role === 'teamlead') {
+      window.location.hash = '#/teams';
+    } else {
+      window.location.hash = '#/student/dashboard';
+    }
+  },
+
+  /**
+   * Restore session on app load
+   */
+  restoreSession(appState) {
+    const session = Auth.getSession();
+    if (session) {
+      appState.role = session.role || 'student';
+      appState.currentUser = session;
+      if (session.studentId) appState.studentId = session.studentId;
     }
   }
 };

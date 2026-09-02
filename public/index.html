@@ -126,43 +126,49 @@
   <!-- BOTTOM NAVIGATION BAR (Mobile & Tablet) -->
   <nav id="bottomnav-root"></nav>
 
-  <!-- GLOBAL MODAL CONTAINER -->
-  <div id="modal-root"></div>
+  <!-- GLOBAL MODAL CONTAINER & SYSTEM MODALS -->
+  <div id="modal-root">
+    <!-- BRIDGE GAP / LEARNING PATH MODAL -->
+    <div id="bridge-gap-modal" class="hidden fixed inset-0 z-[9990] bg-black/40 backdrop-blur-sm items-center justify-center p-4" onclick="if(event.target===this)Utils.closeModal('bridge-gap-modal')">
+      <div class="bg-surface-container-lowest rounded-3xl shadow-2xl w-full max-w-md overflow-hidden border border-surface-variant/40">
+        <div id="bridge-gap-modal-content" class="p-6"></div>
+      </div>
+    </div>
+
+    <!-- SKILL DETAIL MODAL -->
+    <div id="skill-detail-modal" class="hidden fixed inset-0 z-[9990] bg-black/40 backdrop-blur-sm items-center justify-center p-4" onclick="if(event.target===this)Utils.closeModal('skill-detail-modal')">
+      <div class="bg-surface-container-lowest rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden border border-surface-variant/40">
+        <div id="skill-detail-modal-content" class="p-6"></div>
+      </div>
+    </div>
+
+    <!-- RECRUITER EXPLANATION MODAL -->
+    <div id="recruiter-explanation-modal" class="hidden fixed inset-0 z-[9990] bg-black/40 backdrop-blur-sm items-center justify-center p-4" onclick="if(event.target===this)Utils.closeModal('recruiter-explanation-modal')">
+      <div class="bg-surface-container-lowest rounded-3xl shadow-2xl w-full max-w-xl overflow-hidden border border-surface-variant/40">
+        <div id="recruiter-explanation-content" class="p-6"></div>
+      </div>
+    </div>
+
+    <!-- AUTH MODAL OVERLAY -->
+    <div id="auth-modal" class="hidden fixed inset-0 z-[9995] bg-black/50 backdrop-blur-sm items-center justify-center p-4" onclick="if(event.target===this)Utils.closeModal('auth-modal')">
+      <div class="bg-surface-container-lowest rounded-3xl shadow-2xl w-full max-w-md overflow-hidden border border-surface-variant/40">
+        <div id="auth-modal-content" class="p-6"></div>
+      </div>
+    </div>
+  </div>
 
   <!-- TOAST NOTIFICATION CONTAINER -->
   <div id="toast-container" class="fixed bottom-20 md:bottom-6 right-4 z-[9999] flex flex-col gap-2 pointer-events-none"></div>
 
-  <!-- FOOTER -->
-  <footer class="hidden md:block bg-surface-container-lowest border-t border-surface-variant/40 py-8 mt-auto text-xs text-on-surface-variant">
-    <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop flex flex-col md:flex-row items-center justify-between gap-4">
-      <div class="flex items-center gap-3 font-semibold text-primary text-sm">
-        <div class="w-7 h-7 rounded-lg bg-primary-container flex items-center justify-center text-on-primary">
-          <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">grid_view</span>
-        </div>
-        <span class="font-headline-md text-base">VeriSkill</span>
-        <span class="text-[11px] px-2.5 py-0.5 rounded-full bg-secondary-fixed/40 text-on-secondary-fixed font-normal border border-secondary-fixed">
-          Verifiable Skill Passport Engine
-        </span>
-      </div>
-
-      <div class="flex items-center gap-6 font-label-md">
-        <a href="#/about" class="text-on-surface-variant hover:text-primary transition-colors">How It Works</a>
-        <a href="#/onboarding" class="text-on-surface-variant hover:text-primary transition-colors">Student Onboarding</a>
-        <a href="#/admin/fairness" class="text-on-surface-variant hover:text-primary transition-colors">Ethical AI Audit</a>
-        <a href="#/verify/VP-2026-IND-1042" class="text-on-surface-variant hover:text-primary transition-colors">Public Verification</a>
-        <a href="#/student/privacy" class="text-on-surface-variant hover:text-primary transition-colors">Privacy by Design</a>
-      </div>
-
-      <div class="text-on-surface-variant text-[11px]">
-        Empowering students via <strong class="text-primary">Proof, Not Claims</strong>.
-      </div>
-    </div>
-  </footer>
+  <!-- FOOTER ROOT -->
+  <div id="footer-root"></div>
 
   <!-- COMPONENT & ROUTER SCRIPTS -->
+  <script src="/js/i18n.js"></script>
   <script src="/js/utils.js"></script>
   <script src="/js/components/navbar.js"></script>
   <script src="/js/components/onboardingView.js"></script>
+  <script src="/js/components/authView.js"></script>
   <script src="/js/components/landingView.js"></script>
   <script src="/js/components/aboutView.js"></script>
   <script src="/js/components/studentDashboardView.js"></script>

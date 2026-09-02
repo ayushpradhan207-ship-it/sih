@@ -175,7 +175,7 @@ const LandingView = {
                 <h3 class="font-headline-md text-headline-md font-bold text-primary">VERIFY</h3>
                 <p class="font-label-md text-label-md text-secondary font-semibold mt-1">Verifiable Skill Passport</p>
                 <p class="text-on-surface-variant font-body-md text-sm mt-3 leading-relaxed">
-                  Connect GitHub commits, official coursework, competition rankings, and certificates. Automated rule evaluators transition skills from Extracted to Verified with SHA-256 proofs.
+                  Connect GitHub commits, official coursework, competition rankings, and certificates. Extract & verify credentials with tamper-proof cryptographic proofs.
                 </p>
               </div>
               <div class="mt-6 pt-4 border-t border-surface-variant/40 flex items-center text-xs text-on-surface-variant gap-2">

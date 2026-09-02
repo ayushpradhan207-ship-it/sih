@@ -122,10 +122,13 @@ const DemoTour = {
   startTour(startStep = 1) {
     this.isActive = true;
     this.currentStep = Math.max(1, Math.min(startStep, this.totalSteps));
+    if (typeof Auth !== "undefined") {
+      Auth.startDemoTour();
+    }
     this.bindKeyboard();
     this.goToStep(this.currentStep);
     if (window.Utils) {
-      Utils.showToast("🚀 3-Minute Judge Demo Tour started! Use Next / Back or Arrow keys.", "info");
+      Utils.showToast("🚀 3-Minute Judge Demo Tour started! (Aarav Sharma Demo Profile Loaded)", "info");
     }
   },
 

@@ -10,13 +10,18 @@ const App = {
     currentRoute: "/",
     activeDemoStep: 1,
     biasMode: true, // Anti-bias mode active by default
-    extractedSandboxSkills: []
+    extractedSandboxSkills: [],
+    currentUser: null
   },
 
   /**
-   * Initialize App and bind hash routing
+   * Initialize App, restore session and bind hash routing
    */
   async init() {
+    if (typeof Auth !== "undefined") {
+      Auth.restoreSession(this.state);
+    }
+
     window.addEventListener("hashchange", () => this.handleRoute());
     
     if (!window.location.hash) {
@@ -24,6 +29,59 @@ const App = {
     } else {
       this.handleRoute();
     }
+  },
+
+  /**
+   * Navigate to Auth view
+   */
+  goToAuth(mode = 'login') {
+    this._authMode = mode;
+    window.location.hash = "#/auth";
+  },
+
+  /**
+   * Logout user
+   */
+  logout() {
+    if (typeof Auth !== "undefined") {
+      Auth.logout();
+    }
+  },
+
+  /**
+   * Render dynamic multilingual footer
+   */
+  renderFooter() {
+    const footerRoot = document.getElementById("footer-root");
+    if (!footerRoot) return;
+    
+    footerRoot.innerHTML = `
+      <footer class="hidden md:block bg-surface-container-lowest border-t border-surface-variant/40 py-8 mt-auto text-xs text-on-surface-variant">
+        <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop flex flex-col md:flex-row items-center justify-between gap-4">
+          <div class="flex items-center gap-3 font-semibold text-primary text-sm">
+            <div class="w-7 h-7 rounded-lg bg-primary-container flex items-center justify-center text-on-primary">
+              <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">grid_view</span>
+            </div>
+            <span class="font-headline-md text-base">VeriSkill</span>
+            <span class="text-[11px] px-2.5 py-0.5 rounded-full bg-secondary-fixed/40 text-on-secondary-fixed font-normal border border-secondary-fixed">
+              Verifiable Skill Passport Engine
+            </span>
+          </div>
+
+          <div class="flex items-center gap-6 font-label-md">
+            <a href="#/about" class="text-on-surface-variant hover:text-primary transition-colors">${typeof I18n !== 'undefined' ? I18n.t('footer.howItWorks') : 'How It Works'}</a>
+            <a href="#/onboarding" class="text-on-surface-variant hover:text-primary transition-colors">${typeof I18n !== 'undefined' ? I18n.t('footer.onboarding') : 'Student Onboarding'}</a>
+            <a href="#/admin/fairness" class="text-on-surface-variant hover:text-primary transition-colors">${typeof I18n !== 'undefined' ? I18n.t('footer.fairness') : 'Ethical AI Audit'}</a>
+            <a href="#/verify/VP-2026-IND-1042" class="text-on-surface-variant hover:text-primary transition-colors">${typeof I18n !== 'undefined' ? I18n.t('footer.verify') : 'Public Verification'}</a>
+            <a href="#/student/privacy" class="text-on-surface-variant hover:text-primary transition-colors">${typeof I18n !== 'undefined' ? I18n.t('footer.privacy') : 'Privacy by Design'}</a>
+          </div>
+
+          <div class="text-on-surface-variant text-[11px]">
+            ${typeof I18n !== 'undefined' ? I18n.t('footer.tagline') : 'Empowering students via <strong class="text-primary">Proof, Not Claims</strong>.'}
+          </div>
+        </div>
+      </footer>
+    `;
   },
 
   /**
@@ -200,11 +258,26 @@ const App = {
       navContainer.innerHTML = NavbarComponent.render(this.state.currentRoute, this.state.role, this.state.activeDemoStep);
     }
 
+    this.renderFooter();
+
     const appRoot = document.getElementById("app-root");
     if (!appRoot) return;
 
     try {
-      if (path === "/" || path === "") {
+      // 1. Protected Route Guard (Security Enforcement)
+      const isProtected = path.startsWith("/student/") || path.startsWith("/admin") || path.startsWith("/recruiter/") || path.startsWith("/teams");
+      if (isProtected && typeof Auth !== "undefined" && !Auth.isLoggedIn()) {
+        Utils.showToast("🔒 Protected Route: Authentication required. Redirecting to login...", "error");
+        this._authMode = "login";
+        this._postLoginRedirect = path;
+        window.location.hash = "#/auth";
+        return;
+      }
+
+      if (path === "/auth") {
+        appRoot.innerHTML = AuthView.render(this._authMode || "login");
+        this._authMode = null;
+      } else if (path === "/" || path === "") {
         appRoot.innerHTML = LandingView.render();
       } else if (path === "/about") {
         appRoot.innerHTML = AboutView.render();
@@ -213,23 +286,23 @@ const App = {
         appRoot.innerHTML = OnboardingView.render(1);
       } else if (path.startsWith("/student/dashboard")) {
         this.state.role = "student";
-        appRoot.innerHTML = await StudentDashboardView.render(this.state.studentId);
+        appRoot.innerHTML = await StudentDashboardView.render(this.state.studentId || "student-1042");
       } else if (path.startsWith("/student/passport")) {
         this.state.role = "student";
-        appRoot.innerHTML = await SkillPassportView.render(this.state.studentId);
+        appRoot.innerHTML = await SkillPassportView.render(this.state.studentId || "student-1042");
       } else if (path.startsWith("/student/evidence")) {
         this.state.role = "student";
-        appRoot.innerHTML = await EvidenceView.render(this.state.studentId);
+        appRoot.innerHTML = await EvidenceView.render(this.state.studentId || "student-1042");
       } else if (path.startsWith("/student/opportunities")) {
         this.state.role = "student";
-        appRoot.innerHTML = await OpportunitiesView.render(this.state.studentId);
+        appRoot.innerHTML = await OpportunitiesView.render(this.state.studentId || "student-1042");
       } else if (path.startsWith("/student/matches/")) {
         this.state.role = "student";
         const oppId = path.split("/")[3] || "opp-ml-intern";
-        appRoot.innerHTML = await MatchExplainView.render(oppId, this.state.studentId);
+        appRoot.innerHTML = await MatchExplainView.render(oppId, this.state.studentId || "student-1042");
       } else if (path.startsWith("/student/privacy")) {
         this.state.role = "student";
-        appRoot.innerHTML = await PrivacyView.render(this.state.studentId);
+        appRoot.innerHTML = await PrivacyView.render(this.state.studentId || "student-1042");
       } else if (path.startsWith("/recruiter/dashboard")) {
         this.state.role = "recruiter";
         appRoot.innerHTML = await RecruiterDashboardView.render();

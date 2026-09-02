@@ -25,6 +25,9 @@ const OnboardingView = {
   },
 
   renderWelcomeStep() {
+    const session = (typeof Auth !== "undefined" && Auth.getSession()) || null;
+    const userName = session?.name || (session?.isDemo ? "Aarav Sharma" : "Ashutosh Pradhan");
+
     return `
       <div class="min-h-[85vh] flex flex-col items-center justify-center antigravity-bg relative overflow-hidden px-margin-mobile md:px-margin-desktop py-section-gap">
         <!-- Ambient Decorative Elements -->
@@ -53,7 +56,7 @@ const OnboardingView = {
             <div class="absolute inset-0 bg-gradient-to-b from-white/50 to-transparent pointer-events-none"></div>
             <div class="relative z-10">
               <h2 class="font-display-lg text-3xl md:text-display-lg text-primary mb-stack-md leading-tight">
-                Welcome,<br/><span class="text-on-surface-variant">Ashutosh.</span>
+                Welcome,<br/><span class="text-on-surface-variant">${userName}.</span>
               </h2>
               <p class="font-body-lg text-body-lg text-on-surface-variant mb-stack-lg max-w-md mx-auto">
                 Let's turn your academic coursework, projects, and credentials into a verified Skill Passport. We'll guide you step-by-step.
@@ -71,15 +74,23 @@ const OnboardingView = {
                 </div>
               </div>
 
-              <!-- Action Buttons -->
-              <div class="flex flex-col sm:flex-row gap-3 justify-center items-center">
-                <button onclick="OnboardingView.goToStep(4)" class="bg-primary-container text-on-primary w-full sm:w-auto px-8 py-4 rounded-full font-label-md text-label-md hover:bg-primary transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-lg flex items-center justify-center gap-2 group">
-                  <span>Get Started</span>
-                  <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
-                </button>
-                <a href="#/student/dashboard" class="w-full sm:w-auto px-6 py-4 rounded-full border border-outline-variant font-label-md text-label-md text-on-surface-variant hover:bg-surface-bright transition-colors text-center">
-                  Skip to Dashboard
-                </a>
+              <!-- Action Buttons & APAAR / DigiLocker Integration -->
+              <div class="flex flex-col gap-3 justify-center items-center">
+                <div class="flex flex-col sm:flex-row gap-3 justify-center items-center w-full">
+                  <button onclick="OnboardingView.goToStep(4)" class="bg-primary-container text-on-primary w-full sm:w-auto px-8 py-4 rounded-full font-label-md text-label-md hover:bg-primary transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-lg flex items-center justify-center gap-2 group cursor-pointer">
+                    <span>Get Started</span>
+                    <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                  </button>
+                  <button type="button" onclick="OnboardingView.syncDigiLocker()" class="w-full sm:w-auto px-6 py-4 rounded-full bg-secondary-fixed/50 border border-secondary-fixed font-label-md text-label-md text-secondary hover:bg-secondary-fixed/70 transition-colors text-center flex items-center justify-center gap-2 cursor-pointer shadow-sm">
+                    <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">account_balance</span>
+                    <span>Sync with APAAR ID / DigiLocker</span>
+                  </button>
+                </div>
+                
+                <div id="onboarding-apaar-status" class="hidden p-3 rounded-2xl bg-tertiary-fixed/20 border border-tertiary-fixed text-xs font-body-md text-primary flex items-center gap-2 mt-2">
+                  <span class="material-symbols-outlined text-on-tertiary-fixed-variant text-[18px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                  <span><strong>APAAR ID Connected!</strong> Verified with Academic Bank of Credits: <span class="font-bold text-secondary">4.5 NCrF Academic Credits Earned</span>.</span>
+                </div>
               </div>
               <p class="mt-stack-md font-label-sm text-label-sm text-outline">Takes about 3 minutes to complete.</p>
             </div>
@@ -87,6 +98,23 @@ const OnboardingView = {
         </div>
       </div>
     `;
+  },
+
+  syncDigiLocker() {
+    Utils.showToast("Fetching APAAR ID & DigiLocker Academic Records...", "info");
+    if (typeof Auth !== "undefined") {
+      Auth.updateSession({
+        hasSyncedDigiLocker: true,
+        ncrfCredits: 4.5
+      });
+    }
+    setTimeout(() => {
+      const statusEl = document.getElementById("onboarding-apaar-status");
+      if (statusEl) {
+        statusEl.classList.remove("hidden");
+      }
+      Utils.showToast("APAAR ID Verified: 4.5 NCrF Academic Credits Synced!", "success");
+    }, 600);
   },
 
   renderInterestsStep() {
@@ -145,7 +173,7 @@ const OnboardingView = {
               id="continue-interests-btn"
               onclick="OnboardingView.completeOnboarding()" 
               class="bg-primary-container text-on-primary font-label-md text-label-md py-3.5 px-10 rounded-full hover:shadow-[0_4px_20px_rgba(0,0,0,0.15)] hover:bg-primary transition-all active:scale-95 flex items-center justify-center gap-2 cursor-pointer w-full sm:w-auto">
-              <span>Save & Build My Skill Passport</span>
+              <span>Save & Build My VeriSkill Passport</span>
               <span class="material-symbols-outlined" style="font-size: 18px;">arrow_forward</span>
             </button>
           </footer>
@@ -176,7 +204,14 @@ const OnboardingView = {
   },
 
   completeOnboarding() {
-    Utils.showToast("🎉 Interests saved! Welcome to your Skill Passport Dashboard.", "success");
+    const interests = Array.from(this.selectedInterests);
+    if (typeof Auth !== "undefined") {
+      Auth.updateSession({
+        interests: interests,
+        hasCompletedOnboarding: true
+      });
+    }
+    Utils.showToast("🎉 Interests saved! Welcome to your VeriSkill Passport Dashboard.", "success");
     window.location.hash = "#/student/dashboard";
   }
 };

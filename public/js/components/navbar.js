@@ -34,48 +34,96 @@ const NavbarComponent = {
           <!-- Desktop Navigation Cluster -->
           <nav class="hidden md:flex items-center gap-1">
             <a href="#/student/dashboard" class="px-3.5 py-1.5 rounded-full font-label-md text-label-md transition-all duration-200 ${isDashboard ? 'text-secondary font-bold bg-secondary-fixed/40' : 'text-on-surface-variant hover:bg-surface-container hover:text-primary'}">
-              Dashboard
+              ${typeof I18n !== 'undefined' ? I18n.t('navbar.dashboard') : 'Dashboard'}
             </a>
             <a href="#/student/passport" class="px-3.5 py-1.5 rounded-full font-label-md text-label-md transition-all duration-200 ${isPassport ? 'text-secondary font-bold bg-secondary-fixed/40' : 'text-on-surface-variant hover:bg-surface-container hover:text-primary'}">
-              Passport
+              ${typeof I18n !== 'undefined' ? I18n.t('navbar.passport') : 'Passport'}
             </a>
             <a href="#/student/opportunities" class="px-3.5 py-1.5 rounded-full font-label-md text-label-md transition-all duration-200 ${isMatch ? 'text-secondary font-bold bg-secondary-fixed/40' : 'text-on-surface-variant hover:bg-surface-container hover:text-primary'}">
-              Match
+              ${typeof I18n !== 'undefined' ? I18n.t('navbar.match') : 'Match'}
             </a>
             <a href="#/student/evidence" class="px-3.5 py-1.5 rounded-full font-label-md text-label-md transition-all duration-200 ${isGaps ? 'text-secondary font-bold bg-secondary-fixed/40' : 'text-on-surface-variant hover:bg-surface-container hover:text-primary'}">
-              Evidence & Gaps
+              ${typeof I18n !== 'undefined' ? I18n.t('navbar.evidence') : 'Evidence & Gaps'}
             </a>
             <a href="#/teams" class="px-3.5 py-1.5 rounded-full font-label-md text-label-md transition-all duration-200 ${currentRoute.startsWith('/teams') ? 'text-secondary font-bold bg-secondary-fixed/40' : 'text-on-surface-variant hover:bg-surface-container hover:text-primary'}">
-              Teams
+              ${typeof I18n !== 'undefined' ? I18n.t('navbar.teams') : 'Teams'}
             </a>
             <a href="#/admin/fairness" class="px-3.5 py-1.5 rounded-full font-label-md text-label-md transition-all duration-200 ${currentRoute.startsWith('/admin') ? 'text-secondary font-bold bg-secondary-fixed/40' : 'text-on-surface-variant hover:bg-surface-container hover:text-primary'}">
-              Audit
+              ${typeof I18n !== 'undefined' ? I18n.t('navbar.audit') : 'Audit'}
             </a>
           </nav>
 
           <!-- Right Controls Cluster -->
-          <div class="flex items-center gap-3">
-            <!-- Persona Switcher -->
-            <div class="hidden sm:flex items-center">
-              <select onchange="App.setRole(this.value)" class="bg-surface-bright text-on-surface text-xs border border-outline-variant/50 rounded-full px-3 py-1.5 font-label-md focus:outline-none focus:border-secondary cursor-pointer shadow-sm">
-                <option value="student" ${currentRole === 'student' ? 'selected' : ''}>🎓 Student (Ashutosh)</option>
-                <option value="recruiter" ${currentRole === 'recruiter' ? 'selected' : ''}>💼 Recruiter (Apex Labs)</option>
-                <option value="teamlead" ${currentRole === 'teamlead' ? 'selected' : ''}>👥 Team Organizer</option>
-                <option value="admin" ${currentRole === 'admin' ? 'selected' : ''}>⚖️ Ethics & Bias Auditor</option>
-                <option value="public" ${currentRole === 'public' ? 'selected' : ''}>🔍 Public Verifier</option>
-              </select>
+          <div class="flex items-center gap-2.5">
+            <!-- Bhashini Vernacular Language Selector (Feature C & Step 2) -->
+            <div class="relative flex items-center">
+              <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container-low border border-outline-variant/40 hover:border-secondary transition-all">
+                <span class="material-symbols-outlined text-secondary text-[15px]">translate</span>
+                <select onchange="I18n.setLanguage(this.value)" class="bg-transparent text-primary text-xs font-label-md focus:outline-none cursor-pointer pr-1">
+                  <option value="en" ${(typeof I18n !== 'undefined' && I18n.currentLanguage === 'en') ? 'selected' : ''}>English</option>
+                  <option value="hi" ${(typeof I18n !== 'undefined' && I18n.currentLanguage === 'hi') ? 'selected' : ''}>हिंदी (Hindi)</option>
+                  <option value="or" ${(typeof I18n !== 'undefined' && I18n.currentLanguage === 'or') ? 'selected' : ''}>ଓଡ଼ିଆ (Odia)</option>
+                  <option value="ta" ${(typeof I18n !== 'undefined' && I18n.currentLanguage === 'ta') ? 'selected' : ''}>தமிழ் (Tamil)</option>
+                </select>
+                <span class="hidden md:inline-flex items-center text-[9px] font-bold px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 border border-amber-200 uppercase tracking-tighter" title="Powered by Bhashini AI Engine">
+                  Bhashini AI
+                </span>
+              </div>
             </div>
 
             <!-- Public Verification Badge Link -->
             <a href="#/verify/VP-2026-IND-1042" class="hidden lg:inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-tertiary-fixed/20 text-on-tertiary-fixed-variant border border-tertiary-fixed text-xs font-label-sm hover:bg-tertiary-fixed/30 transition-colors">
               <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">verified</span>
-              Verify #VS-1042
+              <span>${typeof I18n !== 'undefined' ? I18n.t('navbar.verify') : 'Verify #VS-1042'}</span>
             </a>
 
-            <!-- User Avatar & Profile Quick View -->
-            <div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant bg-surface-container-highest cursor-pointer hover:ring-2 hover:ring-secondary transition-all" onclick="App.setRole('student')">
-              <img alt="User profile photo" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSWx0e2-SEWuIEGrXnsvm4ah9oeU6y1aOzAG4Hf9K4yxBpcSVeqnczMjJTZnq0xzbMBMgC8xTk-fai4OeLnjMB_zOat6msJCXv6S2jCT7eD2NGWg388APSwrIDqdYI3tmEU9LXwtWGPjApaWaw-tzeysQUFiiSrvMrkP9P8QAMV7y16_bdAgeXsAE9gCf_mEus3MjgRa-ZbPX38HW7vV6wdz-RuHIOPuawrFMKu4xyLIMr9L2jFZIwIQ"/>
-            </div>
+            <!-- User Auth Menu & Avatar -->
+            ${typeof Auth !== 'undefined' && Auth.isLoggedIn() ? `
+              <div class="relative group flex items-center">
+                <button type="button" class="flex items-center gap-2 px-3 py-1.5 rounded-full border border-outline-variant/50 bg-surface-container hover:bg-surface-container-high transition-all cursor-pointer">
+                  <div class="w-6 h-6 rounded-full bg-primary-container text-on-primary flex items-center justify-center text-[11px] font-bold overflow-hidden">
+                    ${Auth.getSession()?.avatar ? `
+                      <img src="${Auth.getSession().avatar}" class="w-full h-full object-cover" alt="Avatar" />
+                    ` : `
+                      ${(Auth.getSession()?.name || 'User').split(' ').map(n=>n[0]).slice(0,2).join('').toUpperCase()}
+                    `}
+                  </div>
+                  <span class="hidden sm:inline font-label-md text-xs text-primary font-medium max-w-[90px] truncate">
+                    ${(Auth.getSession()?.name || 'User').split(' ')[0]}
+                  </span>
+                  <span class="material-symbols-outlined text-[16px] text-on-surface-variant">expand_more</span>
+                </button>
+                
+                <!-- Dropdown Menu -->
+                <div class="absolute right-0 top-full mt-1.5 w-52 bg-surface-container-lowest rounded-2xl shadow-xl border border-surface-variant/40 p-2 hidden group-hover:block z-50">
+                  <div class="px-3 py-2 border-b border-surface-variant/40 mb-1">
+                    <p class="font-label-md text-xs font-bold text-primary truncate">${Auth.getSession()?.name || 'User'}</p>
+                    <p class="font-body-md text-[11px] text-on-surface-variant truncate">${Auth.getSession()?.email || ''}</p>
+                    <span class="inline-block mt-1 px-2 py-0.5 rounded-full bg-secondary-fixed/50 text-secondary text-[10px] font-label-md capitalize">
+                      ${Auth.getSession()?.role || 'student'}
+                    </span>
+                  </div>
+                  <a href="#/student/dashboard" class="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-label-md text-on-surface-variant hover:bg-surface-container hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined text-[16px]">dashboard</span> ${typeof I18n !== 'undefined' ? I18n.t('navbar.dashboard') : 'Dashboard'}
+                  </a>
+                  <a href="#/student/passport" class="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-label-md text-on-surface-variant hover:bg-surface-container hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined text-[16px]">contact_page</span> ${typeof I18n !== 'undefined' ? I18n.t('navbar.passport') : 'Passport'}
+                  </a>
+                  <button type="button" onclick="App.logout()" class="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-label-md text-error hover:bg-error-container/30 transition-colors cursor-pointer text-left">
+                    <span class="material-symbols-outlined text-[16px]">logout</span> ${typeof I18n !== 'undefined' ? I18n.t('navbar.logout') : 'Log Out'}
+                  </button>
+                </div>
+              </div>
+            ` : `
+              <div class="flex items-center gap-1.5">
+                <button type="button" onclick="App.goToAuth('login')" class="px-3 py-1.5 rounded-full font-label-md text-xs text-on-surface-variant hover:bg-surface-container hover:text-primary transition-all cursor-pointer">
+                  ${typeof I18n !== 'undefined' ? I18n.t('navbar.login') : 'Log In'}
+                </button>
+                <button type="button" onclick="App.goToAuth('signup')" class="px-3.5 py-1.5 rounded-full font-label-md text-xs bg-primary-container text-on-primary hover:bg-primary transition-all cursor-pointer shadow-sm">
+                  ${typeof I18n !== 'undefined' ? I18n.t('navbar.signup') : 'Sign Up'}
+                </button>
+              </div>
+            `}
           </div>
         </div>
 
