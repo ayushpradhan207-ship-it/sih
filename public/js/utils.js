@@ -13,10 +13,11 @@ const Utils = {
         ...options,
         headers: { ...defaultHeaders, ...options.headers }
       });
-      if (res.ok) {
+      const contentType = res.headers.get("content-type") || "";
+      if (res.ok && contentType.includes("json")) {
         return await res.json();
       }
-      console.warn(`[Utils.fetchAPI] HTTP ${res.status} on ${endpoint}, activating local state fallback.`);
+      console.warn(`[Utils.fetchAPI] Non-JSON or error status (HTTP ${res.status}, ${contentType}) on ${endpoint}, activating local state fallback.`);
     } catch (err) {
       console.warn(`[Utils.fetchAPI] Network unreachable on ${endpoint}, activating local state fallback.`);
     }
@@ -33,6 +34,342 @@ const Utils = {
     const name = session.name || "Ashutosh Pradhan";
     const studentId = session.studentId || "student-1042";
 
+    // Auth Login & Signup fallback for static deployments
+    if (endpoint === "/api/auth/login") {
+      let body = {};
+      try {
+        body = typeof options.body === "string" ? JSON.parse(options.body) : (options.body || {});
+      } catch (e) {}
+      const email = body.email || "student@veriskill.demo";
+      let user = null;
+      if (email === "student@veriskill.demo") {
+        user = {
+          isDemo: true,
+          role: "student",
+          studentId: "student-1042",
+          anonymizedId: "VS-1042",
+          name: "Aarav Sharma",
+          email: "student@veriskill.demo",
+          passportId: "VP-2026-IND-1042",
+          ncrfCredits: 4.5,
+          overallScore: 84,
+          trustScore: 87,
+          verifiedSkillsCount: 17,
+          hasSyncedDigiLocker: true
+        };
+      } else if (email === "recruiter@veriskill.demo") {
+        user = {
+          isDemo: true,
+          role: "recruiter",
+          recruiterId: "rec-apex-01",
+          name: "Dr. Vikram Malhotra",
+          email: "recruiter@veriskill.demo",
+          company: "Apex Neural Labs"
+        };
+      } else {
+        const derivedName = email.includes("@") ? email.split("@")[0].replace(/[._]/g, " ").replace(/\b\w/g, l => l.toUpperCase()) : email;
+        user = {
+          isDemo: false,
+          role: "student",
+          studentId: "user-1042",
+          anonymizedId: "VS-1042",
+          name: email.includes("@") ? derivedName : email,
+          email: email.includes("@") ? email : `${email.toLowerCase().replace(/\s+/g, '')}@veriskill.demo`,
+          passportId: "VP-2026-IND-1042",
+          ncrfCredits: 0,
+          overallScore: 0,
+          trustScore: 0,
+          verifiedSkillsCount: 0,
+          hasSyncedDigiLocker: false
+        };
+      }
+      return {
+        success: true,
+        token: `jwt-auth-${user.role}-${Date.now()}`,
+        user: user
+      };
+    }
+
+    if (endpoint === "/api/auth/signup") {
+      let body = {};
+      try {
+        body = typeof options.body === "string" ? JSON.parse(options.body) : (options.body || {});
+      } catch (e) {}
+      const user = {
+        isDemo: false,
+        role: body.role || "student",
+        studentId: "user-1042",
+        anonymizedId: "VS-1042",
+        name: body.fullName || "Ashutosh Pradhan",
+        email: body.email || "student@veriskill.demo",
+        passportId: "VP-2026-IND-1042",
+        ncrfCredits: 0,
+        overallScore: 0,
+        trustScore: 0,
+        verifiedSkillsCount: 0,
+        hasSyncedDigiLocker: false
+      };
+      return {
+        success: true,
+        token: `jwt-signup-${user.role}-${Date.now()}`,
+        user: user
+      };
+    }
+
+    // Standard Match Contract Template
+    const mlMatchContract = {
+      candidateId: studentId,
+      anonymizedId: session.anonymizedId || "VS-1042",
+      opportunityId: "opp-ml-intern",
+      opportunityTitle: "Machine Learning Intern",
+      company: "Apex Neural Labs",
+      matchScore: 91,
+      scoreBreakdown: {
+        coverageScore: 94,
+        semanticScore: 92,
+        evidenceStrengthScore: 89,
+        experienceScore: 88,
+        projectAlignmentScore: 93
+      },
+      matchedSkills: [
+        {
+          name: "Python",
+          requiredLevel: "Advanced",
+          candidateLevel: "Advanced",
+          confidence: 92,
+          verificationMultiplier: 1,
+          alignmentScore: 95,
+          verificationStatus: "VERIFIED",
+          isVerified: true,
+          proofHash: "sha256:7a9e1c3f5d7b9a1c3e5f7a9b1d3f5e7a9b1c3d5e7f9a1b3c5d7e9f1a3b5c7d9e",
+          evidenceCount: 5
+        },
+        {
+          name: "Machine Learning",
+          requiredLevel: "Advanced",
+          candidateLevel: "Advanced",
+          confidence: 88,
+          verificationMultiplier: 1,
+          alignmentScore: 93,
+          verificationStatus: "VERIFIED",
+          isVerified: true,
+          proofHash: "sha256:7b12c4e9f08a34d567890123456789abcdef0123456789abcdef0123456789ab",
+          evidenceCount: 4
+        },
+        {
+          name: "SQL",
+          requiredLevel: "Intermediate",
+          candidateLevel: "Intermediate",
+          confidence: 79,
+          verificationMultiplier: 1,
+          alignmentScore: 87,
+          verificationStatus: "VERIFIED",
+          isVerified: true,
+          proofHash: "sha256:1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+          evidenceCount: 3
+        },
+        {
+          name: "PyTorch",
+          requiredLevel: "Intermediate",
+          candidateLevel: "Intermediate",
+          confidence: 76,
+          verificationMultiplier: 1,
+          alignmentScore: 86,
+          verificationStatus: "VERIFIED",
+          isVerified: true,
+          proofHash: "sha256:fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+          evidenceCount: 2
+        }
+      ],
+      missingSkills: [
+        {
+          name: "Docker",
+          candidateLevel: "Beginner",
+          requiredLevel: "Intermediate",
+          gapSeverity: "Medium",
+          importance: "Preferred Skill",
+          remediationAction: "Complete containerization mini-project for ML inference APIs",
+          bridgeAction: {
+            title: "Lab: Docker Container & Cloud Deployment",
+            type: "Cloud Lab",
+            estimatedHours: 5,
+            rewardConfidence: "+40% Skill Confidence"
+          }
+        },
+        {
+          name: "AWS",
+          candidateLevel: "None",
+          requiredLevel: "Intermediate",
+          gapSeverity: "High",
+          importance: "Preferred Skill",
+          remediationAction: "Deploy existing PyTorch model using AWS SageMaker / ECS",
+          bridgeAction: {
+            title: "Lab: AWS Container & Cloud Deployment",
+            type: "Cloud Lab",
+            estimatedHours: 5,
+            rewardConfidence: "+40% Skill Confidence"
+          }
+        }
+      ],
+      recommendations: [
+        "Candidate demonstrates high verified competence across all core role requirements (Python, Machine Learning, SQL, PyTorch).",
+        "Recommended Next Step: Complete containerization mini-project for ML inference APIs"
+      ],
+      verifiedSkillsCount: 16,
+      relevantProjectsCount: 3,
+      trustScore: 87,
+      generatedAt: new Date().toISOString()
+    };
+
+    const fullstackMatchContract = {
+      candidateId: studentId,
+      anonymizedId: session.anonymizedId || "VS-1042",
+      opportunityId: "opp-fullstack-ai",
+      opportunityTitle: "Full Stack AI Engineer Intern",
+      company: "NeuroTech Solutions",
+      matchScore: 85,
+      scoreBreakdown: {
+        coverageScore: 88,
+        semanticScore: 86,
+        evidenceStrengthScore: 84,
+        experienceScore: 82,
+        projectAlignmentScore: 85
+      },
+      matchedSkills: [
+        { name: "TypeScript", alignmentScore: 88, confidence: 80, verificationStatus: "VERIFIED", isVerified: true },
+        { name: "Node.js", alignmentScore: 86, confidence: 78, verificationStatus: "VERIFIED", isVerified: true }
+      ],
+      missingSkills: [
+        {
+          name: "Tailwind CSS",
+          candidateLevel: "Beginner",
+          requiredLevel: "Intermediate",
+          gapSeverity: "Low",
+          importance: "Preferred Skill",
+          remediationAction: "Refactor component styles using Tailwind utility classes"
+        }
+      ],
+      recommendations: ["Strong verified codebase engineering credentials."],
+      verifiedSkillsCount: 14,
+      relevantProjectsCount: 2,
+      trustScore: 85,
+      generatedAt: new Date().toISOString()
+    };
+
+    const dataAnalystMatchContract = {
+      candidateId: studentId,
+      anonymizedId: session.anonymizedId || "VS-1042",
+      opportunityId: "opp-data-analyst",
+      opportunityTitle: "Data Science & Analytics Intern",
+      company: "Quantum Insights AI",
+      matchScore: 82,
+      scoreBreakdown: {
+        coverageScore: 85,
+        semanticScore: 84,
+        evidenceStrengthScore: 80,
+        experienceScore: 80,
+        projectAlignmentScore: 82
+      },
+      matchedSkills: [
+        { name: "Python", alignmentScore: 92, confidence: 90, verificationStatus: "VERIFIED", isVerified: true },
+        { name: "SQL", alignmentScore: 85, confidence: 79, verificationStatus: "VERIFIED", isVerified: true }
+      ],
+      missingSkills: [],
+      recommendations: ["Excellent analytical credentials with verified mathematical problem solving."],
+      verifiedSkillsCount: 12,
+      relevantProjectsCount: 2,
+      trustScore: 84,
+      generatedAt: new Date().toISOString()
+    };
+
+    // 1. Candidate Matches Endpoint: /api/matches/candidate/:id
+    if (endpoint.includes("/matches/candidate")) {
+      return [mlMatchContract, fullstackMatchContract, dataAnalystMatchContract];
+    }
+
+    // 2. Single Match Endpoint: /api/match or /api/matches/:studentId/:oppId
+    if (endpoint.startsWith("/api/match") && !endpoint.includes("/opportunity")) {
+      if (endpoint.includes("opp-fullstack-ai")) return fullstackMatchContract;
+      if (endpoint.includes("opp-data-analyst")) return dataAnalystMatchContract;
+      return mlMatchContract;
+    }
+
+    // 3. Recruiter Candidate Ranking: /api/matches/opportunity/:oppId
+    if (endpoint.includes("/matches/opportunity")) {
+      return {
+        opportunity: {
+          id: "opp-ml-intern",
+          title: "Machine Learning Intern",
+          company: "Apex Neural Labs",
+          location: "Bangalore / Remote",
+          stipend: "₹45,000 / month",
+          description: "Join our Core Applied AI research group to engineer robust clinical prediction models."
+        },
+        attributeBlindStatus: "ACTIVE (Name, photo, gender, age, institution masked)",
+        candidates: [
+          {
+            candidateId: "student-1042",
+            anonymizedId: "VS-1042",
+            passportId: "VP-2026-IND-1042",
+            matchScore: 91,
+            scoreBreakdown: { coverageScore: 94, semanticScore: 92, evidenceStrengthScore: 89, experienceScore: 88, projectAlignmentScore: 93 },
+            matchedSkills: ["Python", "Machine Learning", "SQL", "PyTorch"],
+            missingSkills: ["Docker", "AWS"],
+            verifiedSkillsCount: 16,
+            relevantProjectsCount: 3,
+            trustScore: 87,
+            isBlindMode: true
+          },
+          {
+            candidateId: "student-2048",
+            anonymizedId: "VS-2048",
+            passportId: "VP-2026-IND-2048",
+            matchScore: 87,
+            scoreBreakdown: { coverageScore: 90, semanticScore: 88, evidenceStrengthScore: 85, experienceScore: 82, projectAlignmentScore: 88 },
+            matchedSkills: ["Python", "Machine Learning", "SQL"],
+            missingSkills: ["PyTorch", "Docker"],
+            verifiedSkillsCount: 14,
+            relevantProjectsCount: 2,
+            trustScore: 84,
+            isBlindMode: true
+          }
+        ]
+      };
+    }
+
+    // 4. Opportunities List or Single Opportunity
+    if (endpoint.startsWith("/api/opportunities")) {
+      if (endpoint.includes("opp-fullstack-ai")) {
+        return {
+          id: "opp-fullstack-ai",
+          title: "Full Stack AI Engineer Intern",
+          company: "NeuroTech Solutions",
+          location: "Remote",
+          stipend: "₹40,000 / month",
+          description: "Collaborate directly with senior architects to build responsive real-time web applications."
+        };
+      }
+      if (endpoint.includes("opp-data-analyst")) {
+        return {
+          id: "opp-data-analyst",
+          title: "Data Science & Analytics Intern",
+          company: "Quantum Insights AI",
+          location: "Hyderabad / Hybrid",
+          stipend: "₹35,000 / month",
+          description: "Perform statistical analysis and build predictive risk models."
+        };
+      }
+      return {
+        id: "opp-ml-intern",
+        title: "Machine Learning Intern",
+        company: "Apex Neural Labs",
+        location: "Bangalore / Remote",
+        stipend: "₹45,000 / month",
+        description: "Join our Core Applied AI research group to engineer robust clinical prediction models."
+      };
+    }
+
+    // 5. Passport & Student Profile
     if (endpoint.includes("/passport")) {
       return {
         passportId: session.passportId || "VP-2026-IND-1042",
@@ -84,54 +421,52 @@ const Utils = {
       };
     }
 
-    if (endpoint.includes("/opportunities")) {
-      return [
-        {
-          id: "opp-ml-intern",
-          title: "Machine Learning Research Intern",
-          company: "DeepMind / EdTech Labs",
-          location: "Bengaluru, India (Hybrid)",
-          matchScore: 92,
-          stipend: "₹45,000 / month",
-          requiredSkills: ["Python", "Machine Learning", "PyTorch"],
-          description: "Develop explainable matching models and verifiable credential verification engines."
-        },
-        {
-          id: "opp-fullstack-dev",
-          title: "Full-Stack React Engineer",
-          company: "VeriSkill Open Consortium",
-          location: "Remote",
-          matchScore: 88,
-          stipend: "₹50,000 / month",
-          requiredSkills: ["React", "JavaScript", "Node.js"],
-          description: "Build high-trust cryptographic credential passports with WCAG accessibility."
-        }
-      ];
-    }
-
+    // 6. Fairness & Audit
     if (endpoint.includes("/fairness") || endpoint.includes("/audit")) {
       return {
-        disparateImpactRatio: 0.94,
-        status: "PASSED (Four-Fifths Rule Compliant)",
-        protectedAttributesIsolated: true,
-        auditTimestamp: new Date().toISOString(),
-        demographicParity: "Optimal (0.94 > 0.80 standard)"
+        status: "PASSED",
+        metrics: {
+          disparateImpactRatio: 0.94,
+          demographicParity: "Optimal (0.94 > 0.80 standard)",
+          protectedAttributesIsolated: true,
+          auditTimestamp: new Date().toISOString()
+        },
+        logs: [
+          { timestamp: new Date().toISOString(), action: "DISPARATE_IMPACT_AUDIT", status: "PASSED", ratio: 0.94 },
+          { timestamp: new Date().toISOString(), action: "ATTRIBUTE_BLIND_MASKING", status: "ACTIVE", fieldsMasked: 8 }
+        ]
       };
     }
 
+    // 7. Team Formation Projects & Solver
     if (endpoint.includes("/teams")) {
+      if (endpoint.includes("projects")) {
+        return [
+          {
+            id: "team-proj-healthcare",
+            title: "AI Healthcare Diagnostics & Clinical Triage Platform",
+            domain: "Healthcare / AI",
+            requiredRoles: [
+              { roleName: "AI/ML Lead", minSkills: ["Python", "Machine Learning", "PyTorch"] },
+              { roleName: "Full-Stack UI Engineer", minSkills: ["React", "TypeScript", "Tailwind CSS"] },
+              { roleName: "Systems & Security Architect", minSkills: ["System Design", "Node.js", "Cryptography"] }
+            ]
+          }
+        ];
+      }
       return {
         teamName: "SOA AI Innovation Squad",
         complementarityScore: 94,
         coverageRate: "94% Skill Coverage",
         members: [
-          { name: "Aarav Sharma", role: "AI/ML Lead", score: 92 },
-          { name: "Priya Patel", role: "Full-Stack Engineer", score: 89 },
-          { name: "Rohan Verma", role: "Systems Architect", score: 88 }
+          { name: "Aarav Sharma", role: "AI/ML Lead", score: 92, verifiedSkills: ["Python", "Machine Learning", "PyTorch"] },
+          { name: "Priya Patel", role: "Full-Stack UI Engineer", score: 89, verifiedSkills: ["React", "TypeScript", "Tailwind CSS"] },
+          { name: "Rohan Verma", role: "Systems & Security Architect", score: 88, verifiedSkills: ["System Design", "Node.js", "Cryptography"] }
         ]
       };
     }
 
+    // 8. Vision-AI Certificate Verification Scan
     if (endpoint.includes("/verify/scan")) {
       return {
         success: true,

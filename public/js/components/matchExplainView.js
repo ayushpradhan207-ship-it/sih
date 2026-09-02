@@ -4,11 +4,17 @@
 
 const MatchExplainView = {
   async render(opportunityId = "opp-ml-intern", studentId = "student-1042") {
-    const match = await Utils.fetchAPI("/api/match", {
+    const rawMatch = await Utils.fetchAPI("/api/match", {
       method: "POST",
       body: JSON.stringify({ studentId, opportunityId })
     });
-    const opp = await Utils.fetchAPI(`/api/opportunities/${opportunityId}`);
+    const match = (rawMatch && typeof rawMatch === "object" && !Array.isArray(rawMatch))
+      ? (rawMatch.match || rawMatch.data || rawMatch)
+      : (Array.isArray(rawMatch) ? rawMatch[0] : {});
+    const rawOpp = await Utils.fetchAPI(`/api/opportunities/${opportunityId}`);
+    const opp = (rawOpp && typeof rawOpp === "object" && !Array.isArray(rawOpp))
+      ? (rawOpp.opportunity || rawOpp.data || rawOpp)
+      : (Array.isArray(rawOpp) ? rawOpp.find(o => o.id === opportunityId) || rawOpp[0] : {});
     const breakdown = match.scoreBreakdown || {};
 
     return `

@@ -4,8 +4,10 @@
 
 const FairnessAuditView = {
   async render() {
-    const auditData = await Utils.fetchAPI("/api/audit/fairness");
-    const logs = await Utils.fetchAPI("/api/audit/logs");
+    const rawAuditData = await Utils.fetchAPI("/api/audit/fairness");
+    const auditData = (rawAuditData && typeof rawAuditData === "object") ? (rawAuditData.data || rawAuditData) : { status: "PASSED", metrics: {} };
+    const rawLogs = await Utils.fetchAPI("/api/audit/logs");
+    const logs = Array.isArray(rawLogs) ? rawLogs : (Array.isArray(rawLogs?.logs) ? rawLogs.logs : []);
     const metrics = auditData.metrics || {};
 
     return `

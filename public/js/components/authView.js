@@ -413,14 +413,13 @@ const AuthView = {
     }
 
     try {
-      const res = await fetch('/api/auth/login', {
+      const data = await Utils.fetchAPI('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
       });
-      const data = await res.json();
-      if (!data.success) {
-        throw new Error(data.error || 'Authentication failed. Please check credentials.');
+      if (!data || !data.success) {
+        throw new Error(data?.error || 'Authentication failed. Please check credentials.');
       }
 
       Auth.setSession(data.user, data.token, rememberMe);
@@ -493,14 +492,13 @@ const AuthView = {
     }
 
     try {
-      const res = await fetch('/api/auth/signup', {
+      const data = await Utils.fetchAPI('/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ fullName, email, password, role })
       });
-      const data = await res.json();
-      if (!data.success) {
-        throw new Error(data.error || 'Registration failed.');
+      if (!data || !data.success) {
+        throw new Error(data?.error || 'Registration failed.');
       }
 
       Auth.setSession(data.user, data.token, true);

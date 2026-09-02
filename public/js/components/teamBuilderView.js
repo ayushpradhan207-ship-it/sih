@@ -4,12 +4,16 @@
 
 const TeamBuilderView = {
   async render(projectId = "team-proj-healthcare") {
-    const projects = await Utils.fetchAPI("/api/teams/projects");
-    const activeProject = projects.find(p => p.id === projectId) || projects[0];
-    const teamResult = await Utils.fetchAPI("/api/teams/generate", {
+    const rawProjects = await Utils.fetchAPI("/api/teams/projects");
+    const projects = Array.isArray(rawProjects)
+      ? rawProjects
+      : (Array.isArray(rawProjects?.projects) ? rawProjects.projects : (Array.isArray(rawProjects?.data) ? rawProjects.data : []));
+    const activeProject = projects.find(p => p.id === projectId) || projects[0] || { id: "team-proj-healthcare", title: "AI Healthcare Diagnostics & Clinical Triage Platform" };
+    const rawTeamResult = await Utils.fetchAPI("/api/teams/generate", {
       method: "POST",
       body: JSON.stringify({ projectId: activeProject.id })
     });
+    const teamResult = (rawTeamResult && typeof rawTeamResult === "object") ? (rawTeamResult.data || rawTeamResult) : {};
 
     const isBiasMitigationActive = App.state.biasMode !== false;
 

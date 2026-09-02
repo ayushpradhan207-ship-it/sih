@@ -66,9 +66,9 @@ function sendJSON(res, statusCode, data) {
 }
 
 /**
- * Main HTTP Server
+ * Main HTTP Server / Vercel Serverless Request Handler
  */
-const server = http.createServer(async (req, res) => {
+const requestHandler = async (req, res) => {
   const parsedUrl = url.parse(req.url, true);
   const pathname = parsedUrl.pathname;
   const method = req.method;
@@ -975,11 +975,19 @@ const server = http.createServer(async (req, res) => {
       res.end(content);
     });
   });
-});
+};
 
-server.listen(PORT, () => {
-  console.log(`=======================================================`);
-  console.log(`🚀 VeriSkill Platform Server running on http://localhost:${PORT}`);
-  console.log(`🎓 User Input Friendly & Enhanced API Activated`);
-  console.log(`=======================================================`);
-});
+const server = http.createServer(requestHandler);
+
+if (require.main === module) {
+  server.listen(PORT, () => {
+    console.log(`=======================================================`);
+    console.log(`🚀 VeriSkill Platform Server running on http://localhost:${PORT}`);
+    console.log(`🎓 User Input Friendly & Enhanced API Activated`);
+    console.log(`=======================================================`);
+  });
+}
+
+module.exports = requestHandler;
+module.exports.server = server;
+module.exports.requestHandler = requestHandler;

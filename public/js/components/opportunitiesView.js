@@ -4,7 +4,14 @@
 
 const OpportunitiesView = {
   async render(studentId = "student-1042") {
-    const matches = await Utils.fetchAPI(`/api/matches/candidate/${studentId}`);
+    const rawMatches = await Utils.fetchAPI(`/api/matches/candidate/${studentId}`);
+    const matches = Array.isArray(rawMatches)
+      ? rawMatches
+      : Array.isArray(rawMatches?.matches)
+        ? rawMatches.matches
+        : Array.isArray(rawMatches?.data)
+          ? rawMatches.data
+          : [];
 
     return `
       <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop pt-24 md:pt-28 pb-section-gap flex flex-col gap-stack-lg min-h-screen">

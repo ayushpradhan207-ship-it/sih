@@ -5,8 +5,10 @@
 const CandidateRankView = {
   async render(opportunityId = "opp-ml-intern") {
     const data = await Utils.fetchAPI(`/api/matches/opportunity/${opportunityId}`);
-    const candidates = data.candidates || [];
-    const opp = data.opportunity || {};
+    const candidates = Array.isArray(data?.candidates)
+      ? data.candidates
+      : (Array.isArray(data) ? data : []);
+    const opp = data?.opportunity || {};
 
     const isBiasMitigationActive = App.state.biasMode !== false; // default true
 
