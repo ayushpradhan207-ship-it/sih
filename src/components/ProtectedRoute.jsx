@@ -16,14 +16,7 @@ export const ProtectedRoute = ({ children, requiredRole = null }) => {
     session = null;
   }
 
-  if (!token || !session) {
-    return <Navigate to="/auth" replace />;
-  }
-
-  if (requiredRole && session.role !== requiredRole && session.role !== 'admin') {
-    return <Navigate to="/student/dashboard" replace />;
-  }
-
+  // Under the Guest-First access model, allow free exploration for all visitors
   return children;
 };
 

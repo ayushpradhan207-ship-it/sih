@@ -75,15 +75,19 @@ const StudentDashboardView = {
                 <span class="px-2.5 py-0.5 rounded-full bg-secondary-fixed/50 text-secondary text-[11px] font-label-md font-bold uppercase tracking-wider">
                   ${typeof I18n !== 'undefined' ? I18n.t('dashboard.sihBadge') : '🇮🇳 Smart India Hackathon 2026 Edition'}
                 </span>
-                ${isRealUser ? `
-                  <span class="px-2 py-0.5 rounded-full bg-primary-container text-on-primary text-[10px] font-label-md font-bold">
-                    Authenticated User
-                  </span>
-                ` : `
+                ${isDemo ? `
                   <span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-300 text-[10px] font-label-md font-bold">
                     Demo Tour Mode
                   </span>
-                `}
+                ` : (session?.isGuest ? `
+                  <span class="px-2.5 py-0.5 rounded-full bg-secondary-fixed/50 text-secondary border border-secondary-fixed text-[10px] font-label-md font-bold flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[13px]">person_check</span> Guest Explorer
+                  </span>
+                ` : `
+                  <span class="px-2.5 py-0.5 rounded-full bg-primary-container text-on-primary text-[10px] font-label-md font-bold">
+                    Authenticated User
+                  </span>
+                `)}
               </div>
               <h1 class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-primary font-bold">
                 ${typeof I18n !== 'undefined' ? I18n.t('dashboard.greeting') : 'Good day'}, ${userName}.
@@ -114,7 +118,7 @@ const StudentDashboardView = {
           </div>
         </section>
 
-        <!-- Fresh User Empty State UI Card (MODE B) -->
+        <!-- Fresh User / Guest Empty State UI Card (MODE B) -->
         ${isFreshUser ? `
           <div class="p-8 bg-surface-container-lowest rounded-3xl border border-secondary/30 shadow-[0_8px_30px_rgba(0,0,0,0.06)] text-center flex flex-col items-center justify-center gap-4 relative overflow-hidden">
             <div class="absolute -right-10 -top-10 w-48 h-48 bg-secondary/10 rounded-full blur-3xl pointer-events-none"></div>
@@ -123,10 +127,10 @@ const StudentDashboardView = {
             </div>
             <div class="max-w-lg space-y-1.5">
               <h2 class="font-headline-md text-xl font-bold text-primary">
-                ${typeof I18n !== 'undefined' ? I18n.t('dashboard.emptyStateTitle') : 'No credentials uploaded yet'}
+                ${typeof I18n !== 'undefined' ? I18n.t('dashboard.emptyStateTitle') : 'Welcome! Explore VeriSkill features freely'}
               </h2>
               <p class="font-body-md text-xs md:text-sm text-on-surface-variant leading-relaxed">
-                ${typeof I18n !== 'undefined' ? I18n.t('dashboard.emptyStateSub') : 'Click "Import from DigiLocker" or upload a certificate to begin your verifiable skill journey.'}
+                ${typeof I18n !== 'undefined' ? I18n.t('dashboard.emptyStateSub') : 'Upload your certificates, link DigiLocker below, or test our AI integrity scan without logging in.'}
               </p>
             </div>
             <div class="flex flex-wrap items-center justify-center gap-3 mt-2">

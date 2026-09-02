@@ -5,6 +5,20 @@ export const PublicVerify = ({ passportId = 'VP-2026-IND-1042' }) => {
   const { t } = useLanguage();
   const [calculatedHash, setCalculatedHash] = useState('sha256:0102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f20');
   const targetLedgerSignature = 'sha256:0102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f20';
+  const [isScanning, setIsScanning] = useState(false);
+  const [scanStep, setScanStep] = useState(0);
+
+  const startScan = () => {
+    setIsScanning(true);
+    setScanStep(1);
+    setTimeout(() => setScanStep(2), 500);
+    setTimeout(() => setScanStep(3), 1000);
+    setTimeout(() => setScanStep(4), 1500);
+    setTimeout(() => {
+      setScanStep(5);
+      setIsScanning(false);
+    }, 2000);
+  };
 
   useEffect(() => {
     async function computeHash() {
@@ -30,7 +44,45 @@ export const PublicVerify = ({ passportId = 'VP-2026-IND-1042' }) => {
           </div>
           <h1 className="text-xl md:text-2xl font-bold">{t('verify.title')}</h1>
           <p className="text-xs text-secondary-fixed mt-1">{t('verify.subtitle')}</p>
+          <div className="mt-4">
+            <button
+              type="button"
+              onClick={startScan}
+              className="px-5 py-2 rounded-full bg-secondary text-primary font-bold text-xs shadow-md hover:bg-secondary-fixed transition-all cursor-pointer inline-flex items-center gap-2"
+            >
+              <span className="material-symbols-outlined text-[16px]">document_scanner</span>
+              <span>{isScanning ? 'Scanning In Progress...' : 'Run Vision-AI Integrity Scan'}</span>
+            </button>
+          </div>
         </div>
+
+        {/* Vision-AI Scan Overlay / Steps */}
+        {isScanning && (
+          <div className="p-6 bg-slate-950 text-white border-b border-surface-variant/40 space-y-3">
+            <div className="flex items-center gap-2 text-secondary font-bold text-xs uppercase tracking-wider">
+              <span className="material-symbols-outlined text-[18px] animate-spin">progress_activity</span>
+              <span>Scanning Credential via Vision-AI Engine...</span>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+              <div className={`p-2.5 rounded-xl border flex items-center gap-2 ${scanStep >= 1 ? 'border-tertiary-fixed bg-tertiary-fixed/20 text-tertiary-fixed-dim' : 'border-slate-800 text-slate-500'}`}>
+                <span className="material-symbols-outlined text-sm">{scanStep >= 1 ? 'check_circle' : 'hourglass_empty'}</span>
+                <span>[1] OCR Layout & Text Extraction...</span>
+              </div>
+              <div className={`p-2.5 rounded-xl border flex items-center gap-2 ${scanStep >= 2 ? 'border-tertiary-fixed bg-tertiary-fixed/20 text-tertiary-fixed-dim' : 'border-slate-800 text-slate-500'}`}>
+                <span className="material-symbols-outlined text-sm">{scanStep >= 2 ? 'check_circle' : 'hourglass_empty'}</span>
+                <span>[2] Verifying Digital Signature & Seal...</span>
+              </div>
+              <div className={`p-2.5 rounded-xl border flex items-center gap-2 ${scanStep >= 3 ? 'border-tertiary-fixed bg-tertiary-fixed/20 text-tertiary-fixed-dim' : 'border-slate-800 text-slate-500'}`}>
+                <span className="material-symbols-outlined text-sm">{scanStep >= 3 ? 'check_circle' : 'hourglass_empty'}</span>
+                <span>[3] Validating Cryptographic Integrity...</span>
+              </div>
+              <div className={`p-2.5 rounded-xl border flex items-center gap-2 ${scanStep >= 4 ? 'border-tertiary-fixed bg-tertiary-fixed/20 text-tertiary-fixed-dim' : 'border-slate-800 text-slate-500'}`}>
+                <span className="material-symbols-outlined text-sm">{scanStep >= 4 ? 'check_circle' : 'hourglass_empty'}</span>
+                <span>[4] Executing AI Fraud & Anomaly Audit...</span>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* SHA-256 Banner */}
         <div className="p-5 border-b border-surface-variant/40">

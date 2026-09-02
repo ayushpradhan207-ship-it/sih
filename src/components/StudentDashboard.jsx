@@ -34,6 +34,9 @@ export const StudentDashboard = () => {
     reader.onload = async (event) => {
       const base64 = event.target.result;
       updateProfile({ avatar: base64 });
+      try {
+        localStorage.setItem('veriskill_user_session', JSON.stringify({ ...(currentUser || {}), avatar: base64 }));
+      } catch (e) {}
 
       // Call backend API
       fetch('/api/auth/avatar', {

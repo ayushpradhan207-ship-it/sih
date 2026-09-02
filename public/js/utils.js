@@ -244,14 +244,38 @@ const Auth = {
   },
 
   /**
-   * Get current session
+   * Default Guest User profile for guest-first access
+   */
+  getGuestUser() {
+    return {
+      isDemo: false,
+      isGuest: true,
+      role: 'student',
+      studentId: 'guest-user',
+      anonymizedId: 'VS-GUEST',
+      name: 'Guest Student',
+      email: '',
+      passportId: 'VP-2026-IND-GUEST',
+      ncrfCredits: 0,
+      overallScore: 0,
+      trustScore: 0,
+      verifiedSkillsCount: 0,
+      hasSyncedDigiLocker: false,
+      skills: [],
+      evidenceList: []
+    };
+  },
+
+  /**
+   * Get current session (returns stored user or default Guest profile)
    */
   getSession() {
     try {
       const raw = localStorage.getItem(Auth.SESSION_KEY) || sessionStorage.getItem(Auth.SESSION_KEY);
-      return raw ? JSON.parse(raw) : null;
+      if (raw) return JSON.parse(raw);
+      return Auth.getGuestUser();
     } catch {
-      return null;
+      return Auth.getGuestUser();
     }
   },
 
@@ -278,12 +302,18 @@ const Auth = {
   },
 
   /**
-   * Check if user is logged in
+   * Check if user is explicitly authenticated (not guest)
    */
   isLoggedIn() {
-    const session = Auth.getSession();
-    const token = Auth.getToken();
-    return !!(session && token);
+    try {
+      const raw = localStorage.getItem(Auth.SESSION_KEY) || sessionStorage.getItem(Auth.SESSION_KEY);
+      const token = Auth.getToken();
+      if (!raw || !token) return false;
+      const parsed = JSON.parse(raw);
+      return !parsed.isGuest;
+    } catch {
+      return false;
+    }
   },
 
   /**

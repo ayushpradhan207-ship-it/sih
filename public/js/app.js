@@ -264,14 +264,9 @@ const App = {
     if (!appRoot) return;
 
     try {
-      // 1. Protected Route Guard (Security Enforcement)
-      const isProtected = path.startsWith("/student/") || path.startsWith("/admin") || path.startsWith("/recruiter/") || path.startsWith("/teams");
-      if (isProtected && typeof Auth !== "undefined" && !Auth.isLoggedIn()) {
-        Utils.showToast("🔒 Protected Route: Authentication required. Redirecting to login...", "error");
-        this._authMode = "login";
-        this._postLoginRedirect = path;
-        window.location.hash = "#/auth";
-        return;
+      // Guest-first access: set session user if available or initialize as guest
+      if (typeof Auth !== "undefined" && !this.state.currentUser) {
+        this.state.currentUser = Auth.getSession();
       }
 
       if (path === "/auth") {

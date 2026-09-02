@@ -114,12 +114,20 @@ export const Login = () => {
           <button
             type="button"
             onClick={handleDemoLogin}
-            className="w-full py-2.5 rounded-full bg-secondary-fixed/40 hover:bg-secondary-fixed/60 text-secondary text-xs font-bold border border-secondary-fixed transition-all cursor-pointer"
+            className="w-full py-2.5 rounded-full bg-secondary-fixed/40 hover:bg-secondary-fixed/60 text-secondary text-xs font-bold border border-secondary-fixed transition-all cursor-pointer flex items-center justify-center gap-1.5"
           >
-            Launch Demo Tour Mode (Aarav Sharma)
+            <span className="material-symbols-outlined text-[16px]">play_circle</span>
+            <span>Launch Demo Tour Mode (Aarav Sharma)</span>
           </button>
 
-          <p className="text-center text-xs text-on-surface-variant">
+          <a
+            href="#/student/dashboard"
+            className="w-full py-2.5 rounded-full bg-surface-container hover:bg-surface-container-high text-primary text-xs font-bold border border-outline-variant/30 transition-all text-center block"
+          >
+            Continue as Guest (Free Explore)
+          </a>
+
+          <p className="text-center text-xs text-on-surface-variant pt-1">
             {isSignup ? 'Already have an account?' : "Don't have an account?"}{' '}
             <button
               type="button"

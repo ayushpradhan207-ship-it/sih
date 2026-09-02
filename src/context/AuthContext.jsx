@@ -16,13 +16,31 @@ const DEMO_USER = {
   verifiedSkillsCount: 17
 };
 
+const GUEST_USER = {
+  isDemo: false,
+  isGuest: true,
+  role: "student",
+  studentId: "guest-user",
+  anonymizedId: "VS-GUEST",
+  name: "Guest Student",
+  email: "",
+  passportId: "VP-2026-IND-GUEST",
+  ncrfCredits: 0,
+  overallScore: 0,
+  trustScore: 0,
+  verifiedSkillsCount: 0,
+  hasSyncedDigiLocker: false,
+  skills: [],
+  evidenceList: []
+};
+
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(() => {
     try {
       const saved = localStorage.getItem('veriskill_session') || sessionStorage.getItem('veriskill_session');
-      return saved ? JSON.parse(saved) : null;
+      return saved ? JSON.parse(saved) : GUEST_USER;
     } catch {
-      return null;
+      return GUEST_USER;
     }
   });
 
@@ -49,10 +67,11 @@ export const AuthProvider = ({ children }) => {
   const login = (userData, authToken, remember = true) => {
     const realUser = {
       isDemo: false,
+      isGuest: false,
       role: userData.role || 'student',
       studentId: userData.studentId || `user-${Date.now()}`,
       anonymizedId: userData.anonymizedId || `VS-${Math.floor(1000 + Math.random() * 9000)}`,
-      name: userData.name || userData.fullName || 'User',
+      name: userData.name || userData.fullName || 'Ashutosh Pradhan',
       email: userData.email,
       passportId: userData.passportId || `VP-2026-IND-${Math.floor(1000 + Math.random() * 9000)}`,
       ncrfCredits: userData.ncrfCredits || 0,
@@ -75,7 +94,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    setCurrentUser(null);
+    setCurrentUser(GUEST_USER);
     setToken('');
     localStorage.removeItem('veriskill_session');
     localStorage.removeItem('veriskill_auth_token');
@@ -85,16 +104,17 @@ export const AuthProvider = ({ children }) => {
 
   const updateProfile = (updates) => {
     setCurrentUser(prev => {
-      if (!prev) return prev;
-      const updated = { ...prev, ...updates };
+      const base = prev || GUEST_USER;
+      const updated = { ...base, ...updates };
       localStorage.setItem('veriskill_session', JSON.stringify(updated));
       sessionStorage.setItem('veriskill_session', JSON.stringify(updated));
       return updated;
     });
   };
 
-  const isLoggedIn = !!(currentUser && token);
+  const isLoggedIn = !!(currentUser && token && !currentUser.isGuest);
   const isDemoMode = !!(currentUser && currentUser.isDemo);
+  const isGuestMode = !currentUser || !!currentUser.isGuest;
 
   return (
     <AuthContext.Provider value={{
@@ -102,6 +122,7 @@ export const AuthProvider = ({ children }) => {
       token,
       isLoggedIn,
       isDemoMode,
+      isGuestMode,
       startDemoTour,
       login,
       logout,
