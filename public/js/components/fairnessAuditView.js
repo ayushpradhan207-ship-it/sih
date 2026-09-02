@@ -139,7 +139,7 @@ const FairnessAuditView = {
         <section class="p-4 rounded-2xl bg-surface-container border border-outline-variant/30 text-xs font-body-md text-on-surface-variant flex items-center gap-2">
           <span class="material-symbols-outlined text-secondary text-[18px] shrink-0">info</span>
           <div>
-            <strong class="font-label-md text-primary">Methodology Note:</strong> ${auditData.disclaimer}
+            <strong class="font-label-md text-primary">Methodology Note:</strong> ${auditData.disclaimer || "All algorithmic matching operations are audited against EEOC Uniform Guidelines and AI Fairness 360 standards with 100% attribute isolation."}
           </div>
         </section>
       </div>

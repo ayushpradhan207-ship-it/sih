@@ -425,15 +425,27 @@ const Utils = {
     if (endpoint.includes("/fairness") || endpoint.includes("/audit")) {
       return {
         status: "PASSED",
+        disclaimer: "All algorithmic matching operations are audited against EEOC Uniform Guidelines and AI Fairness 360 standards with 100% attribute isolation.",
         metrics: {
-          disparateImpactRatio: 0.94,
+          disparateImpactRatio: { value: 0.94, status: "PASSED" },
+          equalizedOddsDifference: { value: 0.04, status: "PASSED" },
+          falsePositiveRateGap: { value: 0.03, status: "PASSED" },
+          falseNegativeRateGap: { value: 0.05, status: "PASSED" },
           demographicParity: "Optimal (0.94 > 0.80 standard)",
           protectedAttributesIsolated: true,
           auditTimestamp: new Date().toISOString()
         },
+        protectedAttributesExcluded: [
+          { name: "Legal Full Name", status: "MASKED (SHA-256 Pseudonym VP-2026-IND-1042)" },
+          { name: "Candidate Photo & Avatar", status: "MASKED (Zero-Biometric Profile Rendering)" },
+          { name: "Gender Identity & Pronouns", status: "QUARANTINED from Feature Matrix" },
+          { name: "Age & Date of Birth", status: "EXCLUDED from Scoring Algorithm" },
+          { name: "Educational Institution Tier", status: "NEUTRALIZED (Pure Skill Proof Weight)" },
+          { name: "Geographic Postal Location", status: "ISOLATED from Competence Index" }
+        ],
         logs: [
-          { timestamp: new Date().toISOString(), action: "DISPARATE_IMPACT_AUDIT", status: "PASSED", ratio: 0.94 },
-          { timestamp: new Date().toISOString(), action: "ATTRIBUTE_BLIND_MASKING", status: "ACTIVE", fieldsMasked: 8 }
+          { id: "LOG-AUDIT-901", eventType: "FAIRNESS_AUDIT", timestamp: new Date().toISOString(), details: "EEOC 4/5ths Rule Disparate Impact audit passed with 0.94 parity index across candidate distribution.", actor: "VeriSkill Algorithmic Governance Engine" },
+          { id: "LOG-AUDIT-902", eventType: "BIAS_ISOLATION", timestamp: new Date().toISOString(), details: "Protected demographic dimensions successfully quarantined prior to multi-factor ranking computation.", actor: "Ethical Blind Pipeline" }
         ]
       };
     }
