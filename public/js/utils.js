@@ -108,7 +108,13 @@ const Utils = {
 
     setTimeout(() => {
       toast.classList.add("translate-y-4", "opacity-0");
-      setTimeout(() => toast.remove(), 300);
+      setTimeout(() => {
+        if (typeof toast.remove === "function") {
+          toast.remove();
+        } else if (toast.parentNode) {
+          toast.parentNode.removeChild(toast);
+        }
+      }, 300);
     }, 3500);
   },
 

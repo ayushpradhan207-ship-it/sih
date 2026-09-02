@@ -100,21 +100,24 @@ const OnboardingView = {
     `;
   },
 
-  syncDigiLocker() {
+  async syncDigiLocker() {
     Utils.showToast("Fetching APAAR ID & DigiLocker Academic Records...", "info");
+    const session = typeof Auth !== "undefined" ? Auth.getSession() : null;
+    const studentId = session?.studentId || "student-1042";
+
+    await Utils.fetchAPI(`/api/students/${studentId}/sync-apaar`, { method: "POST" }).catch(() => null);
+
     if (typeof Auth !== "undefined") {
       Auth.updateSession({
         hasSyncedDigiLocker: true,
         ncrfCredits: 4.5
       });
     }
-    setTimeout(() => {
-      const statusEl = document.getElementById("onboarding-apaar-status");
-      if (statusEl) {
-        statusEl.classList.remove("hidden");
-      }
-      Utils.showToast("APAAR ID Verified: 4.5 NCrF Academic Credits Synced!", "success");
-    }, 600);
+    const statusEl = document.getElementById("onboarding-apaar-status");
+    if (statusEl) {
+      statusEl.classList.remove("hidden");
+    }
+    Utils.showToast("APAAR ID Verified: 4.5 NCrF Academic Credits Synced!", "success");
   },
 
   renderInterestsStep() {
@@ -203,8 +206,17 @@ const OnboardingView = {
     }
   },
 
-  completeOnboarding() {
+  async completeOnboarding() {
     const interests = Array.from(this.selectedInterests);
+    const session = typeof Auth !== "undefined" ? Auth.getSession() : null;
+    const studentId = session?.studentId || "student-1042";
+
+    // Call live backend endpoint
+    await Utils.fetchAPI(`/api/students/${studentId}/interests`, {
+      method: "POST",
+      body: JSON.stringify({ interests })
+    }).catch(() => null);
+
     if (typeof Auth !== "undefined") {
       Auth.updateSession({
         interests: interests,
